@@ -1,0 +1,64 @@
+<template>
+    <div class="login-form-container">
+        <form @submit.prevent="loginsubmit()">
+            <h3>Login form</h3>
+            <input type="email" v-model="user.email" placeholder="Nhập email" id="" class="box">
+            <input type="password" v-model="user.matkhau" placeholder="Nhập mật khẩu" id="" class="box">
+            <div class="remember">
+                <input type="checkbox" name="" id="remember-me">
+                <label for="remember-me">remember me</label>
+            </div>
+            <input type="submit" value="Đăng nhập" class="btn">
+            <p>forget password? <a href="#">click here</a></p>
+            <p>don't have an account?
+                <router-link to="/registor">create one</router-link>
+            </p>
+        </form>
+    </div>
+</template>
+
+
+<script>
+export default {
+    data() {
+        return {
+            idKH: '',
+            user: {
+                email: '',
+                password: ''
+            },
+            errors: {}
+        }
+    },
+
+    methods: {
+        loginsubmit() {
+            this.axios.post('http://127.0.0.1:8000/api/khachhang/login', this.user).then(response => {
+                // console.log(response.data.id);
+                this.idKH = response.data.id;
+                window.localStorage.setItem('token', response.data.token);//store token in local storage
+                window.localStorage.setItem('idKH', response.data.id);
+                
+                this.$router.push('/');//redirect to home page
+            }).catch(error => {
+                this.errors = error.response.data.errors;
+            })
+        },
+        checkLogin() {
+            let token = window.localStorage.getItem('token');
+            if (token) {
+                this.$router.push('/');
+            }
+        },
+
+    },
+    // mounted() {
+    //     this.checkLogin();
+    // },
+
+    created() {
+        this.checkLogin();
+    }
+
+}
+</script>
