@@ -14,12 +14,13 @@ const store = createStore({
 
     mutations: {
         addToCart(state, item) {
+            // console.log(item);
             let found = state.cart.find(a => a.id == item.id);
 
-            if (found) {
+            if (found) { //if item is already in cart
                 found.quantity++;
                 found.totalPrice = found.quantity * found.gia;
-            } else {
+            } else { //if item is not in cart 
                 state.cart.push(item);
 
                 item.quantity = 1;
@@ -29,7 +30,22 @@ const store = createStore({
             state.cartCount++;
             // console.log(state.cart);
             this.commit('saveCart');
+        },
 
+        addCart(state, item) {
+            // console.log(item);
+            let found = state.cart.find(a => a.id == item.id);
+            if (found) { //if item is already in cart
+                found.quantity += item.quantity;
+                found.note = item.note;
+                found.totalPrice = found.quantity * found.gia;
+            } else { //if item is not in cart
+                state.cart.push(item);
+                item.quantity = item.quantity;
+                item.note = item.note;
+                item.totalPrice = item.quantity * item.gia;
+            }
+            this.commit('saveCart');
         },
 
         removeFromCart(state, item) {

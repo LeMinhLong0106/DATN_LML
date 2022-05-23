@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ban;
+use App\Models\VaiTroQuyen;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
-class BanController extends Controller
+class VaiTroQuyenController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
     public function index()
     {
-        $data = Ban::all();
-        return response()->json($data, 200);
+        //
     }
 
     /**
@@ -38,33 +35,27 @@ class BanController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'ghe' => 'required',
-        ], [
-            'ghe.required' => 'Nhập số ghế',
-        ]);
-        $data = Ban::create($request->all());
-        return response()->json($data);
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Ban  $ban
+     * @param  \App\Models\VaiTroQuyen  $vaiTroQuyen
      * @return \Illuminate\Http\Response
      */
-    public function show(Ban $ban)
+    public function show(VaiTroQuyen $vaiTroQuyen)
     {
-        return response()->json($ban, 200);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Ban  $ban
+     * @param  \App\Models\VaiTroQuyen  $vaiTroQuyen
      * @return \Illuminate\Http\Response
      */
-    public function edit(Ban $ban)
+    public function edit(VaiTroQuyen $vaiTroQuyen)
     {
         //
     }
@@ -73,30 +64,22 @@ class BanController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ban  $ban
+     * @param  \App\Models\VaiTroQuyen  $vaiTroQuyen
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $ban)
+    public function update(Request $request, VaiTroQuyen $vaiTroQuyen)
     {
-        $this->validate($request, [
-            'ghe' => 'required',
-        ], [
-            'ghe.required' => 'Nhập số ghế',
-        ]);
-        $data = Ban::find($ban);
-        return response()->json($data->update($request->all()));
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Ban  $ban
+     * @param  \App\Models\VaiTroQuyen  $vaiTroQuyen
      * @return \Illuminate\Http\Response
      */
-    public function destroy($ban)
+    public function destroy(VaiTroQuyen $vaiTroQuyen)
     {
-        $data = Ban::find($ban);
-        $data->delete();
-        return response()->json($data);
+        //
     }
 }

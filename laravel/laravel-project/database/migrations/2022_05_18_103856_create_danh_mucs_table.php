@@ -16,7 +16,7 @@ class CreateDanhMucsTable extends Migration
         Schema::create('danhmucmon', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('tendm');
-            $table->integer('uutien');
+            $table->integer('uutien')->default(0);
             $table->timestamps();
         });
     }

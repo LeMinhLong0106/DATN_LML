@@ -161,6 +161,38 @@
                         <span>Đầu bếp</span>
                     </router-link>
                 </li>
+
+                <!-- Khách hàng  -->
+                <li class="nav-item">
+                    <router-link class="nav-link collapsed" to="/admin/khachhang">
+                        <i class="fas fa-edit"></i>
+                        <span>Khách hàng</span>
+                    </router-link>
+                </li>
+
+                <!-- Nhân viên  -->
+                <li class="nav-item">
+                    <router-link class="nav-link collapsed" to="/admin/nhanvien">
+                        <i class="fas fa-edit"></i>
+                        <span>Nhân viên</span>
+                    </router-link>
+                </li>
+
+                <!-- Quyền  -->
+                <li class="nav-item">
+                    <router-link class="nav-link collapsed" to="/admin/quyen">
+                        <i class="fas fa-edit"></i>
+                        <span>Quyền</span>
+                    </router-link>
+                </li>
+
+                <!-- Vai trò  -->
+                <li class="nav-item">
+                    <router-link class="nav-link collapsed" to="/admin/vaitro">
+                        <i class="fas fa-edit"></i>
+                        <span>Vai trò</span>
+                    </router-link>
+                </li>
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
 
@@ -190,8 +222,9 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Chào, {{ user.name
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Chào, {{ user.hoten
                                     }}</span>
+                                    <img class="img-profile rounded-circle" :src="getIMG(user.hinhanh)">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -254,6 +287,9 @@ export default {
         }
     },
     methods: {
+        getIMG(hinhanh) {
+            return `http://localhost:8000/images/${hinhanh}`
+        },
         getUser() {
             let token = window.localStorage.getItem('token');
             if (token == null) {

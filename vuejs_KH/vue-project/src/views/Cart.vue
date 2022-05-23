@@ -13,9 +13,9 @@
                                 <span> Số lượng : </span>
                                 <input type="number" name="" v-model="item.quantity" min="1"
                                     @change="updateSoluong(item.id, item.quantity)">
-                                <!-- <br>
+                                <br>
                                 <span> note : </span>
-                                <span class="price"> abc </span> -->
+                                <input type="text" v-model="item.note">
                                 <br>
                                 <span> Giá : </span>
                                 <span class="price"> {{ item.gia.toLocaleString() }} </span>

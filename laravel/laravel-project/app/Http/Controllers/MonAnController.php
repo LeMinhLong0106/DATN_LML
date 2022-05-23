@@ -25,7 +25,6 @@ class MonanController extends Controller
             'datamonan' => $data,
             'monan' => $monan
         ], 200);
-
         
     }
 
@@ -54,7 +53,7 @@ class MonanController extends Controller
             'gia' => 'required|max:255',
             'donvitinh' => 'required|max:255',
             'danhmuc' => 'required|max:255',
-            'hinhanh' => 'required|max:255',
+            'hinhanh' => 'required',
         ], [
             'tenmonan.required' => 'Tên món ăn không được để trống',
             'tenmonan.unique' => 'Tên món ăn đã tồn tại',
@@ -92,9 +91,10 @@ class MonanController extends Controller
      * @param  \App\Models\Monan  $monan
      * @return \Illuminate\Http\Response
      */
-    public function show(Monan $monan)
+    public function show($monan)
     {
-        //
+        $data = Monan::with(['danhmucmonss'])->find($monan);
+        return response()->json($data);
     }
 
     /**
@@ -122,14 +122,14 @@ class MonanController extends Controller
             'gia' => 'required|max:255',
             'donvitinh' => 'required|max:255',
             'danhmuc' => 'required|max:255',
-            'hinhanh' => 'required|max:255',
+            // 'hinhanh' => 'required|max:255',
         ], [
             'tenmonan.required' => 'Tên món ăn không được để trống',
             'tenmonan.unique' => 'Tên món ăn đã tồn tại',
             'gia.required' => 'Giá không được để trống',
             'donvitinh.required' => 'Đơn vị tính không được để trống',
             'danhmuc.required' => 'Danh mục không được để trống',
-            'hinhanh.required' => 'Hình ảnh không được để trống',
+            // 'hinhanh.required' => 'Hình ảnh không được để trống',
         ]);
 
         $data = Monan::find($monan);

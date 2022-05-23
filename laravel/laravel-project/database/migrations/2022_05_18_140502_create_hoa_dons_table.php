@@ -22,8 +22,8 @@ class CreateHoaDonsTable extends Migration
             $table->string('diachi')->nullable();
             $table->string('sdt')->nullable();
             $table->string('ghichu')->nullable();
-            $table->string('nhanvien_id')->default(0)->nullable();
-            $table->string('nhanvien_tn')->default(0)->nullable();
+            $table->string('nhanvien_id')->nullable();
+            $table->string('nhanvien_tn')->nullable();
             $table->string('khachhang_id')->nullable();
             $table->string('ban_id')->nullable();
             $table->string('loaihd_id')->default(0);

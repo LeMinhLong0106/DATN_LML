@@ -43,17 +43,6 @@
                 </div>
             </div>
         </div>
-        <!-- <form @submit.prevent="saveDM">
-            <input v-model="form.tendm" type="text" name="tendm" placeholder="tendm">
-            <div v-if="form.errors.has('tendm')" v-html="form.errors.get('tendm')" />
-
-            <input v-model="form.uutien" type="number" name="uutien" placeholder="uutien">
-            <div v-if="form.errors.has('uutien')" v-html="form.errors.get('uutien')" />
-
-            <button type="submit" :disabled="form.busy">
-                Log In
-            </button>
-        </form> -->
         <!-- Modal add -->
         <div class="modal fade" id="addModal">
             <div class="modal-dialog">
@@ -68,19 +57,15 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="tendm">Tên danh mục</label>
-                                <!-- <input type="text" class="tendm form-control" name="tendm" v-model="tendm"> -->
                                 <input v-model="form.tendm" type="text" class="form-control" name="tendm">
                                 <div class="text-danger error-text " v-if="form.errors.has('tendm')"
                                     v-html="form.errors.get('tendm')"></div>
-                                <!-- <span class="text-danger error-text tendm_err"></span> -->
                             </div>
                             <div class="form-group">
                                 <label for="uutien">Độ ưu tiên</label>
-                                <!-- <input type="number" class="uutien form-control" name="uutien" v-model="uutien"> -->
                                 <input v-model="form.uutien" type="number" class="form-control" name="uutien">
                                 <div class="text-danger error-text " v-if="form.errors.has('uutien')"
                                     v-html="form.errors.get('uutien')"></div>
-                                <!-- <span class="text-danger error-text uutien_err"></span> -->
                             </div>
                         </div>
 
@@ -106,6 +91,7 @@ export default {
     data() {
         return {
             editmode: true,
+            api: 'http://localhost:8000/api/danhmuc',
             form: new Form({
                 id: '',
                 tendm: '',
@@ -129,7 +115,7 @@ export default {
                 this.$router.push('/login');
             }
             // console.log('update');
-            this.form.put('http://127.0.0.1:8000/api/danhmuc/' + this.form.id, {
+            this.form.put(this.api + '/' + this.form.id, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -165,7 +151,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.form.post('http://127.0.0.1:8000/api/danhmuc', {
+            this.form.post(this.api, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -203,7 +189,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.form.delete('http://127.0.0.1:8000/api/danhmuc/' + id, {
+                    this.form.delete(this.api + '/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
@@ -225,7 +211,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/danhmuc', {
+            this.axios.get(this.api, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

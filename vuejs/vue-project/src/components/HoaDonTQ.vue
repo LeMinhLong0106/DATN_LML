@@ -67,24 +67,27 @@
                                     <th>Số lượng</th>
                                     <!-- <th>Ghi chú</th> -->
                                     <th>Tổng tiền</th>
-                                    <th>Chức năng</th>
+                                    <!-- <th>Chức năng</th> -->
 
                                 </tr>
                             </thead>
                             <tbody id="cthd_table_body">
                                 <tr v-for="item in cthd">
-                                    <!-- <td>{{ item.id }}</td> -->
                                     <td>{{ item.monanss.tenmonan }}</td>
-                                    <!-- <td>{{ item.soluong }}</td> -->
                                     <td>
                                         <input v-model="item.soluong" type="number"
                                             @change="updateSoluong(item.id, item.soluong)" class="form-control" min="1"
                                             style="width: 70px;">
                                     </td>
-                                    <!-- <td>{{ item.ghichu }}</td> -->
                                     <td>{{ item.tongtien.toLocaleString() }}</td>
-                                    <td><button class="btn btn-danger btn-circle btn-sm mr-2"
-                                            @click="deleteMon(item.id)"><i class="fas fa-trash"></i></button></td>
+                                    <td>
+                                        <div v-if="item.tinhtrang == 0">
+                                            <button class="btn btn-danger btn-circle btn-sm mr-2"
+                                                @click="deleteMon(item.id)"><i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        <div v-else></div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="text-right"><b>Tổng:</b></td>

@@ -1,7 +1,17 @@
 <template>
     <div class="container-fluid">
-
-        <h3 class="text-center">Báo cáo doanh thu</h3>
+        <form @submit.prevent="filterDate(date_from,date_to)">
+            <input type="date" v-model="date_from">
+            <input type="date" v-model="date_to">
+            <input type="submit" value="Thống kê">
+        </form>
+        <ul>
+            <!-- <li v-for="all in filterDate">{{ all.id }}</li> -->
+        </ul>
+        <ul>
+            <li v-for="slm in filterSoluongmon">{{ slm }}</li>
+        </ul>
+        <!-- <h3 class="text-center">Báo cáo doanh thu</h3>
         <h4 class="text-center">Từ ngày ... đến ngày ...</h4>
 
         <table class="table table-striped table-class">
@@ -37,7 +47,7 @@
             </tbody>
 
         </table>
-        <h3>Tổng tiền:{{ $data.tongtien.toLocaleString() }} VNĐ </h3>
+        <h3>Tổng tiền:{{ $data.tongtien.toLocaleString() }} VNĐ </h3> -->
     </div>
 </template>
 
@@ -45,44 +55,48 @@
 import moment from 'moment'
 
 export default {
+
     data() {
         return {
-            date_from: '',
-            date_to: '',
-            hdtq: {},
+            hd: [],
+            hdtq: [],
             tongtien: '',
-
-            selectedType: '',
+            soluongmon: '',
             startDate: null,
             endDate: null,
+            date_from: null,
+            date_to: null,
+            // data: [
+            //     { "date": "2022-05-01" },
+            //     { "date": "2022-05-02" },
+            //     { "date": "2022-05-03" },
+            //     { "date": "2022-05-04" },
+            //     { "date": "2022-05-05" },
+            //     { "date": "2022-05-06" }
+            // ],
+
+        }
+    },
+
+    computed: {
+        filterDate() {
+            if (this.date_from && this.date_to) {
+                return this.hd.filter(item => {
+                    return moment(item.created_at).isBetween(this.date_from, this.date_to)
+                })
+            }
+            else {
+                return this.hd
+            }
+        },
+
+        filterSoluongmon() {
+            if (this.date_from && this.date_to) {
+                return this.soluongmon
+            }
         }
     },
     methods: {
-        baocaoTK() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('http://127.0.0.1:8000/api/baocao/hdtq', {
-                params: {
-                    date_from: this.date_from,
-                    date_to: this.date_to,
-                }
-            }, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
-                this.hdtq = res.data.data
-                this.tongtien = res.data.tongtien
-            })
-        },
-
-        format_date(value) {
-            if (value) {
-                return moment(String(value)).format('DD-MM-YYYY')
-            }
-        },
         getBaoCao() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
@@ -94,43 +108,109 @@ export default {
                 }
             }).then(res => {
                 console.log(res.data);
+                this.hd = res.data.hd
                 this.hdtq = res.data.hdtq
+                this.soluongmon = res.data.soluongmon
+                this.tongtien = res.data.tttq
                 this.date_from = res.data.date_from
                 this.date_to = res.data.date_to
-                this.tongtien = res.data.tttq
             })
         },
-    },
 
+        format_date(date) {
+            return moment(date).format('DD-MM-YYYY')
+        },
+    },
     created() {
-        this.getBaoCao();
+        this.getBaoCao()
     },
 
-    computed: {
-        // filterItem: function () {
-        //     let filterType = this.selectedType
-        //     if (!filterType) return this.items;  // when filterType not selected
+    // data() {
+    //     return {
+    //         date_from: '',
+    //         date_to: '',
+    //         hdtq: {},
+    //         tongtien: '',
 
-        //     let startDate = this.startDate && new Date(this.startDate);
-        //     let endDate = this.endDate && new Date(this.endDate);
+    //         selectedType: '',
+    //         startDate: null,
+    //         endDate: null,
+    //     }
+    // },
+    // methods: {
+    //     baocaoTK() {
+    //         let token = window.localStorage.getItem('token');
+    //         if (token == null) {
+    //             this.$router.push('/login');
+    //         }
+    //         this.axios.get('http://127.0.0.1:8000/api/baocao/hdtq', {
+    //             params: {
+    //                 date_from: this.date_from,
+    //                 date_to: this.date_to,
+    //             }
+    //         }, {
+    //             headers: {
+    //                 Authorization: 'Bearer ' + token
+    //             }
+    //         }).then(res => {
+    //             this.hdtq = res.data.data
+    //             this.tongtien = res.data.tongtien
+    //         })
+    //     },
 
-        //     return this.items.filter(item => {
-        //         return item.type == filterType;
-        //     }).filter(item => {
-        //         const itemDate = new Date(item.date)
-        //         if (startDate && endDate) {
-        //             return startDate <= itemDate && itemDate <= endDate;
-        //         }
-        //         if (startDate && !endDate) {
-        //             return startDate <= itemDate;
-        //         }
-        //         if (!startDate && endDate) {
-        //             return itemDate <= endDate;
-        //         }
-        //         return true;  // when neither startDate nor endDate selected
-        //     })
+    //     format_date(value) {
+    //         if (value) {
+    //             return moment(String(value)).format('DD-MM-YYYY')
+    //         }
+    //     },
+    //     getBaoCao() {
+    //         let token = window.localStorage.getItem('token');
+    //         if (token == null) {
+    //             this.$router.push('/login');
+    //         }
+    //         this.axios.get('http://127.0.0.1:8000/api/baocao', {
+    //             headers: {
+    //                 Authorization: 'Bearer ' + token
+    //             }
+    //         }).then(res => {
+    //             console.log(res.data);
+    //             this.hdtq = res.data.hdtq
+    //             this.date_from = res.data.date_from
+    //             this.date_to = res.data.date_to
+    //             this.tongtien = res.data.tttq
+    //         })
+    //     },
+    // },
 
-        // }
-    }
+    // created() {
+    //     this.getBaoCao();
+    // },
+
+    // computed: {
+    //     filterItem: function () {
+    //         let filterType = this.selectedType
+    //         if (!filterType) return this.items;  // when filterType not selected
+
+    //         let startDate = this.startDate && new Date(this.startDate);
+    //         let endDate = this.endDate && new Date(this.endDate);
+
+    //         return this.items.filter(item => {
+    //             return item.type == filterType;
+    //         }).filter(item => {
+    //             const itemDate = new Date(item.date)
+    //             if (startDate && endDate) {
+    //                 return startDate <= itemDate && itemDate <= endDate;
+    //             }
+    //             if (startDate && !endDate) {
+    //                 return startDate <= itemDate;
+    //             }
+    //             if (!startDate && endDate) {
+    //                 return itemDate <= endDate;
+    //             }
+    //             return true;  // when neither startDate nor endDate selected
+    //         })
+
+    //     }
+    // }
 }
 </script>

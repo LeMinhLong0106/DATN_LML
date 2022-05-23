@@ -18,6 +18,12 @@ import HoaDonOn from '../components/HoaDonOn.vue';
 import DetailHDOn from '../components/DetailHDOn.vue';
 import DetailHDTQ from '../components/DetailHDTQ.vue';
 import BaoCao from '../components/BaoCao.vue';
+import KhachHang from '../components/KhachHang.vue';
+import NhanVien from '../components/NhanVien.vue';
+import CreateNV from '../components/Nhanvien/CreateNV.vue';
+import EditNV from '../components/Nhanvien/EditNV.vue';
+import VaiTro from '../components/VaiTro.vue';
+import Quyen from '../components/Quyen.vue';
 
 const router = createRouter({
   history: createWebHistory(
@@ -26,8 +32,7 @@ const router = createRouter({
       path: '/',
       name: 'admin',
       component: Admin,
-      children: [
-        {
+      children: [{
           path: '/',
           name: 'dashboard',
           component: Dashboard,
@@ -56,6 +61,36 @@ const router = createRouter({
           path: '/admin/daubep',
           name: 'daubep',
           component: GiaoDienDB,
+        },
+        {
+          path: '/admin/khachhang',
+          name: 'khachhang',
+          component: KhachHang,
+        },
+        {
+          path: '/admin/nhanvien',
+          name: 'nhanvien',
+          component: NhanVien,
+        },
+        {
+          path: '/admin/nhanvien/create',
+          name: 'createNV',
+          component: CreateNV,
+        },
+        {
+          path: '/admin/nhanvien/edit/:id',
+          name: 'editNV',
+          component: EditNV,
+        },
+        {
+          path: '/admin/vaitro',
+          name: 'vaitro',
+          component: VaiTro,
+        },
+        {
+          path: '/admin/quyen',
+          name: 'quyen',
+          component: Quyen,
         },
         {
           path: '/admin/hoadontq',

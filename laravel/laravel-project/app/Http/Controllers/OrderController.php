@@ -92,7 +92,7 @@ class OrderController extends Controller
             $user = Auth::user();
             $sale = new HoaDon;
             $sale->ban_id = $table_id;
-            $sale->nhanvien_id = $user->name;
+            $sale->nhanvien_id = $user->hoten;
             $sale->songuoi = $people_quantity;
             $sale->save();
             $sale_id = $sale->id;

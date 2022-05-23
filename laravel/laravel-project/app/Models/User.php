@@ -18,9 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'hoten', 'email', 'sdt', 'diachi', 'gioitinh', 'ngaysinh', 'hinhanh', 'vaitro_id', 'email', 'password',
     ];
 
     /**
@@ -41,4 +39,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function vaitross()
+    {
+        return $this->belongsTo(VaiTro::class, 'vaitro_id');
+    }
 }

@@ -77,7 +77,8 @@ class KhachHangController extends Controller
 
     public function index()
     {
-        //
+        $data = KhachHang::all();
+        return response()->json($data, 200);
     }
 
     /**
@@ -141,8 +142,10 @@ class KhachHangController extends Controller
      * @param  \App\Models\KhachHang  $khachHang
      * @return \Illuminate\Http\Response
      */
-    public function destroy(KhachHang $khachHang)
+    public function destroy($khachHang)
     {
-        //
+        $data = KhachHang::find($khachHang);
+        $data->delete();
+        return response()->json($data);
     }
 }

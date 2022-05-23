@@ -17,9 +17,9 @@ class CreateCTHDSTable extends Migration
             $table->bigIncrements('id');
             $table->integer('hoadon_id');
             $table->integer('monan_id');
-            $table->string('soluong');
-            $table->string('giaban');
-            $table->string('ghichu');
+            $table->string('soluong')->default(0);
+            $table->string('giaban')->default(0);
+            $table->string('ghichu')->nullable();
             $table->string('tinhtrang')->default(0);
             $table->string('tongtien')->default(0);
             $table->timestamps();

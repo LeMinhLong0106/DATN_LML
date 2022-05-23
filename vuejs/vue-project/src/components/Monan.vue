@@ -96,8 +96,7 @@
                      </div>
                      <div class="form-group">
                         <label for="hinhanh">Ảnh</label>
-                        <!-- <input v-model="form.hinhanh" type="text" class="form-control" name="hinhanh"> -->
-                        <input @change="updateImage" type="file" class="form-control" name="hinhanh">
+                        <input @change="saveImage" type="file" class="form-control" name="hinhanh">
                         <div class="text-danger error-text " v-if="form.errors.has('hinhanh')"
                            v-html="form.errors.get('hinhanh')"></div>
                      </div>
@@ -145,10 +144,10 @@
 
 <script>
 import Form from 'vform'
-
 export default {
    data() {
       return {
+         api: 'http://localhost:8000/api/monan',
          editmode: true,
          form: new Form({
             id: '',
@@ -156,9 +155,9 @@ export default {
             gia: '',
             mota: '',
             tinhtrang: 1,
-            hinhanh: '',
             donvitinh: '',
             danhmuc: '',
+            hinhanh: '',
          }),
 
          ds_mon: {},
@@ -168,12 +167,11 @@ export default {
    methods: {
 
       getIMG(hinhanh) {
-         return `/images/${hinhanh}`
+         return `http://localhost:8000/images/${hinhanh}`
       },
 
-      updateImage(e) {
+      saveImage(e) {
          this.form.hinhanh = e.target.files[0]
-         // console.log(this.form.hinhanh)
       },
 
       newModal() {
@@ -188,7 +186,7 @@ export default {
          if (token == null) {
             this.$router.push('/login');
          }
-         this.form.post('http://127.0.0.1:8000/api/monan', {
+         this.form.post(this.api, {
             headers: {
                Authorization: 'Bearer ' + token
             }
@@ -224,7 +222,7 @@ export default {
          if (token == null) {
             this.$router.push('/login');
          }
-         this.form.put('http://127.0.0.1:8000/api/monan/' + this.form.id, {
+         this.form.put(this.api + '/' + this.form.id,{
             headers: {
                Authorization: 'Bearer ' + token
             }
@@ -262,7 +260,7 @@ export default {
             confirmButtonText: 'Yes, delete it!'
          }).then((result) => {
             if (result.isConfirmed) {
-               this.form.delete('http://127.0.0.1:8000/api/monan/' + id, {
+               this.form.delete(this.api + '/' + id, {
                   headers: {
                      Authorization: 'Bearer ' + token
                   }
@@ -284,7 +282,7 @@ export default {
          if (token == null) {
             this.$router.push('/login');
          }
-         this.axios.get('http://127.0.0.1:8000/api/monan', {
+         this.axios.get(this.api, {
             headers: {
                Authorization: 'Bearer ' + token
             }

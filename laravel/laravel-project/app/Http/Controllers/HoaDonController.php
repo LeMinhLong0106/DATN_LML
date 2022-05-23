@@ -25,7 +25,7 @@ class HoaDonController extends Controller
     {
         $data = HoaDon::find($hDTaiQuay);
         $cthd = CTHD::where('hoadon_id', $hDTaiQuay)->with(['monanss'])
-        ->get();
+            ->get();
         return response()->json([
             'data' => $data,
             'cthd' => $cthd,
@@ -37,8 +37,14 @@ class HoaDonController extends Controller
     {
         $user = Auth::user();
         $sale = HoaDon::find($id);
+        $detail = CTHD::where('hoadon_id', $id)->get();
+        $detail->each(function ($item) {
+            $item->update([
+                'tinhtrang' => 1
+            ]);
+        });
         $sale->tinhtrang = 1;
-        $sale->nhanvien_tn = $user->name;
+        $sale->nhanvien_tn = $user->hoten;
         $sale->save();
         $tabs = Ban::find($sale->ban_id);
         $tabs->tinhtrang = 0;
@@ -51,7 +57,7 @@ class HoaDonController extends Controller
         $user = Auth::user();
         $sale = HoaDon::find($id);
         $sale->tinhtrang = 1;
-        $sale->nhanvien_tn = $user->name;
+        $sale->nhanvien_tn = $user->hoten;
         $sale->save();
         return $this->indexHDO();
     }
@@ -80,7 +86,7 @@ class HoaDonController extends Controller
 
     public function indexHDO()
     {
-        $data = HoaDon::where('loaihd_id',1)->get();
+        $data = HoaDon::where('loaihd_id', 1)->get();
         return response()->json([
             'data' => $data,
         ]);

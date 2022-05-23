@@ -50,8 +50,7 @@ export default {
         },
         addToCart(item) {
             this.$store.commit('addToCart', item);
-            console.log(item);
-
+            // console.log(item);
         },
     },
     

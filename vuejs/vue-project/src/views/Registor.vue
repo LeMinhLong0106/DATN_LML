@@ -9,14 +9,31 @@
             <div class="col-lg-7">
               <div class="p-5">
                 <div class="text-center">
-                  <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                  <h1 class="h4 text-gray-900 mb-4">Tạo tài khoản!</h1>
                 </div>
                 <form @submit.prevent="registorsubmit()">
                   <div class="form-group">
-                    <input v-model="user.name" type="text" class="form-control form-control-user"
-                      :class="{ 'is-invalid': errors.name }" placeholder="Name">
-                    <div v-if="errors.name" class="invalid-feedback">
-                      <strong>{{ errors.name[0] }}</strong>
+                    <input v-model="user.hoten" type="text" class="form-control form-control-user"
+                      :class="{ 'is-invalid': errors.hoten }" placeholder="Họ và tên">
+                    <div v-if="errors.hoten" class="invalid-feedback">
+                      <strong>{{ errors.hoten[0] }}</strong>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <input v-model="user.diachi" type="text" class="form-control form-control-user"
+                        :class="{ 'is-invalid': errors.diachi }" placeholder="Địa chỉ...">
+                      <div v-if="errors.diachi" class="invalid-feedback">
+                        <strong>{{ errors.diachi[0] }}</strong>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <input v-model="user.sdt" type="text" class="form-control form-control-user"
+                        :class="{ 'is-invalid': errors.sdt }" placeholder="Số điện thoại">
+                      <div v-if="errors.sdt" class="invalid-feedback">
+                        <strong>{{ errors.sdt[0] }}</strong>
+                      </div>
                     </div>
                   </div>
 
@@ -27,7 +44,15 @@
                       <strong>{{ errors.email[0] }}</strong>
                     </div>
                   </div>
-                  <div class="form-group row">
+
+                  <div class="form-group">
+                    <input v-model="user.password" type="password" class="form-control form-control-user"
+                      :class="{ 'is-invalid': errors.password }" placeholder="Password">
+                    <div v-if="errors.password" class="invalid-feedback">
+                      <strong>{{ errors.password[0] }}</strong>
+                    </div>
+                  </div>
+                  <!-- <div class="form-group row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
                       <input v-model="user.password" type="password" class="form-control form-control-user"
                         :class="{ 'is-invalid': errors.password }" placeholder="Password">
@@ -36,14 +61,14 @@
                       </div>
 
                     </div>
-                    <!-- <div class="col-sm-6">
+                    <div class="col-sm-6">
                       <input v-model="user.password_confirm" type="password" class="form-control form-control-user"
                         :class="{ 'is-invalid': errors.password_confirm }" placeholder="Repeat Password">
                       <div v-if="errors.password_confirm" class="invalid-feedback">
                         <strong>{{ errors.password_confirm[0] }}</strong>
                       </div>
-                    </div> -->
-                  </div>
+                    </div>
+                  </div> -->
                   <button type="submit" class="btn btn-primary btn-user btn-block">
                     Register Account
                   </button>
@@ -70,7 +95,9 @@ export default {
   data() {
     return {
       user: {
-        name: '',
+        hoten: '',
+        diachi: '',
+        sdt: '',
         email: '',
         password: ''
       },

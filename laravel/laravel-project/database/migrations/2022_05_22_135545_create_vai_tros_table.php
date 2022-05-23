@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKhachHangsTable extends Migration
+class CreateVaiTrosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateKhachHangsTable extends Migration
      */
     public function up()
     {
-        Schema::create('khachhang', function (Blueprint $table) {
+        Schema::create('vaitro', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('tenkh');
-            $table->string('email')->unique();
-            $table->string('sdt')->unique();
-            $table->string('diachi');
-            $table->string('matkhau');
+            $table->string('tenvaitro');
+            $table->string('mota');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateKhachHangsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('khachhang');
+        Schema::dropIfExists('vaitro');
     }
 }

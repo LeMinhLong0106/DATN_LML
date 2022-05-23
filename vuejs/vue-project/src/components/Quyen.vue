@@ -1,12 +1,12 @@
 <template>
     <div class="container-fluid">
-        <h1 class="h3 mb-4 text-gray-800">Quản lý bàn</h1>
+        <h1 class="h3 mb-4 text-gray-800">Quyền</h1>
         <div id="message"></div>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <div class="row">
                     <div class="col">
-                        <h6 class="m-0 font-weight-bold text-primary">Danh sách bàn</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Danh sách quyền</h6>
                     </div>
                     <div class="col" align="right">
                         <button type="button" class="btn btn-success btn-circle btn-sm" @click="newModal()">
@@ -20,23 +20,15 @@
                     <table class="table table-bordered" width="100%" cellspacing="0" id="dataTable">
                         <thead>
                             <tr>
-                                <th>Số bàn</th>
-                                <th>Số ghế</th>
-                                <th>Tình trạng</th>
-                                <th>Hành động</th>
+                                <th>Tên quyền</th>
+                                <th>Mô tả</th>
+                                <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(todo, index) in ds_ban" :key="index">
-                                <td>{{ todo.id }}</td>
-                                <td>{{ todo.ghe }}</td>
-
-                                <td v-if="todo.tinhtrang == 0">
-                                    <span class="badge badge-danger">Trống</span>
-                                </td>
-                                <td v-else-if="todo.tinhtrang == 1">
-                                    <span class="badge badge-success">Đã đặt</span>
-                                </td>
+                            <tr v-for="(todo, index) in ds_q" :key="index">
+                                <td>{{ todo.tenquyen }}</td>
+                                <td>{{ todo.mota }}</td>
                                 <td>
                                     <button class="btn btn-primary btn-circle btn-sm mr-2" @click="editModal(todo)"><i
                                             class="fas fa-edit"></i></button>
@@ -49,7 +41,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Modal add -->
         <div class="modal fade" id="addModal">
             <div class="modal-dialog">
@@ -63,10 +54,16 @@
                         <!-- Modal body -->
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="ghe">Số ghế</label>
-                                <input v-model="form.ghe" type="text" class="form-control" name="ghe">
-                                <div class="text-danger error-text " v-if="form.errors.has('ghe')"
-                                    v-html="form.errors.get('ghe')"></div>
+                                <label for="tenquyen">Tên quyền</label>
+                                <input v-model="form.tenquyen" type="text" class="form-control" name="tenquyen">
+                                <div class="text-danger error-text " v-if="form.errors.has('tenquyen')"
+                                    v-html="form.errors.get('tenquyen')"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mota">Mô tả</label>
+                                <input v-model="form.mota" type="text" class="form-control" name="mota">
+                                <div class="text-danger error-text " v-if="form.errors.has('mota')"
+                                    v-html="form.errors.get('mota')"></div>
                             </div>
                         </div>
 
@@ -80,9 +77,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </template>
 
 <script>
@@ -92,21 +87,22 @@ export default {
     data() {
         return {
             editmode: true,
-            api: 'http://localhost:8000/api/ban',
+            api: 'http://localhost:8000/api/quyen',
             form: new Form({
                 id: '',
-                ghe: '',
-                tinhtrang: 0,
+                tenquyen: '',
+                mota: '',
             }),
-            ds_ban: {},
+            ds_q: {},
         }
     },
     methods: {
-        editModal(ban) {
+
+        editModal(vaitro) {
             this.editmode = true
             $('#addModal').modal('show')
-            this.form.fill(ban);//gán giá trị
-            $('#modal_title').html('Sửa bàn');
+            this.form.fill(vaitro);//gán giá trị
+            $('#modal_title').html('Sửa quyền');
         },
 
         updateDM() {
@@ -119,28 +115,31 @@ export default {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-            }, this.form).then(() => {
-                $('#addModal').modal('hide')
-                this.$swal(
-                    'Thành công!',
-                    'Bàn đã dược cập nhật.',
-                    'success'
-                )
-                this.getBan();
-            }).catch(error => {
-                this.$swal(
-                    'Error!',
-                    'Your file has been deleted.',
-                    'error'
-                )
             })
+                .then(() => {
+                    $('#addModal').modal('hide')
+                    this.$swal(
+                        'Thành công!',
+                        'Quyền đã dược cập nhật.',
+                        'success'
+                    )
+                    this.getDM();
+                })
+                .catch(error => {
+                    this.$swal(
+                        'Error!',
+                        'Your file has been deleted.',
+                        'error'
+                    )
+                })
         },
 
         newModal() {
             this.editmode = false
             this.form.reset();
             $('#addModal').modal('show')
-            $('#modal_title').html('Thêm bàn');
+            $('#modal_title').html('Thêm quyền');
+
         },
 
         saveDM() {
@@ -157,10 +156,10 @@ export default {
                     $('#addModal').modal('hide')
                     this.$swal(
                         'Thành công!',
-                        'Bàn đã được thêm.',
+                        'Quyền đã được thêm.',
                         'success'
                     )
-                    this.getBan();
+                    this.getDM();
                 })
                 .catch(error => {
                     this.$swal(
@@ -197,13 +196,13 @@ export default {
                             'success'
                         )
                     })
-                    this.getBan();
+                    this.getDM();
                 }
 
             })
         },
 
-        getBan() {
+        getDM() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
@@ -212,13 +211,19 @@ export default {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-            }).then(response => {
-                this.ds_ban = response.data
+            }).then(res => {
+                // console.log(res.data);
+                this.ds_q = res.data
             })
         },
+
     },
+
     created() {
-        this.getBan();
+        this.getDM();
     },
+
+
+
 }      
 </script>

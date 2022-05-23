@@ -15,7 +15,7 @@ class CreateBansTable extends Migration
     {
         Schema::create('bans', function (Blueprint $table) {
             $table->bigIncrements('id');            
-            $table->integer('ghe');
+            $table->integer('ghe')->default(0);
             $table->tinyInteger('tinhtrang')->default(0);
             $table->timestamps();
         });

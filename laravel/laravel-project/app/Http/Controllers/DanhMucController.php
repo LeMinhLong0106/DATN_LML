@@ -79,7 +79,7 @@ class DanhMucController extends Controller
      * @param  \App\Models\DanhMuc  $danhMuc
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$danhMuc)
+    public function update(Request $request, $danhMuc)
     {
         $this->validate($request, [
             'tendm' => 'required',

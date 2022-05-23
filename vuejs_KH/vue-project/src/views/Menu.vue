@@ -20,7 +20,7 @@
         </section> -->
         <!-- end menu -->
 
-         <!-- <div v-for="(dm, index) in danhmucs" :key="index">
+        <!-- <div v-for="(dm, index) in danhmucs" :key="index">
             <section class="popular" id="">
                 <div>
                     <h3>{{ dm.tendm }}</h3>
@@ -53,7 +53,7 @@
                     <div class="box-container">
                         <div class="box" v-for="ma in dm.monan">
                             <div class="image">
-                                <img src="public/images/about-icon-1.png" alt="">
+                                <img :src="getIMG(ma.hinhanh)" >
                             </div>
                             <div class="content">
                                 <h3>{{ ma.tenmonan }}</h3>
@@ -67,17 +67,14 @@
             </section>
         </div>
 
-        <Detail 
-        :detailmonan="detailmonan" 
-        :active="active.monan_show"
-        />
+        <!-- <Detail :detailmonan="detailmonan" :active="active.monan_show" /> -->
 
-       
+
     </div>
 </template>
 
 <script setup>
-import Detail from './Detail.vue';
+// import Detail from './Detail.vue';
 </script>
 
 <script>
@@ -88,12 +85,15 @@ export default {
             monans: [],
             danhmucs: [],
             detailmonan: {},
-            active : {
-                monan_show:true,
+            active: {
+                monan_show: true,
             }
         }
     },
     methods: {
+        getIMG(hinhanh) {
+            return `http://localhost:8000/images/${hinhanh}`
+        },
         getData() {
             this.axios.get('http://127.0.0.1:8000/api/menu').then(res => {
                 this.monans = res.data.monans;
@@ -103,13 +103,13 @@ export default {
         },
         detail(ma) {
             this.detailmonan = ma;
-            console.log(this.detailmonan);
-            // this.$router.push({
-            //     name: 'detail',
-            //     params: {
-            //         id: ma.id
-            //     }
-            // })
+            // console.log(this.detailmonan);
+            this.$router.push({
+                name: 'detail',
+                params: {
+                    id: ma.id
+                }
+            })
         }
     },
 

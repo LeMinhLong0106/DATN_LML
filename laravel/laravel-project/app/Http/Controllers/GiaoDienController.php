@@ -156,6 +156,7 @@ class GiaoDienController extends Controller
             $order_detail->tongtien = $value['quantity'] * $value['gia'];
             $order_detail->monan_id = $value['id'];
             $order_detail->soluong = $value['quantity'];
+            $order_detail->ghichu = $value['note'];
             $order_detail->giaban = $value['gia'];
             $order_detail->save();
         }
