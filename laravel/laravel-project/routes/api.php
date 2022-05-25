@@ -2,10 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/majestic', 'GiaoDienController@majestic')->name('majestic');
 Route::get('/menu', 'GiaoDienController@menu')->name('menu');
-Route::get('/detail/{id}', 'GiaoDienController@detail')->name('detail');
+Route::get('/detail/{id}', 'MonanController@show_mon')->name('detail');
 
 // Route::get('/about', 'GiaoDienController@about')->name('about');
 // Route::get('/search', 'GiaoDienController@search')->name('search');
@@ -15,9 +16,20 @@ Route::get('/detail/{id}', 'GiaoDienController@detail')->name('detail');
 // nhân viên
 Route::post('/register', 'UserController@register');
 Route::post('/login', 'UserController@login');
+
+// đăng nhập với gg
+// Route::get('redirectToGoogle', 'SocialController@redirectToGoogle')->name('redirectToGoogle');
+// Route::get('callbackGoogle', 'SocialController@callbackGoogle')->name('callbackGoogle');
+
+Route::get('login/google', 'SocialController@redirectToProvider');
+Route::get('login/google/callback', 'SocialController@handleProviderCallback');
+
+
 // khách hàng
 Route::post('/khachhang/register', 'KhachHangController@register')->name('khachhang.register');
 Route::post('/khachhang/login', 'KhachHangController@login')->name('khachhang.login');
+Route::post('checkout', 'GiaoDienController@checkout')->name('checkout');
+
 Route::get('order/getSaleDetails/{id}', 'OrderController@getSaleDetails')->name('order.getSaleDetails');
 
 Route::middleware('auth:api')->group(function () {
@@ -63,7 +75,6 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/khachhang/logout', 'KhachHangController@logout')->name('khachhang.logout');
 
-    Route::post('checkout', 'GiaoDienController@checkout')->name('checkout');
 });
 
 

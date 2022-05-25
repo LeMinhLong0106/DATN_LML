@@ -17,7 +17,7 @@ class CreateKhachHangsTable extends Migration
             $table->bigIncrements('id');
             $table->string('tenkh');
             $table->string('email')->unique();
-            $table->string('sdt')->unique();
+            $table->string('sdt');
             $table->string('diachi');
             $table->string('matkhau');
             $table->timestamps();

@@ -97,6 +97,12 @@ class MonanController extends Controller
         return response()->json($data);
     }
 
+    public function show_mon($monan)
+    {
+        $data = Monan::with(['danhmucmonss'])->find($monan);
+        return response()->json($data);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

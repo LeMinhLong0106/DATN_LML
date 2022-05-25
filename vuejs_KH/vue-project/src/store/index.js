@@ -14,20 +14,23 @@ const store = createStore({
 
     mutations: {
         addToCart(state, item) {
-            // console.log(item);
+            console.log(item);
             let found = state.cart.find(a => a.id == item.id);
 
             if (found) { //if item is already in cart
                 found.quantity++;
+                // found.note = item.note;
                 found.totalPrice = found.quantity * found.gia;
             } else { //if item is not in cart 
                 state.cart.push(item);
-
+                item.note = null;
                 item.quantity = 1;
                 item.totalPrice = item.gia;
             }
 
-            state.cartCount++;
+            // state.cartCount++;
+            state.cartCount = state.cart.length;
+
             // console.log(state.cart);
             this.commit('saveCart');
         },
@@ -45,16 +48,21 @@ const store = createStore({
                 item.note = item.note;
                 item.totalPrice = item.quantity * item.gia;
             }
+            // state.cartCount += item.quantity;
+            state.cartCount = state.cart.length;
+
             this.commit('saveCart');
         },
 
         removeFromCart(state, item) {
             let index = state.cart.indexOf(item);
+            console.log(index);
 
             if (index > -1) {
                 let a = state.cart[index];
-                state.cartCount -= a.quantity;
-
+                console.log(a);
+                // state.cartCount -= a.quantity;
+                state.cartCount -= 1;
                 state.cart.splice(index, 1);
             }
             this.commit('saveCart');
@@ -68,6 +76,7 @@ const store = createStore({
             found.totalPrice = found.quantity * found.gia;
 
             // console.log(state.cart);
+            // state.cartCount = sum(item.quantity); 
             this.commit('saveCart');
         },
         // lưu cart vào localStorage 

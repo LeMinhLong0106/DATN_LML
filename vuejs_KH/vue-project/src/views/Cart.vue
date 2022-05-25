@@ -7,7 +7,8 @@
                     <div class="box-container">
                         <div class="box" v-for="item in $store.state.cart" :key="item.id">
                             <i class="fas fa-times" @click.prevent="removeFromCart(item)"></i>
-                            <img src="images/menu-1.png" alt="">
+                            <!-- <img src="images/menu-1.png" alt=""> -->
+                                <img :src="getIMG(item.hinhanh)" >
                             <div class="content">
                                 <h3>{{ item.tenmonan }}</h3>
                                 <span> Số lượng : </span>
@@ -18,10 +19,12 @@
                                 <input type="text" v-model="item.note">
                                 <br>
                                 <span> Giá : </span>
-                                <span class="price"> {{ item.gia.toLocaleString() }} </span>
+                                <span class="price"> {{ item.gia }} </span>
+                                <!-- <span class="price"> {{ item.gia.toLocaleString() }} </span> -->
                                 <br>
                                 <span> Tổng : </span>
-                                <span class="price"> {{ item.totalPrice.toLocaleString() }} </span>
+                                <span class="price"> {{ item.totalPrice }} </span>
+                                <!-- <span class="price"> {{ item.totalPrice.toLocaleString() }} </span> -->
                             </div>
                         </div>
                     </div>
@@ -100,19 +103,23 @@ export default {
         }
     },
     methods: {
+        getIMG(hinhanh) {
+            return `http://localhost:8000/images/${hinhanh}`
+        },
+
         removeFromCart(item) {
             this.$store.commit('removeFromCart', item);
         },
         updateSoluong(id, quantity) {
             this.$store.commit('updateSoluong', { id, quantity });
         },
+        
         thanhtoan() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
             }
             else {
-                // this.$router.push('/cart');
                 let data = {
                     idKH: this.getKH,
                     hoten: this.hoten,

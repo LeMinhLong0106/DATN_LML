@@ -23,14 +23,17 @@
                 <div @click="search" id="search-btn" class="fas fa-search"></div>
                 <router-link to="/cart">
                     <div id="cart-btn" class="fas fa-shopping-cart">
-                        <span class="badge"></span>
+                        <!-- <span class="badge">{{ $store.state.cartCount }}</span> -->
+                        <span class="badge">{{soluong}}</span>
+
                     </div>
                 </router-link>
+
                 <router-link to="/login">
                     <div id="login-btn" class="fas fa-user"></div>
                 </router-link>
 
-                <div @click="logout()" id="login-btn" class="fas fa-user"></div>
+                <div @click="logout()" v-if="checklog">logout</div>
             </div>
         </header>
     </div>
@@ -39,7 +42,15 @@
 
 <script>
 
+
 export default {
+    data() {
+        return {
+            checklog: false,
+            soluong: '',
+        }
+    },
+
     methods: {
         menu() {
             document.querySelector('.header .navbar').classList.toggle('active')
@@ -56,7 +67,20 @@ export default {
         },
         timkiem() {
             this.$router.push('/search/' + this.timkiem);
-            
+        }
+    },
+    
+    mounted(){
+        this.soluong = window.localStorage.getItem('cartCount');
+    },
+
+    created() {
+        let token = window.localStorage.getItem('token');
+        if (token == null) {
+            this.checklog = false;
+        }
+        else {
+            this.checklog = true;
         }
     }
 }  

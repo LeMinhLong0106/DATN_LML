@@ -135,7 +135,10 @@ const router = createRouter({
       name: 'registor',
       component: Registor
     },
-
+    {
+      path: '/auth/:provider/callback',
+      component: Login
+    },
   ]
 })
 

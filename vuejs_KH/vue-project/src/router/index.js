@@ -6,6 +6,7 @@ import HomeView from '../views/HomeView.vue'
 import Menu from '../views/Menu.vue'
 import Cart from '../views/Cart.vue'
 import Login from '../views/Login.vue'
+import LoginGG from '../views/LoginGG.vue'
 import Registor from '../views/Registor.vue'
 import Search from '../views/Search.vue'
 import Detail from '../views/Detail.vue'
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/cart',
       name: 'cart',
       component: Cart
+    },
+    {
+      path: '/api/login/google/callback',
+      name: 'loginGG',
+      component: LoginGG
     },
     {
       path: '/login',

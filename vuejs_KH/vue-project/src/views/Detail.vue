@@ -1,5 +1,6 @@
 <template>
     <div>
+        
         <section class="food-preview-container">
             <div class="food-preview">
                 <img :src="getIMG(monans.hinhanh)">
@@ -40,7 +41,6 @@ export default {
                 quantity: '',
                 note: '',
             },
-            api: 'http://localhost:8000/api/monan',
         }
     },
     methods: {
@@ -48,15 +48,7 @@ export default {
             return `http://localhost:8000/images/${hinhanh}`
         },
         getMon() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get(this.api + '/' + this.$route.params.id, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
+            this.axios.get('http://localhost:8000/api/detail/' + this.$route.params.id).then(response => {
                 // this.monans = response.data;
                 this.monans.hinhanh = response.data['hinhanh'];         
                 this.monans.tenmonan = response.data['tenmonan'];         
@@ -75,6 +67,12 @@ export default {
             console.log(item);
             this.$store.commit('addCart', item);
             // console.log(item);
+            this.$swal(
+                'Thành công!',
+                'Thêm thành công',
+                'success'
+            )
+            this.$router.push('/menu');
         },
 
         // addCart(monan) {
@@ -102,6 +100,5 @@ export default {
     created() {
         this.getMon();
     },
-
 }
 </script>

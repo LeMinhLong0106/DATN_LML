@@ -12,6 +12,6 @@ class KhachHang extends Model
     use HasApiTokens, HasFactory;
     protected $table = 'khachhang';
     protected $fillable = [
-        'tenkh',    'email',    'sdt',    'diachi',    'matkhau',
+        'tenkh',    'email',    'sdt',    'diachi',    'matkhau',    'google_id',
     ];
 }

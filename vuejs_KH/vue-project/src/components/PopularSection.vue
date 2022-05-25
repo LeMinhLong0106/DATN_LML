@@ -7,6 +7,7 @@
         </div>
 
         <div class="box-container">
+            <!-- <Toasts :show-progress="true" :rtl="false" :max-messages="5" :time-out="3000" :closeable="true"></Toasts> -->
 
             <div class="box" v-for="(todo, index) in monan_moi" :key="index">
                 <a href="#" class="fas fa-heart"></a>
@@ -14,7 +15,7 @@
                     <img src="images/food-1.png" alt="">
                 </div>
                 <div class="content">
-                    <h3>{{todo.tenmonan}}</h3>
+                    <h3>{{ todo.tenmonan }}</h3>
                     <div class="stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -23,7 +24,7 @@
                         <i class="fas fa-star-half-alt"></i>
                         <span> (50) </span>
                     </div>
-                    <div class="price">{{todo.gia}}/{{todo.donvitinh}}</div>
+                    <div class="price">{{ todo.gia }}/{{ todo.donvitinh }}</div>
                     <div class="btn" @click="addToCart(todo)">add to cart</div>
                 </div>
             </div>
@@ -50,12 +51,19 @@ export default {
         },
         addToCart(item) {
             this.$store.commit('addToCart', item);
+            this.$swal(
+                'Thành công!',
+                'Thêm thành công',
+                'success'
+            )
+
             // console.log(item);
         },
     },
-    
+
     created() {
         this.getDM();
     },
+
 }
 </script>

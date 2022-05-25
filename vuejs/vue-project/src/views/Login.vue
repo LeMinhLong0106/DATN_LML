@@ -19,7 +19,8 @@
                                             <div class="form-group">
                                                 <input v-model="user.email" type="email"
                                                     class="form-control form-control-user"
-                                                    :class="{ 'is-invalid': errors.email }" placeholder="Email Address...">
+                                                    :class="{ 'is-invalid': errors.email }"
+                                                    placeholder="Email Address...">
 
                                                 <div v-if="errors.email" class="invalid-feedback">
                                                     <strong>{{ errors.email[0] }}</strong>
@@ -28,8 +29,7 @@
                                             <div class="form-group">
                                                 <input v-model="user.password" type="password"
                                                     class="form-control form-control-user"
-                                                    :class="{ 'is-invalid': errors.password }"
-                                                    placeholder="Password">
+                                                    :class="{ 'is-invalid': errors.password }" placeholder="Password">
                                                 <div v-if="errors.password" class="invalid-feedback">
                                                     <strong>{{ errors.password[0] }}</strong>
                                                 </div>
@@ -45,20 +45,24 @@
                                             <button type="submit" class="btn btn-primary btn-user btn-block">
                                                 Login
                                             </button>
-                                            <!-- <hr>
-                                            <button type="submit" class="btn btn-google btn-user btn-block">
-                                                <i class="fab fa-google fa-fw"></i> Login with Google
-                                            </button>
-                                            <button type="submit" class="btn btn-facebook btn-user btn-block">
+                                            <hr>
+
+                                            <!-- <button type="submit" class="btn btn-facebook btn-user btn-block">
                                                 <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                                             </button> -->
                                         </form>
+                                        <!-- <button @click="loginGG()" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                        </button> -->
+                                        <!-- <button @click.prevent="authProvider('google')">Sign up with Google</button> -->
+                                        <button @click="authProvider('google')">auth Google</button>
                                         <hr>
                                         <div class="text-center">
                                             <a class="small" href="forgot-password.html">Forgot Password?</a>
                                         </div>
                                         <div class="text-center">
-                                            <router-link to="/registor" class="small" href="register.html">Create an Account!</router-link>
+                                            <router-link to="/registor" class="small" href="register.html">Create an
+                                                Account!</router-link>
                                         </div>
                                     </div>
                                 </div>
@@ -84,6 +88,22 @@ export default {
     },
 
     methods: {
+        authProvider(provider) {
+            let self = this;
+            this.$auth.authenticate(provider).then(response => {
+                self.socialLogin(provider, response)
+            }).catch(err => {
+                console.log({ err: err })
+            })
+        },
+        socialLogin(provider, response) {
+            this.$http.post('social/' + provider, response).then(response => {
+                return response.data.token;
+            }).catch(err => {
+                console.log({ err: err })
+            })
+        },
+
         loginsubmit() {
             this.axios.post('http://127.0.0.1:8000/api/login', this.user).then(response => {
                 window.localStorage.setItem('token', response.data.token);//store token in local storage
