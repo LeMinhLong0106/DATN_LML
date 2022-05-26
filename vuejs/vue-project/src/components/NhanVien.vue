@@ -24,6 +24,7 @@
                                 <th>Hình ảnh</th>
                                 <th>Mã nhân viên</th>
                                 <th>Tên nhân viên</th>
+                                <th>Giới tính</th>
                                 <th>Địa chỉ</th>
                                 <th>Số điện thoại</th>
                                 <th>Email</th>
@@ -36,6 +37,9 @@
                                 <td><img :src="getIMG(item.hinhanh)" style="width: 5rem; "></td>
                                 <td>{{ item.id }}</td>
                                 <td>{{ item.hoten }}</td>
+                                
+                                <td v-if="item.gioitinh == 1">Nam</td>
+                                <td v-else>Nữ</td>
                                 <td>{{ item.diachi }}</td>
                                 <td>{{ item.sdt }}</td>
                                 <td>{{ item.email }}</td>
@@ -64,7 +68,6 @@ export default {
     data() {
         return {
             api: 'http://localhost:8000/api/nhanvien',
-
             ds_nv: {},
             ds_vt: {},
         }
@@ -76,13 +79,13 @@ export default {
                 this.$router.push('/login');
             }
             this.$swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Bạn chắc chắn xóa?',
+                text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Ye, xóaaaa!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.axios.delete(this.api + '/' + id, {
@@ -91,8 +94,8 @@ export default {
                         }
                     }).then(() => {
                         this.$swal(
-                            'Deleted!',
-                            'Your file has been deleted.',
+                            'Đã xóa!',
+                            'Thông tin nhân viên.',
                             'success'
                         )
                     })
@@ -119,6 +122,7 @@ export default {
                 this.ds_nv = res.data
             })
         },
+        
         getVT() {
             let token = window.localStorage.getItem('token');
             if (token == null) {

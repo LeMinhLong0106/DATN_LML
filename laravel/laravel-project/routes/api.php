@@ -41,6 +41,7 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('/quyen', 'QuyenController');
     Route::resource('/nhanvien', 'UserController');
     Route::post('/update_nv/{id}', 'UserController@update_nv');
+    Route::post('/update_ma/{id}', 'MonanController@update_ma');
     // hóa đơn
     Route::get('hdtaiquay', 'HoaDonController@indexHDTQ')->name('hdtaiquay.indexHDTQ');
     Route::get('hdonline', 'HoaDonController@indexHDO')->name('hdonline.indexHDO');

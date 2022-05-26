@@ -6,6 +6,7 @@ use App\Models\DanhMuc;
 use App\Models\Monan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 class MonanController extends Controller
 {
@@ -121,6 +122,46 @@ class MonanController extends Controller
      * @param  \App\Models\Monan  $monan
      * @return \Illuminate\Http\Response
      */
+
+    public function update_ma(Request $request, $monan)
+    {
+        $this->validate($request, [
+            'tenmonan' => 'required|unique:monan,tenmonan,' . $monan,
+            'gia' => 'required|max:255',
+            'donvitinh' => 'required|max:255',
+            'danhmuc' => 'required|max:255',
+            'hinhanh' => 'required',
+        ], [
+            'tenmonan.required' => 'Tên món ăn không được để trống',
+            'tenmonan.unique' => 'Tên món ăn đã tồn tại',
+            'gia.required' => 'Giá không được để trống',
+            'donvitinh.required' => 'Đơn vị tính không được để trống',
+            'danhmuc.required' => 'Danh mục không được để trống',
+            'hinhanh.required' => 'Hình ảnh không được để trống',
+        ]);
+
+        $data = Monan::find($monan);
+        $data->tenmonan = $request->tenmonan;
+        $data->gia = $request->gia;
+        $data->mota = $request->mota;
+        $data->donvitinh = $request->donvitinh;
+        $data->tinhtrang = $request->tinhtrang;
+        $data->danhmuc = $request->danhmuc;
+
+        if ($request->hasFile('hinhanh')) {
+            $file = $request->file('hinhanh');
+            $image = $file->getClientOriginalName();
+            $file->move('images', $image);
+            $data->hinhanh = $image;
+        }
+        $data->save();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Cập nhật món ăn thành công',
+        ]);
+    }
+
     public function update(Request $request, $monan)
     {
         $this->validate($request, [

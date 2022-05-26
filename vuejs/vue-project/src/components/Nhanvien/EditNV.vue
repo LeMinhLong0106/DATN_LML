@@ -1,89 +1,118 @@
 <template>
-    <div class="container-fluid">
-        <div class="modal-content">
-            <form @submit.prevent="updateMon" enctype="multipart/form-data">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modal_title"></h4>
-                </div>
-
-                <!-- Modal body -->
-                <div class="form-group">
-                    <label for="hoten">Tên nhân viên</label>
-                    <input v-model="ds_nv.hoten" type="text" class="form-control" name="hoten" placeholder="Họ tên">
-                    <div class="text-danger error-text "></div>
-                </div>
-                <div class="form-group">
-                    <label for="diachi">Địa chỉ</label>
-                    <input v-model="ds_nv.diachi" type="text" class="form-control" name="diachi" placeholder="Địa chỉ">
-                    <div class="text-danger error-text ">
+    
+    <div class="px-4 mt-4">
+        <form @submit.prevent="updateMon" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-xl-4">
+                    <!-- Profile picture card-->
+                    <div class="card mb-4 mb-xl-0">
+                        <div class="card-header">Profile Picture</div>
+                        <div class="card-body text-center">
+                            <!-- Profile picture image-->
+                            <img class="img-account-profile rounded-circle mb-2 w-100" :src="getIMG(ds_nv.hinhanh)">
+                            <!-- Profile picture help block-->
+                            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                            <!-- Profile picture upload button-->
+                            <!-- <button class="btn btn-primary" type="button">Upload new image</button> -->
+                            <input @change="updateImage" type="file" class="form-control" name="hinhanh">
+                            
+                        </div>
                     </div>
                 </div>
+                <div class="col-xl-8">
+                    <!-- Account details card-->
+                    <div class="card mb-4">
+                        <div class="card-header">Account Details</div>
+                        <div class="card-body">
+                            <!-- Form Row-->
+                            <div class="row gx-3 mb-3">
+                                <!-- Form Group (first name)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="hoten">Tên nhân viên</label>
+                                    <input v-model="ds_nv.hoten" type="text" class="form-control" name="hoten"
+                                        placeholder="Họ tên">
+                                    <div class="text-danger error-text " v-if="errors['hoten']"
+                                        v-html="errors['hoten']">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="hoten">Giới tính</label>
+                                    <br>
+                                    <input type="radio" value="1" checked v-model="ds_nv.gioitinh" />
+                                    Nam
 
-                <div class="form-group">
-                    <label for="sdt">Số điện thoại</label>
-                    <input v-model="ds_nv.sdt" type="number" class="form-control" name="sdt"
-                        placeholder="Số điện thoại">
-                    <div class="text-danger error-text ">
+                                    <input type="radio" value="0" v-model="ds_nv.gioitinh" />
+                                    Nữ
+                                </div>
+                            </div>
+
+                            <div class="row gx-3 mb-3">
+                                <!-- Form Group (first name)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="sdt">Số điện thoại</label>
+                                    <input v-model="ds_nv.sdt" type="number" class="form-control" name="sdt"
+                                        placeholder="Số điện thoại">
+                                    <div class="text-danger error-text " v-if="errors['sdt']" v-html="errors['sdt']">
+                                    </div>
+                                </div>
+                                <!-- Form Group (last name)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="diachi">Địa chỉ</label>
+                                    <input v-model="ds_nv.diachi" type="text" class="form-control" name="diachi"
+                                        placeholder="Địa chỉ">
+                                    <div class="text-danger error-text " v-if="errors['diachi']"
+                                        v-html="errors['diachi']">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Group (email address)-->
+                            <div class="row gx-3 mb-3">
+                                <!-- Form Group (first name)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="email">Email</label>
+                                    <input v-model="ds_nv.email" type="email" class="form-control" name="email"
+                                        placeholder="Email">
+                                    <div class="text-danger error-text " v-if="errors['email']"
+                                        v-html="errors['email']">
+                                    </div>
+                                </div>
+                                <!-- Form Group (last name)-->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="password">Mật khẩu</label>
+                                    <input v-model="ds_nv.password" type="password" class="form-control" name="password"
+                                        placeholder="Mật khẩu">
+                                    <div class="text-danger error-text " v-if="errors['password']"
+                                        v-html="errors['password']">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Group (Roles)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="vaitro_id">Vai trò</label>
+                                <select class="form-control" name="vaitro_id" v-model="ds_nv.vaitro_id">
+                                    <option value="" class="form-control">Vai trò</option>
+                                    <option v-for="item in ds_vt" v-bind:value="item.id">
+                                        {{ item.tenvaitro }}
+                                    </option>
+                                </select>
+                                <div class="text-danger error-text " v-if="errors['vaitro_id']"
+                                    v-html="errors['vaitro_id']">
+                                </div>
+                            </div>
+                            <!-- Submit button-->
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                            <router-link to="/admin/nhanvien"  class="btn btn-primary float-right">Quay lại</router-link>
+                        </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="sdt">Email</label>
-                    <input v-model="ds_nv.email" type="email" class="form-control" name="email" placeholder="Email">
-                    <div class="text-danger error-text "></div>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Mật khẩu</label>
-                    <input v-model="ds_nv.password" type="password" class="form-control" name="password"
-                        placeholder="Mật khẩu">
-                    <div class="text-danger error-text ">
-                    </div>
-                </div>
-                <!-- <div class="form-group d-none">
-                                <label for="tinhtrang">Tình trạng</label>
-                                <input type="radio" name="tinhtrang" value="1" checked> Còn
-                                <input type="radio" name="tinhtrang" value="0"> Hết
-                            </div> -->
-                <div>
-                    <img :src="getIMG(ds_nv.hinhanh)" style="width: 5rem; ">
-                </div>
-                <div class="form-group">
-                    <label for="hinhanh">Ảnh</label>
-                    <input v-on:change="updateImage" type="file" class="form-control" name="hinhanh">
-                    <div class="text-danger error-text ">
-                    </div>
-                </div>
-                <!-- <div class="form-group">
-                    <label for="vaitro_id">Vai trò</label>
-                    <select class="form-control" name="vaitro_id" v-model="ds_nv.vaitro_id">
-                        <option value="" class="form-control">Vai trò</option>
-                        <option v-for="item in ds_vt" v-bind:value="item.id">
-                            {{ item.tenvaitro }}
-                        </option>
-                    </select>
-                    <div class="text-danger error-text "></div>
-                </div> -->
-                <div class="form-group">
-                    <label for="vaitro_id">Vai trò</label>
-                    <select class="form-control" name="vaitro_id" v-model="ds_nv.vaitro_id">
-                        <option value="" class="form-control">Vai trò</option>
-                        <option v-for="item in ds_vt" v-bind:value="item.id">
-                            {{ item.tenvaitro }}
-                        </option>
-                    </select>
-
-                </div>
-
-                <button type="submit" class="btn btn-primary">Thêm</button>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </template>
 
 <script>
-import Form from 'vform'
 
 export default {
     data() {
@@ -91,6 +120,7 @@ export default {
             api: 'http://localhost:8000/api/nhanvien',
             ds_nv: {},
             ds_vt: {},
+            errors: {},
         }
     },
     methods: {
@@ -108,6 +138,7 @@ export default {
             formData.append('diachi', this.ds_nv.diachi);
             formData.append('sdt', this.ds_nv.sdt);
             formData.append('email', this.ds_nv.email);
+            formData.append('gioitinh', this.ds_nv.gioitinh);
             formData.append('password', this.ds_nv.password);
             formData.append('vaitro_id', this.ds_nv.vaitro_id);
             formData.append('hinhanh', this.hinhanh);
@@ -123,9 +154,12 @@ export default {
                     'success'
                 )
             }).catch(err => {
+                // console(err);
+                this.errors = err.response.data.errors;
+                // console.log(this.errors);
                 this.$swal(
-                    'Error!',
-                    'Your file has been deleted.',
+                    'Thất bại!',
+                    'nhân viên chưa được thêm.',
                     'error'
                 )
             })
@@ -170,8 +204,6 @@ export default {
         this.getNV();
         this.getVT();
     },
-
-
 
 }      
 </script>

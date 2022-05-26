@@ -87,20 +87,22 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'hoten' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6',
-            'sdt' => 'required|numeric',
+            'sdt' => 'required|min:10',
             'diachi' => 'required|string|max:255',
         ], [
             'hoten.required' => 'Nhập họ tên',
             'email.required' => 'Nhập email',
             'password.required' => 'Nhập mật khẩu',
             'sdt.required' => 'Nhập số điện thoại',
+            'sdt.min' => 'Số điện thoại phải có ít nhất 10 số',
             'diachi.required' => 'Nhập địa chỉ',
         ]);
 
         $data = new User;
         $data->hoten = $request->hoten;
+        $data->gioitinh = $request->gioitinh;
         $data->email = $request->email;
         $data->password = Hash::make($request->password);
         $data->sdt = $request->sdt;
@@ -127,18 +129,20 @@ class UserController extends Controller
             'hoten' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6',
-            'sdt' => 'required|numeric',
+            'sdt' => 'required|min:10',
             'diachi' => 'required|string|max:255',
         ], [
             'hoten.required' => 'Nhập họ tên',
             'email.required' => 'Nhập email',
             'password.required' => 'Nhập mật khẩu',
             'sdt.required' => 'Nhập số điện thoại',
+            'sdt.min' => 'Số điện thoại phải có ít nhất 10 số',
             'diachi.required' => 'Nhập địa chỉ',
         ]);
 
         $data = User::find($nhanvien);
         $data->hoten = $request->hoten;
+        $data->gioitinh = $request->gioitinh;
         $data->email = $request->email;
         $data->password = Hash::make($request->password);
         $data->sdt = $request->sdt;
@@ -167,12 +171,14 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'sdt' => 'required|numeric',
             'diachi' => 'required|string|max:255',
+            'vaitro_id' => 'required',
         ], [
             'hoten.required' => 'Nhập họ tên',
             'email.required' => 'Nhập email',
             'password.required' => 'Nhập mật khẩu',
             'sdt.required' => 'Nhập số điện thoại',
             'diachi.required' => 'Nhập địa chỉ',
+            'vaitro_id.required' => 'Nhập vai trò',
         ]);
 
         $data = User::find($nhanvien);

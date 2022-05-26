@@ -8,8 +8,10 @@
                   <h6 class="m-0 font-weight-bold text-primary">Danh sách món ăn</h6>
                </div>
                <div class="col" align="right">
-                  <button type="button" class="btn btn-success btn-circle btn-sm" @click="newModal()">
-                     <i class="fas fa-plus"></i></button>
+                  <router-link :to="{ name: 'createMA' }">
+                     <button type="button" class="btn btn-success btn-circle btn-sm">
+                        <i class="fas fa-plus"></i></button>
+                  </router-link>
                </div>
             </div>
          </div>
@@ -47,8 +49,10 @@
                         <!-- <td>{{ todo.danhmuc }}</td> -->
                         <td>{{ todo.danhmucmonss.tendm }}</td>
                         <td>
-                           <button class="btn btn-primary btn-circle btn-sm mr-2" @click="editModal(todo)"><i
-                                 class="fas fa-edit"></i></button>
+                           <router-link :to="{ name: 'editMA', params: { id: todo.id } }">
+                              <button class="btn btn-primary btn-circle btn-sm mr-2"><i
+                                    class="fas fa-edit"></i></button>
+                           </router-link>
                            <button class="btn btn-danger btn-circle btn-sm" @click="deleteMon(todo.id)"><i
                                  class="fas fa-trash"></i></button>
                         </td>
@@ -59,16 +63,14 @@
          </div>
       </div>
       <!-- Modal add -->
-      <div class="modal fade" id="addModal">
+      <!-- <div class="modal fade" id="addModal">
          <div class="modal-dialog">
             <div class="modal-content">
                <form @submit.prevent="editmode ? updateMon() : saveMon()" enctype="multipart/form-data">
-                  <!-- Modal Header -->
                   <div class="modal-header">
                      <h4 class="modal-title" id="modal_title"></h4>
                   </div>
 
-                  <!-- Modal body -->
                   <div class="modal-body">
                      <div class="form-group">
                         <label for="tenmonan">Tên món ăn</label>
@@ -96,7 +98,8 @@
                      </div>
                      <div class="form-group">
                         <label for="hinhanh">Ảnh</label>
-                        <input @change="saveImage" type="file" class="form-control" name="hinhanh">
+                        <input @change="editmode ? updateImage() : saveImage()" type="file" class="form-control"
+                           name="hinhanh">
                         <div class="text-danger error-text " v-if="form.errors.has('hinhanh')"
                            v-html="form.errors.get('hinhanh')"></div>
                      </div>
@@ -127,7 +130,6 @@
                      </div>
                   </div>
 
-                  <!-- Modal footer -->
                   <div class="modal-footer">
                      <button v-show="!editmode" type="submit" class="btn btn-primary">Thêm</button>
                      <button v-show="editmode" type="submit" class="btn btn-primary">Cập nhật</button>
@@ -136,30 +138,17 @@
                </form>
             </div>
          </div>
-      </div>
+      </div> -->
 
    </div>
 
 </template>
 
 <script>
-import Form from 'vform'
 export default {
    data() {
       return {
          api: 'http://localhost:8000/api/monan',
-         editmode: true,
-         form: new Form({
-            id: '',
-            tenmonan: '',
-            gia: '',
-            mota: '',
-            tinhtrang: 1,
-            donvitinh: '',
-            danhmuc: '',
-            hinhanh: '',
-         }),
-
          ds_mon: {},
          ds_dm: {},
       }
@@ -168,81 +157,6 @@ export default {
 
       getIMG(hinhanh) {
          return `http://localhost:8000/images/${hinhanh}`
-      },
-
-      saveImage(e) {
-         this.form.hinhanh = e.target.files[0]
-      },
-
-      newModal() {
-         this.editmode = false
-         this.form.reset();
-         $('#addModal').modal('show')
-         $('#modal_title').html('Thêm món ăn');
-      },
-
-      saveMon() {
-         let token = window.localStorage.getItem('token');
-         if (token == null) {
-            this.$router.push('/login');
-         }
-         this.form.post(this.api, {
-            headers: {
-               Authorization: 'Bearer ' + token
-            }
-         })
-            .then(() => {
-               $('#addModal').modal('hide')
-               this.$swal(
-                  'Thành công!',
-                  'món ăn đã được thêm.',
-                  'success'
-               )
-               this.getMon();
-            })
-            .catch(error => {
-               this.$swal(
-                  'Error!',
-                  'Your file has been deleted.',
-                  'error'
-               )
-            })
-      },
-
-      editModal(monan) {
-         // console.log(monan.id);
-         this.editmode = true
-         $('#addModal').modal('show')
-         this.form.fill(monan);//gán giá trị
-         $('#modal_title').html('Sửa món ăn');
-      },
-
-      updateMon() {
-         let token = window.localStorage.getItem('token');
-         if (token == null) {
-            this.$router.push('/login');
-         }
-         this.form.put(this.api + '/' + this.form.id,{
-            headers: {
-               Authorization: 'Bearer ' + token
-            }
-         })
-            .then(() => {
-               $('#addModal').modal('hide')
-               this.$swal(
-                  'Thành công!',
-                  'món ăn đã dược cập nhật.',
-                  'success'
-               )
-               this.getMon();
-            })
-            .catch(error => {
-               this.$swal(
-                  'Error!',
-                  'Your file has been deleted.',
-                  'error'
-               )
-            })
       },
 
       deleteMon(id) {

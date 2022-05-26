@@ -11,6 +11,8 @@ import Registor from '../views/Registor.vue';
 import Admin from '../views/Admin.vue';
 import Danhmuc from '../components/Danhmuc.vue';
 import Monan from '../components/Monan.vue';
+import CreateMA from '../components/MonAn/CreateMA.vue';
+import EditMA from '../components/MonAn/EditMA.vue';
 import Order from '../components/Order.vue';
 import GiaoDienDB from '../components/GiaoDienDB.vue';
 import HoaDonTQ from '../components/HoaDonTQ.vue';
@@ -51,6 +53,16 @@ const router = createRouter({
           path: '/admin/monan',
           name: 'monan',
           component: Monan,
+        },
+        {
+          path: '/admin/monan/create',
+          name: 'createMA',
+          component: CreateMA,
+        },
+        {
+          path: '/admin/monan/edit/:id',
+          name: 'editMA',
+          component: EditMA,
         },
         {
           path: '/admin/order',

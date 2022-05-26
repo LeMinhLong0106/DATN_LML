@@ -1,83 +1,142 @@
 <template>
     <div class="container-fluid">
-        <form @submit.prevent="filterDate(date_from,date_to)">
+        <!-- <form>
             <input type="date" v-model="date_from">
             <input type="date" v-model="date_to">
             <input type="submit" value="Thống kê">
         </form>
         <ul>
-            <!-- <li v-for="all in filterDate">{{ all.id }}</li> -->
+            <li v-for="all in filterDate">{{ all }}</li>
         </ul>
         <ul>
             <li v-for="slm in filterSoluongmon">{{ slm }}</li>
         </ul>
-        <!-- <h3 class="text-center">Báo cáo doanh thu</h3>
-        <h4 class="text-center">Từ ngày ... đến ngày ...</h4>
+        <ul>
+            {{ tongtien }}
+            TTHQ: {{ tthq }}
+        </ul> -->
 
-        <table class="table table-striped table-class">
-            <thead>
-                <tr>
-                    <th>Mã hóa đơn</th>
-                    <th>Số bàn</th>
-                    <th>Ngày đặt</th>
-                    <th>Nhân viên phục vụ</th>
-                    <th>Nhân viên thu ngân</th>
-                    <th>Tổng tiền</th>
-                    <th>Trạng thái</th>
-                    <th>Chức năng</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item in hdtq">
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.ban_id }}</td>
-                    <td>{{ format_date(item.created_at) }}</td>
-                    <td>{{ item.nhanvien_id }}</td>
-                    <td>{{ item.nhanvien_tn }}</td>
-                    <td>{{ item.tongtien.toLocaleString() }} VNĐ</td>
-                    <td>
-                        <span v-if="item.tinhtrang == 0" class="badge badge-danger">Chưa thanh toán</span>
-                        <span v-else class="badge badge-success">Đã thanh toán</span>
-                    </td>
-                    <td>
-                        <a class="btn btn-warning btn-circle btn-sm" href="">
-                            <i class="fas fa-eye"></i></a>
-                    </td>
-                </tr>
-            </tbody>
+        <!-- <canvas id="myChart" ></canvas> -->
+        <ChartBar />
+        <br>
+        <ChartLine />
+        <br>
+        <ChartDoughnut />
 
-        </table>
-        <h3>Tổng tiền:{{ $data.tongtien.toLocaleString() }} VNĐ </h3> -->
+
     </div>
 </template>
 
+<script setup>
+import ChartBar from './Chart/ChartBar.vue'
+import ChartLine from './Chart/ChartLine.vue'
+import ChartDoughnut from './Chart/ChartDoughnut.vue'
+</script>
+
+<style>
+.container-fluid {
+    margin-top: 20px;
+}
+
+.chart-container {
+    background-color: #eee8d5;
+    border-radius: 0.5rem;
+}
+</style>
+
 <script>
 import moment from 'moment'
-
+import Chart from 'chart.js/auto';
 export default {
-
     data() {
         return {
             hd: [],
             hdtq: [],
             tongtien: '',
-            soluongmon: '',
+            soluongmon: [],
             startDate: null,
             endDate: null,
             date_from: null,
             date_to: null,
-            // data: [
-            //     { "date": "2022-05-01" },
-            //     { "date": "2022-05-02" },
-            //     { "date": "2022-05-03" },
-            //     { "date": "2022-05-04" },
-            //     { "date": "2022-05-05" },
-            //     { "date": "2022-05-06" }
-            // ],
-
+            tthq: '',
         }
     },
+    mounted() {
+        const ctx = document.getElementById('myChart');
+        const data = {
+            labels: [
+                'Red',
+                'Blue',
+                'Yellow',
+                'Green',
+            ],
+            datasets: [{
+                label: 'Món ăn được đặt nhiều nhất',
+                data: [12, 19, 3, 5],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)'
+                ],
+                hoverOffset: 4
+            }]
+        };
 
+        // const labels = ['tháng 1', 'tháng 2', 'tháng 3', 'tháng 4', 'tháng 5', 'tháng 6', 'tháng 7', 'tháng 8', 'tháng 9', 'tháng 10', 'tháng 11', 'tháng 12'];
+        // const data = {
+        //     labels: labels,
+        //     datasets: [{
+        //         label: 'My First Dataset',
+        //         data: [65, 59, 80, 81, 56, 55, 40, 50,32, 45, 67, 89],
+        //         fill: false,
+        //         borderColor: 'rgb(75, 192, 192)',
+        //         tension: 0.1
+        //     }]
+        // };
+        const myChart = new Chart(ctx, {
+            // type: 'line',
+            // data: data,
+
+            type: 'pie',
+            data: data,
+
+            // type: 'bar',
+            // data: {
+            //     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            //     datasets: [{
+            //         label: '# of Votes',
+            //         data: [12, 19, 3, 5, 6, 3],
+            //         backgroundColor: [
+            //             'rgba(255, 99, 132, 0.2)',
+            //             'rgba(54, 162, 235, 0.2)',
+            //             'rgba(255, 206, 86, 0.2)',
+            //             'rgba(75, 192, 192, 0.2)',
+            //             'rgba(153, 102, 255, 0.2)',
+            //             'rgba(255, 159, 64, 0.2)'
+            //         ],
+            //         borderColor: [
+            //             'rgba(255, 99, 132, 1)',
+            //             'rgba(54, 162, 235, 1)',
+            //             'rgba(255, 206, 86, 1)',
+            //             'rgba(75, 192, 192, 1)',
+            //             'rgba(153, 102, 255, 1)',
+            //             'rgba(255, 159, 64, 1)'
+            //         ],
+            //         borderWidth: 1
+            //     }]
+            // },
+            // options: {
+            //     scales: {
+            //         y: {
+            //             beginAtZero: true
+            //         }
+            //     }
+            // }
+        });
+
+        myChart;
+    },
     computed: {
         filterDate() {
             if (this.date_from && this.date_to) {
@@ -97,6 +156,12 @@ export default {
         }
     },
     methods: {
+        localizeDate(date) {
+            if (!date || !date.includes('-')) return date
+            const [yyyy, mm, dd] = date.split('-')
+            return new Date(`${mm}/${dd}/${yyyy}`)
+        },
+
         getBaoCao() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
@@ -114,6 +179,7 @@ export default {
                 this.tongtien = res.data.tttq
                 this.date_from = res.data.date_from
                 this.date_to = res.data.date_to
+                this.tthq = res.data.tongtienhomnay
             })
         },
 

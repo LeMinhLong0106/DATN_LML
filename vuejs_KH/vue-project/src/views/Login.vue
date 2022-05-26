@@ -9,16 +9,16 @@
                 <label for="remember-me">remember me</label>
             </div>
             <input type="submit" value="Đăng nhập" class="btn">
+            <button @click="loginGG()" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                        </button>
             <p>forget password? <a href="#">click here</a></p>
             <p>don't have an account?
                 <router-link to="/registor">create one</router-link>
             </p>
         </form>
-        <!-- <a :href="url('/redirectToGoogle')" class="btn btn-primary btn-block">Đăng
-                                            nhập Google</a> -->
-        <!-- <button  @click="loginGG()">Đăng nhập GG</button> -->
-        <button @click="loginGG()" class="btn">Đăng nhập GG</button>
-        <!-- <button @click="authProvider('google')" class="btn">Sign up with Google</button> -->
+        <!-- <button @click="loginGG()" class="btn">Đăng nhập GG</button> -->
+        
     </div>
 </template>
 
@@ -37,27 +37,6 @@ export default {
     },
 
     methods: {
-        // authProvider(provider) {
-        //     let self = this;
-        //     this.$auth.authenticate(provider).then(response => {
-        //         self.socialLogin(provider, response)
-        //     }).catch(err => {
-        //         console.log({ err: err })
-        //     })
-        // },
-        // socialLogin(provider, response) {
-        //     this.$http.post('http://127.0.0.1:8000/api/social/' + provider, response).then(response => {
-        //         return response.data.token;
-        //     }).catch(err => {
-        //         console.log({ err: err })
-        //     })
-        // },
-
-        // async loginGG() {
-        //     const googleUser = await this.$gAuth.signIn();
-        //     console.log("googleUser", googleUser);
-        // },
-
         loginGG() {
             this.axios.get('http://127.0.0.1:8000/api/login/google').then(response => {
                 // console.log(response.data.url);
@@ -67,8 +46,6 @@ export default {
                 // this.$router.push('/');//redirect to home page
             })
         },
-
-
 
         loginsubmit() {
             this.axios.post('http://127.0.0.1:8000/api/khachhang/login', this.user).then(response => {
@@ -91,10 +68,6 @@ export default {
         },
 
     },
-    // mounted() {
-    //     this.checkLogin();
-    // },
-
     created() {
         this.checkLogin();
     }

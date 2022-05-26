@@ -15,9 +15,9 @@ class DanhMucController extends Controller
 
     public function index()
     {
-        // $data = DanhMuc::all();
-        // return response()->json($data, 200);
-        return DanhMuc::latest()->paginate(20);
+        $data = DanhMuc::all();
+        return response()->json($data, 200);
+        // return DanhMuc::latest()->paginate(20);
     }
 
     /**

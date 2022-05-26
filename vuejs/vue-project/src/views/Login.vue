@@ -55,8 +55,6 @@
                                             <i class="fab fa-google fa-fw"></i> Login with Google
                                         </button> -->
                                         <!-- <button @click.prevent="authProvider('google')">Sign up with Google</button> -->
-                                        <button @click="authProvider('google')">auth Google</button>
-                                        <hr>
                                         <div class="text-center">
                                             <a class="small" href="forgot-password.html">Forgot Password?</a>
                                         </div>
@@ -88,21 +86,6 @@ export default {
     },
 
     methods: {
-        authProvider(provider) {
-            let self = this;
-            this.$auth.authenticate(provider).then(response => {
-                self.socialLogin(provider, response)
-            }).catch(err => {
-                console.log({ err: err })
-            })
-        },
-        socialLogin(provider, response) {
-            this.$http.post('social/' + provider, response).then(response => {
-                return response.data.token;
-            }).catch(err => {
-                console.log({ err: err })
-            })
-        },
 
         loginsubmit() {
             this.axios.post('http://127.0.0.1:8000/api/login', this.user).then(response => {

@@ -11,10 +11,15 @@ class BaoCaoController extends Controller
 {
     public function index()
     {
-        $soluongmon = CTHD::select(['monan_id','created_at', DB::raw('sum(soluong) as total')])
-            ->groupBy('monan_id','created_at')
+        // $soluongmon = CTHD::select(['monan_id', 'created_at', DB::raw('sum(soluong) as total')])
+        //     ->groupBy('monan_id', 'created_at')
+        //     ->orderBy('total', 'desc')
+        //     // ->take(2)
+        //     ->get();
+        $soluongmon = CTHD::select(['monan_id', DB::raw('sum(soluong) as total')])
+            ->groupBy('monan_id')
             ->orderBy('total', 'desc')
-            // ->take(2)
+            ->take(4)
             ->get();
 
         $tongtienhomnay = HoaDon::select('created_at', DB::raw('sum(tongtien) as total'))
@@ -22,6 +27,7 @@ class BaoCaoController extends Controller
             ->where('created_at', '=', date('Y-m-d'))
             ->where('loaihd_id', 0)->where('tinhtrang', 1)
             ->first('total');
+
 
         $tongtienhomqua = HoaDon::select('created_at', DB::raw('sum(tongtien) as total'))
             ->groupBy('created_at')
@@ -44,7 +50,7 @@ class BaoCaoController extends Controller
             $hdtq = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 1)->whereBetween('created_at', [$date_from, $date_to])->get();
             $tttq = HoaDon::whereBetween('created_at', [$date_from, $date_to])->sum('tongtien');
 
-            $soluongmon = CTHD::select(['monan_id','created_at'], DB::raw('sum(soluong) as total'))
+            $soluongmon = CTHD::select(['monan_id', 'created_at'], DB::raw('sum(soluong) as total'))
                 ->whereBetween('created_at', [$date_from, $date_to])
                 ->groupBy('monan_id')
                 ->orderBy('total', 'desc')
@@ -52,6 +58,7 @@ class BaoCaoController extends Controller
             // $soluongmon = CTHD::whereBetween('created_at', [$date_from, $date_to])->get();
             $songuoi = HoaDon::whereBetween('created_at', [$date_from, $date_to])->where('loaihd_id', 0)->sum('songuoi');
         }
+
 
         return response()->json([
             'hd' => $hd,
