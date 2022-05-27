@@ -216,7 +216,7 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                this.ds_dm = res.data.data
+                this.ds_dm = res.data
             })
         },
 

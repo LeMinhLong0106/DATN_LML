@@ -9,7 +9,7 @@ class HoaDon extends Model
 {
     use HasFactory;
     protected $table = 'hoadon';
-    protected $fillable = ['tinhtrang', 'tongtien', 'hoten', 'diachi', 'sdt', 'songuoi', 'ghichu', 'nhanvien_id', 'nhanvien_tn', 'khachhang_id', 'ban_id', 'loaihd_id', 'created_at', 'updated_at'];
+    protected $fillable = ['tinhtrang', 'tongtien', 'hoten', 'diachi', 'sdt', 'songuoi', 'ghichu', 'nhanvien_id', 'nhanvien_tn', 'thoigianden', 'khachhang_id', 'ban_id', 'loaihd_id', 'created_at', 'updated_at'];
 
     public function cthds()
     {

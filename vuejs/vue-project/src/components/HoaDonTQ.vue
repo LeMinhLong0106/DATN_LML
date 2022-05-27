@@ -48,6 +48,20 @@
 
         </table>
 
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">Tình trạng bàn</div>
+            <div class="card-body">
+
+                <span v-for="todo in ds_ban">
+                    <button v-if="todo.tinhtrang == 0" class="mb-2 mr-2 btn btn-secondary"
+                        @click="showmodal(todo.id)">Bàn {{ todo.id }}
+                        <br> {{
+                                todo.ghe
+                        }} ghế</button>
+                </span>
+            </div>
+        </div>
+
         <!-- Modal -->
         <div class="modal fade" id="editHD">
             <div class="modal-dialog" style="max-width: 700px;">
@@ -103,6 +117,48 @@
                 </div>
             </div>
         </div>
+
+        <div id="orderModal" class="modal fade">
+            <div class="modal-dialog">
+                <form @submit.prevent="saveDSmon">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modal_title"></h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Tên KH</label>
+                                <input type="text" class="form-control" v-model="hoten">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Số điện thoại</label>
+                                <input type="text" class="form-control" v-model="sdt">
+                            </div>
+
+                            <div class="form-group" id="form_people">
+                                <label>Số lượng người</label>
+                                <input type="number" class="form-control" min="1" v-model="songuoi">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Thời gian đến</label>
+                                <input type="time" class="form-control" v-model="thoigianden">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Ghi chú</label>
+                                <textarea class="form-control" rows="4" v-model="ghichu"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-success" value="Add" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
 </template>
@@ -113,8 +169,16 @@ export default {
 
     data() {
         return {
+            ds_ban: {},
             ds_hd: {},
             cthd: {},
+
+            hoten: '',
+            sdt: '',
+            songuoi: '',
+            ghichu: '',
+            thoigianden: '',
+
             id: '',
             tong: '',
             product_quantity: '',
@@ -270,13 +334,63 @@ export default {
                     this.getHD()
                 }
             })
+        },
 
+        showmodal(id) {
+            $('#orderModal').modal('show')
+            $('#modal_title').text('Khách hàng đặt bàn:' + id)
+            this.table_id = id;
+            this.hoten = '';
+            this.sdt = '';
+            this.songuoi = '';
+            this.ghichu = '';
+            this.thoigianden = '';
+        },
 
+        saveDSmon() {
+            let data = {
+                id: this.table_id,
+                hoten: this.hoten,
+                sdt: this.sdt,
+                songuoi: this.songuoi,
+                ghichu: this.ghichu,
+                thoigianden: this.thoigianden,
+            }
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.axios.post('http://127.0.0.1:8000/api/hdtaiquay/khdattruoc', data, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then(response => {
+                console.log(response);
+                $('#orderModal').modal('hide')
+                this.getBan();
+            }).catch(error => {
+                // this.showMessage('Sửa thất bại');
+            });
+        },
+
+        getBan() {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.axios.get('http://127.0.0.1:8000/api/getBanTrong', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then(res => {
+                this.ds_ban = res.data
+            })
         },
     },
 
     created() {
         this.getHD();
+        this.getBan();
     },
 
 }    

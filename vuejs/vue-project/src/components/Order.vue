@@ -12,7 +12,12 @@
                                 <br> {{
                                         todo.ghe
                                 }} ghế</button>
-                            <button v-else-if="todo.tinhtrang !== 0" class="mb-2 mr-2 btn btn-danger"
+                            <button v-else-if="todo.tinhtrang == 1" class="mb-2 mr-2 btn btn-warning"
+                                @click="showmodal(todo.id)">Bàn {{ todo.id }}
+                                <br> {{
+                                        todo.ghe
+                                }} ghế</button>
+                            <button v-else-if="todo.tinhtrang == 2" class="mb-2 mr-2 btn btn-danger"
                                 @click="showmodal(todo.id)">Bàn {{ todo.id }}
                                 <br> {{
                                         todo.ghe
@@ -128,6 +133,24 @@
                 </form>
             </div>
         </div>
+
+        <div>
+            <div class="row">
+                <div class="col-sm-6" v-for="hd in ds_hdkd">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Bàn: {{ hd.ban_id }}</h5>
+                            <p class="card-text">Họ tên: {{ hd.hoten }}</p>
+                            <p class="card-text">Số điện thoại: {{ hd.sdt }}</p>
+                            <p class="card-text">Thời gian đến: {{ hd.thoigianden }}</p>
+                            <p class="card-text">Số người: {{ hd.songuoi }}</p>
+                            <p class="card-text">Ghi chú:{{ hd.ghichu }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </template>
 
@@ -148,6 +171,7 @@ export default {
             ds_ban: {},
             ds_monan: {},
             ds_mon: {},
+            ds_hdkd: {},
             tong: '',
         }
     },
@@ -173,12 +197,12 @@ export default {
             $('#people_quantity').attr('max', this.table_ghe); // gán giá trị cho input hidden
             $('.showSelectedMenuAndTable').removeClass('d-none');
 
-            if (this.table_status === 1) {
-                $('#form_people').addClass('d-none');
-                $('#people_quantity').attr('required', false);
-            } else {
+            if (this.table_status === 0) {
                 $('#form_people').removeClass('d-none');
                 $('#people_quantity').attr('required', true);
+            } else {
+                $('#form_people').addClass('d-none');
+                $('#people_quantity').attr('required', false);
             };
             this.product_name = '',
                 this.product_quantity = '',
@@ -329,11 +353,27 @@ export default {
             })
         },
 
+        getHDKD() {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.axios.get('http://127.0.0.1:8000/api/getHDKD', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then(res => {
+                // console.log(res.data);
+                this.ds_hdkd = res.data
+            })
+        },
+
     },
 
     created() {
         this.getBan();
         this.getMonAn();
+        this.getHDKD();
     },
 
 }    

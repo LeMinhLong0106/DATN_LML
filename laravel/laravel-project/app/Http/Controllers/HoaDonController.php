@@ -52,6 +52,35 @@ class HoaDonController extends Controller
         return response()->json();
     }
 
+    public function getHDKD()
+    {
+        $data = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 0)->whereNotNull('thoigianden')->get();
+        return response()->json($data);
+    }
+
+    public function khdattruoc(Request $request)
+    {
+        $user = Auth::user();
+        $ban = Ban::find($request->id);
+        $ban->tinhtrang = 2;
+        $ban->save();
+        $hoadon = HoaDon::create([
+            'hoten' => $request->hoten,
+            'sdt' => $request->sdt,
+            'ghichu' => $request->ghichu,
+            'songuoi' => $request->songuoi,
+            'thoigianden' => $request->thoigianden,
+            'ban_id' => $request->id,
+            'loaihd_id' => 0,
+            'nhanvien_tn' => $user->hoten,
+            'tongtien' => 0,
+            'tinhtrang' => 0,
+        ]);
+        return response()->json([
+            'hoadon' => $hoadon,
+        ]);
+    }
+
     public function thanhtoanon($id)
     {
         $user = Auth::user();

@@ -12,7 +12,8 @@
                 <div class="price">{{ monans.gia }}/{{ monans.donvitinh }}</div>
 
                 <div v-if="monans.tinhtrang == 1">
-                    Số lượng:<input type="number" v-model="monans.quantity" class="form-control" min="1" style="width: 100px;">
+                    Số lượng:<input type="number" v-model="monans.quantity" class="form-control" min="1"
+                        style="width: 100px;">
                     Ghi chú:<input type="text" v-model="monans.note" class="form-control" style="width: 100px;">
                     <button class="btn btn-danger" @click="addToCart(monans)">Thêm vào giỏ hàng</button>
                 </div>
@@ -50,8 +51,8 @@ export default {
         getMon() {
             this.axios.get('http://localhost:8000/api/detail/' + this.$route.params.id).then(response => {
                 // this.monans = response.data;
-                this.monans.hinhanh = response.data['hinhanh'];         
-                this.monans.tenmonan = response.data['tenmonan'];         
+                this.monans.hinhanh = response.data['hinhanh'];
+                this.monans.tenmonan = response.data['tenmonan'];
                 this.monans.gia = response.data['gia'];
                 this.monans.donvitinh = response.data['donvitinh'];
                 this.monans.tinhtrang = response.data['tinhtrang'];

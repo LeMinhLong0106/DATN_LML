@@ -32,6 +32,9 @@ Route::post('checkout', 'GiaoDienController@checkout')->name('checkout');
 
 Route::get('order/getSaleDetails/{id}', 'OrderController@getSaleDetails')->name('order.getSaleDetails');
 
+Route::get('baocao', 'BaoCaoController@index')->name('baocao.index');
+
+
 Route::middleware('auth:api')->group(function () {
     Route::resource('/ban', 'BanController');
     Route::resource('/danhmuc', 'DanhMucController');
@@ -55,8 +58,12 @@ Route::middleware('auth:api')->group(function () {
     Route::get('hdonline/{id}/thanhtoanon', 'HoaDonController@thanhtoanon');
     Route::get('hdtaiquay/showReceipt/{id}', 'HoaDonController@showReceipt')->name('hdtaiquay.showReceipt');
 
+    Route::post('hdtaiquay/khdattruoc', 'HoaDonController@khdattruoc')->name('hdtaiquay.khdattruoc');
+    Route::get('/getBanTrong', 'BanController@getBanTrong')->name('getBanTrong');
+    Route::get('/getHDKD', 'HoaDonController@getHDKD')->name('getHDKD');
+
     // báo cáo
-    Route::get('baocao', 'BaoCaoController@index')->name('baocao.index');
+    // Route::get('baocao', 'BaoCaoController@index')->name('baocao.index');
 
     // thực đơn
     Route::resource('order', 'OrderController');

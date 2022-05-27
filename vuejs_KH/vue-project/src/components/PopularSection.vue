@@ -12,20 +12,22 @@
             <div class="box" v-for="(todo, index) in monan_moi" :key="index">
                 <a href="#" class="fas fa-heart"></a>
                 <div class="image">
-                    <img src="images/food-1.png" alt="">
+                    <!-- <img src="images/food-1.png" alt=""> -->
+                    <img :src="getIMG(todo.hinhanh)">
                 </div>
                 <div class="content">
                     <h3>{{ todo.tenmonan }}</h3>
-                    <div class="stars">
+                    <!-- <div class="stars">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star-half-alt"></i>
                         <span> (50) </span>
-                    </div>
+                    </div> -->
                     <div class="price">{{ todo.gia }}/{{ todo.donvitinh }}</div>
-                    <div class="btn" @click="addToCart(todo)">add to cart</div>
+                    <div v-if="todo.tinhtrang == 1" class="btn" @click="addToCart(todo)">Thêm vào giỏ</div>
+                    <div v-else class="btn">Món ăn hết</div>
                 </div>
             </div>
         </div>
@@ -43,6 +45,9 @@ export default {
         }
     },
     methods: {
+        getIMG(hinhanh) {
+            return `http://localhost:8000/images/${hinhanh}`
+        },
         getDM() {
             this.axios.get('http://127.0.0.1:8000/api/majestic').then(res => {
                 // console.log(res.data.monan_moi);

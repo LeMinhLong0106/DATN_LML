@@ -99,4 +99,10 @@ class BanController extends Controller
         $data->delete();
         return response()->json($data);
     }
+
+    public function getBanTrong()
+    {
+        $data = Ban::where('tinhtrang', 0)->get();
+        return response()->json($data);
+    }
 }

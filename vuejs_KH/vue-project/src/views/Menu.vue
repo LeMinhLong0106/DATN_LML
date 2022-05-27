@@ -44,8 +44,26 @@
                 </div>
             </section>
         </div> -->
+        
+        <section class="popular">
+            <input type="search" name="timkiem" v-model="search" placeholder="Tìm kiếm..." id="search-box">
+            
+            <div class="box-container">
+                <div class="box" v-for="ma in danhsachmonan">
+                    <div class="image">
+                        <img :src="getIMG(ma.hinhanh)">
+                    </div>
+                    <div class="content">
+                        <h3>{{ ma.tenmonan }}</h3>
+                        <div class="price">{{ ma.gia }}/{{ ma.donvitinh }}</div>
+                        <button type="button" class="btn" @click="detail(ma)">Chi tiết</button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <div v-for="(dm, index) in danhmucs" :key="index">
+        <!-- {{dm.monan}} -->
+        <!-- <div v-for="(dm, index) in danhmucs" :key="index">
             <section class="popular">
                 <div>
                     <h3>teen danh muc: {{ dm.tendm }}</h3>
@@ -58,14 +76,13 @@
                             <div class="content">
                                 <h3>{{ ma.tenmonan }}</h3>
                                 <div class="price">{{ ma.gia }}/{{ ma.donvitinh }}</div>
-                                <!-- <router-link to="/detail" class="btn">Chi tiết</router-link> -->
                                 <button type="button" class="btn" @click="detail(ma)">Chi tiết</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-        </div>
+        </div> -->
 
         <!-- <Detail :detailmonan="detailmonan" :active="active.monan_show" /> -->
 
@@ -87,8 +104,24 @@ export default {
             detailmonan: {},
             active: {
                 monan_show: true,
-            }
+            },
+            search: '',
         }
+    },
+    computed: {
+        danhsachmonan() {
+            return this.monans.filter(monan => {
+                return monan.tenmonan.toLowerCase().indexOf(this.search.toLowerCase()) !== -1;
+            })
+        },
+        // danhsachmonana() {
+        //     return this.monans.filter(monan => monan.tenmonan.toLowerCase().includes(this.search.toLowerCase()))
+        // },
+        // danhsachmonan() {
+        //     return this.danhmucs.filter(danhmuc => {
+        //         return danhmuc.monan.filter(monan => monan.tenmonan.toLowerCase().includes(this.search.toLowerCase()))
+        //     })
+        // },
     },
     methods: {
         getIMG(hinhanh) {
@@ -96,6 +129,7 @@ export default {
         },
         getData() {
             this.axios.get('http://127.0.0.1:8000/api/menu').then(res => {
+                console.log(res.data.danhmucs);
                 this.monans = res.data.monans;
                 this.danhmucs = res.data.danhmucs;
                 // this.m = res.data.monans;

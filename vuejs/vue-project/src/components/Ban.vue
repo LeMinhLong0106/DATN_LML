@@ -32,10 +32,13 @@
                                 <td>{{ todo.ghe }}</td>
 
                                 <td v-if="todo.tinhtrang == 0">
-                                    <span class="badge badge-danger">Trống</span>
+                                    <span class="badge badge-success">Trống</span>
                                 </td>
                                 <td v-else-if="todo.tinhtrang == 1">
-                                    <span class="badge badge-success">Đã đặt</span>
+                                    <span class="badge badge-warning">Đã có khách</span>
+                                </td>
+                                <td v-else-if="todo.tinhtrang == 2">
+                                    <span class="badge badge-danger">Khách đặt</span>
                                 </td>
                                 <td>
                                     <button class="btn btn-primary btn-circle btn-sm mr-2" @click="editModal(todo)"><i
