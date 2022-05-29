@@ -17,6 +17,12 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->middleware('checkQuyen');
+    }
     public function index()
     {
         return response()->json(CTHD::with(['monanss'])->get());
@@ -88,7 +94,7 @@ class OrderController extends Controller
         $monans = MonAn::find($id_mon);
 
         $sale = HoaDon::where('ban_id', $table_id)->where('tinhtrang', 0)->first();
-        if (!$sale) {
+        if (!$sale) {//nếu chưa có hóa đơn thì tạo hóa đơn
             $user = Auth::user();
             $sale = new HoaDon;
             $sale->ban_id = $table_id;
@@ -101,6 +107,8 @@ class OrderController extends Controller
             $table->tinhtrang = 1; //đã đặt
             $table->save();
         } else {
+            $user = Auth::user();
+            $sale->nhanvien_id = $user->hoten;
             $sale_id =  $sale->id;
         }
         // lưu chi tiết hóa đơn

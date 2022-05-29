@@ -1,29 +1,27 @@
 <template>
-  <Line v-if="loaded" :chart-data="chartData" :width="width" :height="height" />
-
+  <Pie v-if="loaded" :chart-data="chartData" :width="width" :height="height" />
 </template>
 
 <script>
-import { Line } from 'vue-chartjs'
+import { Pie } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   Title,
   Tooltip,
   Legend,
-  LineElement,
+  ArcElement,
   CategoryScale,
-  LinearScale,
-  PointElement
 } from 'chart.js'
-
-ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement)
+ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale)
 
 export default {
-  name: 'LineChart',
-  components: { Line },
+  name: 'PieChart',
+  components: {
+    Pie
+  },
   props: {
     width: {
-      type: Number,
+     type: Number,
       default: 0
     },
     height: {
@@ -40,21 +38,22 @@ export default {
 
     try {
       let token = window.localStorage.getItem('token');
-      const response = await this.axios.get('http://127.0.0.1:8000/api/ban', {
+      const response = await this.axios.get('http://127.0.0.1:8000/api/baocao', {
         headers: {
           Authorization: 'Bearer ' + token
         }
       })
       // console.log(response.data)
       this.chartData = {
-        labels: response.data.map(item => item.id),
+        labels: response.data.soluongmon.map(item => item.monanss.tenmonan),
         datasets: [{
           label: 'Số lượng bàn',
-          data: response.data.map(item => item.ghe),
+          data: response.data.soluongmon.map(item => item.total),
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
             'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
           ],
         },
         ],

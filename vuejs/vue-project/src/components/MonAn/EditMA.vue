@@ -9,7 +9,7 @@
                         <div class="card-header">Profile Picture</div>
                         <div class="card-body text-center">
                             <!-- Profile picture image-->
-                            <img class="img-account-profile rounded-circle mb-2 w-100" :src="getIMG(ds_ma.hinhanh)">
+                            <img class="img-account-profile mb-2 w-100" :src="getIMG(ds_ma.hinhanh)">
                             <!-- Profile picture help block-->
                             <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                             <!-- Profile picture upload button-->
@@ -128,15 +128,6 @@ export default {
             formData.append('donvitinh', this.ds_ma.donvitinh);
             formData.append('danhmuc', this.ds_ma.danhmuc);
             formData.append('hinhanh', this.hinhanh);
-            // axios.put(`${this.api}/${this.$route.params.id}`, formData, {
-            //     headers: {
-            //         'Authorization': `Bearer ${token}`
-            //     }
-            // }).then(res => {
-            //     this.$router.push('/admin/nhanvien');
-            // }).catch(err => {
-            //     this.errors = err.response.data.errors;
-            // })
             this.axios.post('http://localhost:8000/api/update_ma' + '/' + this.$route.params.id, formData, {
                 headers: {
                     Authorization: 'Bearer ' + token
@@ -145,7 +136,7 @@ export default {
                 this.$router.push('/admin/monan');
                 this.$swal(
                     'Thành công!',
-                    'nhân viên đã được thêm.',
+                    'Món ăn đã được thêm.',
                     'success'
                 )
             }).catch(err => {
@@ -154,7 +145,7 @@ export default {
                 // console.log(this.errors);
                 this.$swal(
                     'Thất bại!',
-                    'nhân viên chưa được thêm.',
+                    'Món ăn chưa được thêm.',
                     'error'
                 )
             })

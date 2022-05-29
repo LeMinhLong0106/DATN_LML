@@ -148,8 +148,8 @@ export default {
                 })
                 .catch(error => {
                     this.$swal(
-                        'Error!',
-                        'Your file has been deleted.',
+                        'Thất bại!',
+                        'Hình như có lỗi dồi!!!',
                         'error'
                     )
                 })

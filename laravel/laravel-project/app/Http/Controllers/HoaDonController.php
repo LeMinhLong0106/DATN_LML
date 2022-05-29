@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class HoaDonController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->middleware('checkQuyen');
+    }
+    
     public function indexHDTQ()
     {
         $data = HoaDon::where('loaihd_id', 0)->get();

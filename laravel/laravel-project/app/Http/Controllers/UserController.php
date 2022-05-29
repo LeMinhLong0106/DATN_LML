@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -68,7 +67,11 @@ class UserController extends Controller
 
     public function getUser(Request $request)
     {
-        return response()->json($request->user('api'), 200);
+        $user = User::find($request->user('api')->id);
+        $user -> userquyen = User::find($request->user('api')->id)->vaitross->quyens;
+        // $user = DB::table('users')->find($request->user('api')->id);
+        return response()->json($user, 200);
+        // return response()->json($request->user('api'), 200);
     }
 
     public function index()

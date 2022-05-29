@@ -32,6 +32,10 @@
                                 <td>
                                     <button class="btn btn-primary btn-circle btn-sm mr-2" @click="editModal(todo)"><i
                                             class="fas fa-edit"></i></button>
+                                    <!-- <router-link :to="{ name: 'editVT', params: { id: todo.id } }">
+                                        <button class="btn btn-primary btn-circle btn-sm mr-2"><i
+                                                class="fas fa-edit"></i></button>
+                                    </router-link> -->
                                     <button class="btn btn-danger btn-circle btn-sm" @click="deleteDM(todo.id)"><i
                                             class="fas fa-trash"></i></button>
                                 </td>
@@ -65,6 +69,25 @@
                                 <div class="text-danger error-text " v-if="form.errors.has('mota')"
                                     v-html="form.errors.get('mota')"></div>
                             </div>
+                            <!-- <div>
+                                <label class="small mb-1">Quyền</label>
+                                <div class="form-check" v-for="item in ds_quyen">
+                                    <input class="form-check-input" type="checkbox" :value="item.id"
+                                        v-model="form.quyen" v-bind:true-value="yes" v-bind:false-value="no">
+                                    <label class="form-check-label">{{ item.mota }}</label>
+                                </div>
+                            </div> -->
+                            <!-- <div class="row">
+                                <div class="col-6" v-for="item in ds_quyen">
+                                    <div class="block">
+                                        <label>
+                                            <input type="checkbox" :value="item.id" v-model="form.quyen">
+                                            <span>{{ item.mota }}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div> -->
+
                         </div>
 
                         <!-- Modal footer -->
@@ -92,8 +115,12 @@ export default {
                 id: '',
                 tenvaitro: '',
                 mota: '',
+                quyen: [],
             }),
+            yes: true,
+            no: false,
             ds_vt: {},
+            // ds_quyen: {},
         }
     },
     methods: {
@@ -101,7 +128,8 @@ export default {
         editModal(vaitro) {
             this.editmode = true
             $('#addModal').modal('show')
-            this.form.fill(vaitro);//gán giá trị
+            this.form.fill(vaitro);//gán giá trị vào form
+            // console.log(this.form)
             $('#modal_title').html('Sửa vai trò');
         },
 
@@ -139,7 +167,6 @@ export default {
             this.form.reset();
             $('#addModal').modal('show')
             $('#modal_title').html('Thêm vai trò');
-
         },
 
         saveDM() {
@@ -202,7 +229,7 @@ export default {
             })
         },
 
-        getDM() {
+        getVT() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
@@ -214,13 +241,32 @@ export default {
             }).then(res => {
                 // console.log(res.data);
                 this.ds_vt = res.data
+            }).catch(error => {
+                this.$router.push('/');
             })
         },
+
+        // getQuyen() {
+        //     let token = window.localStorage.getItem('token');
+        //     if (token == null) {
+        //         this.$router.push('/login');
+        //     }
+        //     this.axios.get('http://localhost:8000/api/quyen', {
+        //         headers: {
+        //             Authorization: 'Bearer ' + token
+        //         }
+        //     }).then(res => {
+        //         // console.log(res.data);
+        //         this.ds_quyen = res.data
+        //     })
+        // },
+
 
     },
 
     created() {
-        this.getDM();
+        this.getVT();
+        // this.getQuyen();
     },
 
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class KhachHangController extends Controller
 {
+    
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -77,6 +78,8 @@ class KhachHangController extends Controller
 
     public function index()
     {
+        // $this->middleware('auth:api');
+        // $this->middleware('checkQuyen');
         $data = KhachHang::all();
         return response()->json($data, 200);
     }

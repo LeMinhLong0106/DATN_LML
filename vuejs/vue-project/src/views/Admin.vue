@@ -32,165 +32,10 @@
                 <div class="sidebar-heading">
                     Nhà hàng
                 </div>
-                <div v-if="user.vaitro_id == 100">
-                    <!-- bàn -->
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/admin/ban">
-                            <i class="fas fa-fw fa-table"></i>
-                            <span>Bàn</span>
-                        </router-link>
-                    </li>
-                    <!-- thực đơn -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_1"
-                            aria-expanded="true" aria-controls="collapse_1">
-                            <i class="fas fa-th-list"></i>
-                            <span>Thực đơn</span>
-                        </a>
-                        <div id="collapse_1" class="collapse" aria-labelledby="headingTwo"
-                            data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <router-link class="collapse-item" to="/admin/danhmuc">Danh mục</router-link>
-                                <router-link class="collapse-item" to="/admin/monan">Món ăn</router-link>
-                            </div>
-                        </div>
-                    </li>
-                </div>
-
-                <div v-if="user.vaitro_id == 200">
-                    <!-- Hóa đơn -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_2"
-                            aria-expanded="true" aria-controls="collapse_2">
-                            <i class="fas fa-th-list"></i>
-                            <span>Hóa đơn</span>
-                        </a>
-                        <div id="collapse_2" class="collapse" aria-labelledby="headingTwo"
-                            data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <router-link class="collapse-item" to="/admin/hoadontq">Hóa đơn tại quầy</router-link>
-                                <router-link class="collapse-item" to="/">Hóa đơn online</router-link>
-                            </div>
-                        </div>
-                    </li>
-
-                    <!-- Báo cáo  -->
-                    <li class="nav-item">
-                        <router-link class="nav-link collapsed" to="/admin/baocao">
-                            <i class="fas fa-edit"></i>
-                            <span>Báo cáo</span>
-                        </router-link>
-                    </li>
-                </div>
-
-                <div v-if="user.vaitro_id == 300">
-                    <!-- order  -->
-                    <li class="nav-item">
-                        <router-link class="nav-link collapsed" to="/admin/order">
-                            <i class="fas fa-edit"></i>
-                            <span>Đơn hàng</span>
-                        </router-link>
-                    </li>
-
-                    <!-- Đầu bêps  -->
-                    <li class="nav-item">
-                        <router-link class="nav-link collapsed" to="/admin/daubep">
-                            <i class="fas fa-edit"></i>
-                            <span>Đầu bếp</span>
-                        </router-link>
-                    </li>
-                </div>
-
-                <!-- bàn -->
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/admin/ban">
+                <li class="nav-item" v-for="u in ds_q">
+                    <router-link class="nav-link" :to="u.tenquyen">
                         <i class="fas fa-fw fa-table"></i>
-                        <span>Bàn</span>
-                    </router-link>
-                </li>
-                <!-- thực đơn -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_1"
-                        aria-expanded="true" aria-controls="collapse_1">
-                        <i class="fas fa-th-list"></i>
-                        <span>Thực đơn</span>
-                    </a>
-                    <div id="collapse_1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <router-link class="collapse-item" to="/admin/danhmuc">Danh mục</router-link>
-                            <router-link class="collapse-item" to="/admin/monan">Món ăn</router-link>
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Hóa đơn -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_2"
-                        aria-expanded="true" aria-controls="collapse_2">
-                        <i class="fas fa-th-list"></i>
-                        <span>Hóa đơn</span>
-                    </a>
-                    <div id="collapse_2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <router-link class="collapse-item" to="/admin/hoadontq">Hóa đơn tại quầy</router-link>
-                            <router-link class="collapse-item" to="/admin/hoadononline">Hóa đơn online</router-link>
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Báo cáo  -->
-                <li class="nav-item">
-                    <router-link class="nav-link collapsed" to="/admin/baocao">
-                        <i class="fas fa-edit"></i>
-                        <span>Báo cáo</span>
-                    </router-link>
-                </li>
-
-                <!-- order  -->
-                <li class="nav-item">
-                    <router-link class="nav-link collapsed" to="/admin/order">
-                        <i class="fas fa-edit"></i>
-                        <span>Đơn hàng</span>
-                    </router-link>
-                </li>
-
-                <!-- Đầu bêps  -->
-                <li class="nav-item">
-                    <router-link class="nav-link collapsed" to="/admin/daubep">
-                        <i class="fas fa-edit"></i>
-                        <span>Đầu bếp</span>
-                    </router-link>
-                </li>
-
-                <!-- Khách hàng  -->
-                <li class="nav-item">
-                    <router-link class="nav-link collapsed" to="/admin/khachhang">
-                        <i class="fas fa-edit"></i>
-                        <span>Khách hàng</span>
-                    </router-link>
-                </li>
-
-                <!-- Nhân viên  -->
-                <li class="nav-item">
-                    <router-link class="nav-link collapsed" to="/admin/nhanvien">
-                        <i class="fas fa-edit"></i>
-                        <span>Nhân viên</span>
-                    </router-link>
-                </li>
-
-                <!-- Quyền  -->
-                <li class="nav-item">
-                    <router-link class="nav-link collapsed" to="/admin/quyen">
-                        <i class="fas fa-edit"></i>
-                        <span>Quyền</span>
-                    </router-link>
-                </li>
-
-                <!-- Vai trò  -->
-                <li class="nav-item">
-                    <router-link class="nav-link collapsed" to="/admin/vaitro">
-                        <i class="fas fa-edit"></i>
-                        <span>Vai trò</span>
+                        <span>{{ u.mota }}</span>
                     </router-link>
                 </li>
                 <!-- Divider -->
@@ -283,7 +128,9 @@
 export default {
     data() {
         return {
-            user: {},
+            user: [],
+            ds_vt: [],
+            ds_q: [],
         }
     },
     methods: {
@@ -300,12 +147,29 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                console.log(res.data);
                 this.user = res.data;
+                this.ds_q = this.user['userquyen'];
+                // this.user['test'] = 'test';
+                // console.log(this.ds_q);
             }).catch(err => {
                 console.log(err);
             })
         },
+        // getVT() {
+        //     let token = window.localStorage.getItem('token');
+        //     if (token == null) {
+        //         this.$router.push('/login');
+        //     }
+        //     this.axios.get('http://127.0.0.1:8000/api/vaitro', {
+        //         headers: {
+        //             Authorization: 'Bearer ' + token
+        //         }
+        //     }).then(res => {
+        //         console.log(res.data);
+        //         this.ds_vt = res.data
+        //         // console.log(this.ds_vt);
+        //     })
+        // },
         logout() {
             window.localStorage.removeItem('token');
             this.$router.push('/login');
@@ -313,6 +177,10 @@ export default {
     },
     created() {
         this.getUser();
+        // this.getVT();
     },
+    mounted() {
+        this.getUser();
+    }
 }
 </script>

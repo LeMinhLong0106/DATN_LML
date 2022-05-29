@@ -1,78 +1,68 @@
 <template>
-  <DoughnutChart :chart-data="data" :options="options" css-classes="chart-container" />
+  <Doughnut v-if="loaded" :chart-data="chartData" :width="width" :height="height" />
 </template>
 
-<script setup>
-import { ref, computed } from "vue"
-import { DoughnutChart } from "vue-chart-3"
-import { Chart, DoughnutController, ArcElement } from "chart.js"
+<script>
+import { Doughnut } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  CategoryScale,
+} from 'chart.js'
+ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale)
 
-Chart.register(DoughnutController, ArcElement)
-const database = [
-  {
-    name: "TTHQ",
-    value: 110
+export default {
+  name: 'DoughnutChart',
+  components: {
+    Doughnut
   },
-  {
-    name: "Hội đồng",
-    value: 20
+  props: {
+    width: {
+     type: Number,
+      default: 100
+    },
+    height: {
+      type: Number,
+      default: 100
+    },
   },
-  {
-    name: "Công ty",
-    value: 41
+  data: () => ({
+    loaded: false,
+    chartData: null
+  }),
+  async mounted() {
+    this.loaded = false
+
+    try {
+      let token = window.localStorage.getItem('token');
+      const response = await this.axios.get('http://127.0.0.1:8000/api/baocao', {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      })
+      // console.log(response.data)
+      this.chartData = {
+        labels: response.data.soluongmon.map(item => item.monanss.tenmonan),
+        datasets: [{
+          label: 'Số lượng bàn',
+          data: response.data.soluongmon.map(item => item.total),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+          ],
+        },
+        ],
+      }
+
+      this.loaded = true
+    } catch (e) {
+      console.error(e)
+    }
   }
-]
-
-// const database = 
-
-const dataValues = ref(database)
-
-const data = computed(() => ({
-  labels: dataValues.value.map(item => item.name),
-
-  datasets: [
-    {
-      data: dataValues.value,
-      backgroundColor: ["#859900", "#d33682", "#cb4b16"]
-    }
-  ]
-}))
-
-const options = ref({
-  elements: {
-    arc: {
-      borderColor: "#073642"
-    }
-  },
-
-  plugins: {
-    title: {
-      text: "Doughnut"
-    }
-  }
-})
-
-
-// methods = {
-//   getBaoCao() {
-//     let token = window.localStorage.getItem('token');
-//     if (token == null) {
-//       this.$router.push('/login');
-//     }
-//     this.axios.get('http://127.0.0.1:8000/api/baocao', {
-//       headers: {
-//         Authorization: 'Bearer ' + token
-//       }
-//     }).then(res => {
-//       console.log(res.data.hd);
-
-//       this.hd = res.data.hd
-
-//     })
-//   },
-// },
-// created = () => {
-//   this.getBaoCao()
-// }
-
+}
 </script>

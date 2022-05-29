@@ -21,8 +21,8 @@
                     <table class="table table-bordered" width="100%" cellspacing="0" id="dataTable">
                         <thead>
                             <tr>
-                                <th>Hình ảnh</th>
                                 <th>Mã nhân viên</th>
+                                <th>Hình ảnh</th>
                                 <th>Tên nhân viên</th>
                                 <th>Giới tính</th>
                                 <th>Địa chỉ</th>
@@ -34,8 +34,8 @@
                         </thead>
                         <tbody>
                             <tr v-for="item in ds_nv">
-                                <td><img :src="getIMG(item.hinhanh)" style="width: 5rem; "></td>
                                 <td>{{ item.id }}</td>
+                                <td><img :src="getIMG(item.hinhanh)" style="width: 5rem; "></td>
                                 <td>{{ item.hoten }}</td>
                                 
                                 <td v-if="item.gioitinh == 1">Nam</td>
@@ -120,6 +120,8 @@ export default {
                 }
             }).then(res => {
                 this.ds_nv = res.data
+            }).catch(error => {
+                this.$router.push('/');
             })
         },
         
@@ -134,6 +136,8 @@ export default {
                 }
             }).then(res => {
                 this.ds_vt = res.data
+            }).catch(error => {
+                this.$router.push('/');
             })
         },
 

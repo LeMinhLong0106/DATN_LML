@@ -16,10 +16,10 @@ class BaoCaoController extends Controller
         //     ->orderBy('total', 'desc')
         //     // ->take(2)
         //     ->get();
-        $soluongmon = CTHD::select(['monan_id', DB::raw('sum(soluong) as total')])
+        $soluongmon = CTHD::with(['monanss'])->select(['monan_id', DB::raw('sum(soluong) as total')])
             ->groupBy('monan_id')
             ->orderBy('total', 'desc')
-            ->take(4)
+            // ->take(4)
             ->get();
 
         $tongtienhomnay = HoaDon::select('created_at', DB::raw('sum(tongtien) as total'))

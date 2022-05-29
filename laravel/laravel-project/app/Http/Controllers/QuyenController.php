@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quyen;
+use App\Models\VaiTro;
 use Illuminate\Http\Request;
 
 class QuyenController extends Controller
@@ -12,6 +13,13 @@ class QuyenController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->middleware('checkQuyen');
+    }
+    
     public function index()
     {
         $quyen = Quyen::all();
@@ -36,16 +44,32 @@ class QuyenController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'tenquyen' => 'required|unique:quyen,tenquyen',
-            'mota' => 'required',
-        ], [
-            'tenquyen.required' => 'Tên quyền không được để trống',
-            'tenquyen.unique' => 'Tên quyền đã tồn tại',
-            'mota.required' => 'Mô tả không được để trống',
-        ]);
-        $quyen = Quyen::create($request->all());
-        return response()->json($quyen);
+        // return $request->all();
+        // $vaitro = VaiTro::create(    
+        //     [
+        //         'tenvaitro' => $request->tenvaitro,
+        //         'mota' => $request->mota,
+        //     ]
+        // );
+
+        $data = VaiTro::find($request->vaitro_id);
+        // lưu vào bản vaittro_quyen
+        $data->quyens()->sync($request->quyen);
+
+        // $vaitro = VaiTro::find($request->vaitro_id);
+        // $vaitro->quyens()->attach($request->quyen);
+        // return response()->json($vaitro);
+
+        // $request->validate([
+        //     'tenquyen' => 'required|unique:quyen,tenquyen',
+        //     'mota' => 'required',
+        // ], [
+        //     'tenquyen.required' => 'Tên quyền không được để trống',
+        //     'tenquyen.unique' => 'Tên quyền đã tồn tại',
+        //     'mota.required' => 'Mô tả không được để trống',
+        // ]);
+        // $quyen = Quyen::create($request->all());
+        // return response()->json($quyen);
     }
 
     /**

@@ -217,6 +217,8 @@ export default {
                 }
             }).then(res => {
                 this.ds_dm = res.data
+            }).catch(error => {
+                this.$router.push('/');
             })
         },
 

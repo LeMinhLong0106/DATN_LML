@@ -216,12 +216,18 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(response => {
+                console.log(response.data);
                 this.ds_ban = response.data
+            }).catch(error => {
+                this.$router.push('/');
             })
         },
     },
     created() {
         this.getBan();
     },
+    // mounted() {
+    //     this.getBan();
+    // },
 }      
 </script>

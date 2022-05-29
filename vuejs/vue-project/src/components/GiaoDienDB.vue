@@ -61,6 +61,8 @@ export default {
                 }
             }).then(res => {
                 this.ds_cthd = res.data.cthd
+            }).catch(error => {
+                this.$router.push('/');
             })
         },
 

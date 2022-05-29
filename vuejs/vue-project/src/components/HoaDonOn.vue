@@ -160,36 +160,6 @@ export default {
             }
         },
 
-        getHD() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('http://127.0.0.1:8000/api/hdonline', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
-                this.ds_hd = res.data.data
-            })
-        },
-
-        getCTHD(id) {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('http://127.0.0.1:8000/api/hdonline/' + id, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
-                // console.log(res.data.cthd)
-                this.cthd = res.data.cthd
-                this.tong = res.data.tong
-            })
-        },
-
         deleteHD(id) {
             let token = window.localStorage.getItem('token');
             if (token == null) {
@@ -221,6 +191,41 @@ export default {
             })
 
 
+        },
+
+        
+        getHD() {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.axios.get('http://127.0.0.1:8000/api/hdonline', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then(res => {
+                this.ds_hd = res.data.data
+            }).catch(error => {
+                this.$router.push('/');
+            })
+        },
+
+        getCTHD(id) {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.axios.get('http://127.0.0.1:8000/api/hdonline/' + id, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then(res => {
+                // console.log(res.data.cthd)
+                this.cthd = res.data.cthd
+                this.tong = res.data.tong
+            }).catch(error => {
+                this.$router.push('/');
+            })
         },
     },
 

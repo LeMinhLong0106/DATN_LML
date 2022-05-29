@@ -4,20 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\Ban;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 
 class BanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        // $this->middleware('isAdmin');
+        $this->middleware('checkQuyen');
+    }
 
     public function index()
     {
         $data = Ban::all();
+        // $routeName = Route::currentRouteName();
+        // $routeName = explode('.', $routeName);
+        // $routeName = $routeName[0];
+
+        // $route = DB::table('quyen')->where('tenquyen', $routeName)->get();
+        // return $route;
+
         return response()->json($data, 200);
+
     }
 
     /**

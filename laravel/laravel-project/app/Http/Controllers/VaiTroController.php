@@ -12,9 +12,15 @@ class VaiTroController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->middleware('checkQuyen');
+    }
+    
     public function index()
     {
-        $data = VaiTro::all();
+        $data = VaiTro::with(['quyens'])->get();
         return response()->json($data);
     }
 
@@ -36,6 +42,7 @@ class VaiTroController extends Controller
      */
     public function store(Request $request)
     {
+        return $request->all();
         $request->validate([
             'tenvaitro' => 'required|unique:vaitro,tenvaitro',
             'mota' => 'required',
@@ -44,8 +51,15 @@ class VaiTroController extends Controller
             'tenvaitro.unique' => 'Tên vai trò đã tồn tại',
             'mota.required' => 'Mô tả không được để trống',
         ]);
-        $vaitro = VaiTro::create($request->all());
-        return response()->json($vaitro);
+        $vaitro = VaiTro::create(
+            [
+                'tenvaitro' => $request->tenvaitro,
+                'mota' => $request->mota,
+            ]
+        );
+        // $vaitro->quyens()->attach($request->quyen);
+        return $vaitro;
+        // return response()->json($vaitro);
     }
 
     /**
@@ -54,9 +68,10 @@ class VaiTroController extends Controller
      * @param  \App\Models\VaiTro  $vaiTro
      * @return \Illuminate\Http\Response
      */
-    public function show(VaiTro $vaiTro)
+    public function show($vaiTro)
     {
-        //
+        $data = VaiTro::find($vaiTro);
+        return response()->json($data);
     }
 
     /**

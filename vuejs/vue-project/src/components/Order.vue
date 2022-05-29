@@ -1,7 +1,8 @@
 <template>
     <div class="container-fluid">
-        <h1 class="h3 mb-4 text-gray-800">Danh sách đặc món</h1>
+        <h1 class="h3 mb-4 text-gray-800">Danh sách đặt món</h1>
         <div class="row">
+            <!-- danh sách bàn -->
             <div class="col col-sm-4">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">Tình trạng bàn</div>
@@ -26,6 +27,7 @@
                     </div>
                 </div>
             </div>
+            <!-- danh sách món ăn cho bàn -->
             <div class="col col-sm-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3" id="showSelectedTable"></div>
@@ -84,7 +86,7 @@
                 </div>
             </div>
         </div>
-
+        <!-- modal chọn món -->
         <div id="orderModal" class="modal fade">
             <div class="modal-dialog">
                 <form @submit.prevent="saveDSmon">
@@ -133,10 +135,11 @@
                 </form>
             </div>
         </div>
-
+        <!-- danh sách đặt bàn -->
         <div>
+            <h1 class="h3 mb-4 text-gray-800">Danh sách bàn đặt trước</h1>
             <div class="row">
-                <div class="col-sm-6" v-for="hd in ds_hdkd">
+                <div class="col-sm-3 mb-2" v-for="hd in ds_hdkd">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Bàn: {{ hd.ban_id }}</h5>
@@ -249,8 +252,8 @@ export default {
 
                 this.getBan();
             }).catch(error => {
-                // this.showMessage('Sửa thất bại');
-            });
+                this.$router.push('/');
+            })
         },
 
         // xác nhận món ăn nấu xong
@@ -273,8 +276,8 @@ export default {
 
                 this.getBan();
             }).catch(error => {
-                // this.showMessage('Sửa thất bại');
-            });
+                this.$router.push('/');
+            })
         },
 
         // xóa món ăn
@@ -336,6 +339,8 @@ export default {
                 }
             }).then(res => {
                 this.ds_ban = res.data
+            }).catch(error => {
+                this.$router.push('/');
             })
         },
 
@@ -350,6 +355,8 @@ export default {
                 }
             }).then(res => {
                 this.ds_monan = res.data.monan
+            }).catch(error => {
+                this.$router.push('/');
             })
         },
 
@@ -365,6 +372,8 @@ export default {
             }).then(res => {
                 // console.log(res.data);
                 this.ds_hdkd = res.data
+            }).catch(error => {
+                this.$router.push('/');
             })
         },
 

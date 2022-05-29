@@ -11,11 +11,9 @@ import VueAxios from 'vue-axios'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-import "./plugins/chart.js"
+// import "./plugins/chart.js"
 
 const app = createApp(App)
-
-
 
 app.use(router)
 app.mount('#app');

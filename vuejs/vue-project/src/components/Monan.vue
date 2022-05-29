@@ -202,7 +202,9 @@ export default {
             }
          }).then(res => {
             this.ds_mon = res.data.datamonan
-         })
+         }).catch(error => {
+                this.$router.push('/');
+            })
       },
 
       getDM() {
@@ -216,7 +218,9 @@ export default {
             }
          }).then(res => {
             this.ds_dm = res.data.data
-         })
+         }).catch(error => {
+                this.$router.push('/');
+            })
       },
    },
 

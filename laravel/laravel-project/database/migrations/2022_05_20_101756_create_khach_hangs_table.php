@@ -20,6 +20,7 @@ class CreateKhachHangsTable extends Migration
             $table->string('sdt');
             $table->string('diachi');
             $table->string('matkhau');
+            $table->string('google_id')->nullable();
             $table->timestamps();
         });
     }

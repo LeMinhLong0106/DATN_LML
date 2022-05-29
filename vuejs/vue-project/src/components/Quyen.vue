@@ -1,208 +1,96 @@
 <template>
     <div class="container-fluid">
-        <h1 class="h3 mb-4 text-gray-800">Quyền</h1>
-        <div id="message"></div>
+        <h1 class="h3 mb-4 text-gray-800">Phân quyền</h1>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <div class="row">
-                    <div class="col">
-                        <h6 class="m-0 font-weight-bold text-primary">Danh sách quyền</h6>
-                    </div>
-                    <div class="col" align="right">
-                        <button type="button" class="btn btn-success btn-circle btn-sm" @click="newModal()">
-                            <i class="fas fa-plus"></i></button>
-                    </div>
-                </div>
+                <p> Vai trò
+                    <select style="width:300px" class="form-control" name="vaitro_id" v-model="data.vaitro_id"
+                        @change="changeAdmin">
+                        <option v-for="item in ds_vt" v-bind:value="item.id">
+                            {{ item.mota }}
+                        </option>
+                    </select>
+                </p>
             </div>
-
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" cellspacing="0" id="dataTable">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Tên quyền</th>
-                                <th>Mô tả</th>
-                                <th>Chức năng</th>
+                                <th>Check</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(todo, index) in ds_q" :key="index">
-                                <td>{{ todo.tenquyen }}</td>
-                                <td>{{ todo.mota }}</td>
+                            <tr v-for="item in ds_q">
+                                <td>{{ item.mota }}</td>
                                 <td>
-                                    <button class="btn btn-primary btn-circle btn-sm mr-2" @click="editModal(todo)"><i
-                                            class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-circle btn-sm" @click="deleteDM(todo.id)"><i
-                                            class="fas fa-trash"></i></button>
+                                    <input type="checkbox" v-model="data.quyen" v-bind:value="item.id"
+                                        v-bind:name="item.tenquyen" />
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-        <!-- Modal add -->
-        <div class="modal fade" id="addModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form @submit.prevent="editmode ? updateDM() : saveDM()">
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="modal_title"></h4>
-                        </div>
-
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="tenquyen">Tên quyền</label>
-                                <input v-model="form.tenquyen" type="text" class="form-control" name="tenquyen">
-                                <div class="text-danger error-text " v-if="form.errors.has('tenquyen')"
-                                    v-html="form.errors.get('tenquyen')"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="mota">Mô tả</label>
-                                <input v-model="form.mota" type="text" class="form-control" name="mota">
-                                <div class="text-danger error-text " v-if="form.errors.has('mota')"
-                                    v-html="form.errors.get('mota')"></div>
-                            </div>
-                        </div>
-
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                            <button v-show="!editmode" type="submit" class="btn btn-primary">Thêm</button>
-                            <button v-show="editmode" type="submit" class="btn btn-primary">Cập nhật</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
-                        </div>
-                    </form>
-                </div>
+                <button class="btn btn-primary" @click="phanQuyen">Thêm</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import Form from 'vform'
-
 export default {
     data() {
         return {
-            editmode: true,
             api: 'http://localhost:8000/api/quyen',
-            form: new Form({
-                id: '',
-                tenquyen: '',
-                mota: '',
-            }),
+            data: {
+                quyen: [],
+                vaitro_id: null,
+            },
             ds_q: {},
+            ds_vt: {},
+            // resources: [
+            //     { resourcesName: 'ban', read: false, write: false, update: false, delete: false, name: 'ban' },
+            //     { resourcesName: 'danhmuc', read: false, write: false, update: false, delete: false, name: 'danhmuc' },
+            //     { resourcesName: 'monan', read: false, write: false, update: false, delete: false, name: 'monan' },
+            // ]
         }
     },
     methods: {
-
-        editModal(vaitro) {
-            this.editmode = true
-            $('#addModal').modal('show')
-            this.form.fill(vaitro);//gán giá trị
-            $('#modal_title').html('Sửa quyền');
+        changeAdmin() {
+            let index = this.ds_vt.findIndex(item => item.id == this.data.vaitro_id);
+            let quyen = this.ds_vt[index].quyens;
+            if (quyen != null) {
+                this.data.quyen = quyen.map(item => item.id)
+            } else {
+                this.data.quyen = [];
+            }
         },
-
-        updateDM() {
+        phanQuyen() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
             }
-            // console.log('update');
-            this.form.put(this.api + '/' + this.form.id, {
+            let data = {
+                vaitro_id: this.data.vaitro_id,
+                quyen: this.data.quyen
+                // resources: this.resources
+            }
+            this.axios.post(this.api, data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-            })
-                .then(() => {
-                    $('#addModal').modal('hide')
-                    this.$swal(
-                        'Thành công!',
-                        'Quyền đã dược cập nhật.',
-                        'success'
-                    )
-                    this.getDM();
-                })
-                .catch(error => {
-                    this.$swal(
-                        'Error!',
-                        'Your file has been deleted.',
-                        'error'
-                    )
-                })
-        },
-
-        newModal() {
-            this.editmode = false
-            this.form.reset();
-            $('#addModal').modal('show')
-            $('#modal_title').html('Thêm quyền');
-
-        },
-
-        saveDM() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.form.post(this.api, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            })
-                .then(() => {
-                    $('#addModal').modal('hide')
-                    this.$swal(
-                        'Thành công!',
-                        'Quyền đã được thêm.',
-                        'success'
-                    )
-                    this.getDM();
-                })
-                .catch(error => {
-                    this.$swal(
-                        'Error!',
-                        'Your file has been deleted.',
-                        'error'
-                    )
-                })
-        },
-
-        deleteDM(id) {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.$swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.form.delete(this.api + '/' + id, {
-                        headers: {
-                            Authorization: 'Bearer ' + token
-                        }
-                    }).then(() => {
-                        this.$swal(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
-                        )
-                    })
-                    this.getDM();
-                }
-
+            }).then(res => {
+                this.$swal(
+                    'Thành công!',
+                    'Cập nhật phân quyền.',
+                    'success'
+                )
+                // console.log(res.data)
             })
         },
 
-        getDM() {
+        getQuyen() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
@@ -213,14 +101,39 @@ export default {
                 }
             }).then(res => {
                 // console.log(res.data);
+                console.log(this.$route);
                 this.ds_q = res.data
+            }).catch(error => {
+                this.$router.push('/');
             })
         },
 
+        getVT() {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.axios.get('http://127.0.0.1:8000/api/vaitro', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then(res => {
+                console.log(res.data);
+                this.ds_vt = res.data
+                this.data.vaitro_id = this.ds_vt[0].id
+                if (this.ds_vt[0].quyens != null) {
+                    this.data.quyen = this.ds_vt[0].quyens.map(item => item.id)
+                }
+                // console.log(this.ds_vt);
+            }).catch(error => {
+                this.$router.push('/');
+            })
+        },
     },
 
     created() {
-        this.getDM();
+        this.getQuyen();
+        this.getVT();
     },
 
 

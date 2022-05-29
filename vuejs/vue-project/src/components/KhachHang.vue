@@ -96,6 +96,8 @@ export default {
                 }
             }).then(res => {
                 this.ds_kh = res.data
+            }).catch(error => {
+                this.$router.push('/');
             })
         },
 
