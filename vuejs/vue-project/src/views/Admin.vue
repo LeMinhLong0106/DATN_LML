@@ -29,9 +29,9 @@
                 <hr class="sidebar-divider">
 
                 <!-- Heading -->
-                <div class="sidebar-heading">
+                <!-- <div class="sidebar-heading">
                     Nhà hàng
-                </div>
+                </div> -->
                 <li class="nav-item" v-for="u in ds_q">
                     <router-link class="nav-link" :to="u.tenquyen">
                         <i class="fas fa-fw fa-table"></i>
@@ -62,7 +62,6 @@
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
-
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -155,32 +154,21 @@ export default {
                 console.log(err);
             })
         },
-        // getVT() {
-        //     let token = window.localStorage.getItem('token');
-        //     if (token == null) {
-        //         this.$router.push('/login');
-        //     }
-        //     this.axios.get('http://127.0.0.1:8000/api/vaitro', {
-        //         headers: {
-        //             Authorization: 'Bearer ' + token
-        //         }
-        //     }).then(res => {
-        //         console.log(res.data);
-        //         this.ds_vt = res.data
-        //         // console.log(this.ds_vt);
-        //     })
-        // },
+
         logout() {
             window.localStorage.removeItem('token');
             this.$router.push('/login');
         },
     },
+    // beforeCreate() {
+    //     this.getUser();
+    // },
     created() {
         this.getUser();
         // this.getVT();
     },
-    mounted() {
-        this.getUser();
-    }
+    // mounted() {
+    //     this.getUser();
+    // }
 }
 </script>

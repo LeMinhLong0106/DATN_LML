@@ -17,7 +17,7 @@ class HoaDonController extends Controller
         $this->middleware('auth:api');
         $this->middleware('checkQuyen');
     }
-    
+
     public function indexHDTQ()
     {
         $data = HoaDon::where('loaihd_id', 0)->get();
@@ -66,6 +66,17 @@ class HoaDonController extends Controller
 
     public function khdattruoc(Request $request)
     {
+        $this->validate($request, [
+            'hoten' => 'required',
+            'sdt' => 'required|numeric|digits_between:10,11',
+            'thoigianden' => 'required',
+        ], [
+            'hoten.required' => 'Nhập họ tên',
+            'sdt.required' => 'Nhập số điện thoại',
+            'sdt.numeric' => 'Số điện thoại phải là số',
+            'sdt.digits_between' => 'Số điện thoại phải từ 10 đến 11 số',
+            'thoigianden.required' => 'Chọn thời gian đến',
+        ]);
         $user = Auth::user();
         $ban = Ban::find($request->id);
         $ban->tinhtrang = 2;
@@ -94,6 +105,14 @@ class HoaDonController extends Controller
         $sale->tinhtrang = 1;
         $sale->nhanvien_tn = $user->hoten;
         $sale->save();
+
+        $detail = CTHD::where('hoadon_id', $id)->get();
+        $detail->each(function ($item) {
+            $item->update([
+                'tinhtrang' => 1
+            ]);
+        });
+        
         return $this->indexHDO();
     }
 

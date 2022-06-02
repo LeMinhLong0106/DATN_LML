@@ -135,7 +135,7 @@ export default {
                 this.homnay = res.data.tongtienhomnay
                 this.homqua = res.data.tongtienhomqua
 
-                console.log(res.data.tongtienhomnay);
+                // console.log(res.data.tongtienhomnay);
             })
         },
     },

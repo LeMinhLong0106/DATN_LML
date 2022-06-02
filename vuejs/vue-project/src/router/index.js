@@ -10,7 +10,7 @@ import Login from '../views/Login.vue';
 import Registor from '../views/Registor.vue';
 import Admin from '../views/Admin.vue';
 import Danhmuc from '../components/Danhmuc.vue';
-import Monan from '../components/Monan.vue';
+import Monan from '../components/MonAn/Monan.vue';
 import CreateMA from '../components/MonAn/CreateMA.vue';
 import EditMA from '../components/MonAn/EditMA.vue';
 import Order from '../components/Order.vue';
@@ -21,7 +21,7 @@ import DetailHDOn from '../components/DetailHDOn.vue';
 import DetailHDTQ from '../components/DetailHDTQ.vue';
 import BaoCao from '../components/BaoCao.vue';
 import KhachHang from '../components/KhachHang.vue';
-import NhanVien from '../components/NhanVien.vue';
+import NhanVien from '../components/Nhanvien/NhanVien.vue';
 import CreateNV from '../components/Nhanvien/CreateNV.vue';
 import EditNV from '../components/Nhanvien/EditNV.vue';
 import VaiTro from '../components/VaiTro.vue';
@@ -132,11 +132,9 @@ const router = createRouter({
       ]
     },
     {
-      path: '/home',
-      name: 'home',
-      component: HomeView
+      path: "/:catchAll(.*)",
+      component: HomeView,
     },
-
     {
       path: '/login',
       name: 'login',

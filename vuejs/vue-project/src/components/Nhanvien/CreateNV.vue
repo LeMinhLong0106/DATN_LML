@@ -154,7 +154,7 @@ export default {
                         'nhân viên đã được thêm.',
                         'success'
                     )
-                    this.$router.push('/admin/nhanvien')
+                    this.$router.push('/nhanvien')
 
                 })
                 .catch(error => {

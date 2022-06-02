@@ -57,7 +57,7 @@
                         <div style="text-align:center;">
                             <div>
                                 <input type="submit" name="them" value="Thanh toán" class="btn btn-primary" />
-                                <router-link to="/admin/hoadononline" class="btn btn-primary">Trở về</router-link>
+                                <router-link to="/hoadononline" class="btn btn-primary">Trở về</router-link>
                             </div>
                         </div>
                     </form>
@@ -78,6 +78,7 @@ export default {
             cthd: {},
             tong: '',
             user: {},
+            api: 'http://127.0.0.1:8000/api/hdonline/',
         }
     },
     methods: {
@@ -95,7 +96,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/hdonline/' + id, {
+            this.axios.get(this.api + id, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -111,12 +112,12 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/hdonline/' + this.hd.id + '/thanhtoanon', {
+            this.axios.get(this.api + this.hd.id + '/thanhtoanon', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                this.$router.push('/admin/hoadononline')
+                this.$router.push('/hoadononline')
             })
 
         },

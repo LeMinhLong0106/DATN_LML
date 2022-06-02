@@ -44,12 +44,8 @@
                     </td>
                 </tr>
             </tbody>
-
         </table>
-
-
     </div>
-
 </template>
 
 <script>
@@ -63,97 +59,12 @@ export default {
             id: '',
             tong: '',
             product_quantity: '',
+
+            api: 'http://localhost:8000/api/',
         }
     },
 
     methods: {
-
-        // detailhdonline(id) {
-        //     this.id = id
-        //     this.$router.push({
-        //         name: 'hoadononline.edit',
-        //         params: {
-        //             id: id
-        //         }
-        //     })
-        // },
-
-        // thanhToan() {
-        //     var id = this.id;
-        //     var tong = this.tong;
-        //     var url = 'http://localhost:8000/api/hdonline/' + id + '/thanhtoan';
-        //     let token = window.localStorage.getItem('token');
-        //     if (token == null) {
-        //         this.$router.push('/login');
-        //     }
-        //     this.axios.put(url, {
-        //         tong: tong
-        //     }, {
-        //         headers: {
-        //             Authorization: 'Bearer ' + token
-        //         }
-        //     }).then(response => {
-        //         this.getHD();
-        //         $('#detailhdonline').modal('hide');
-        //     }).catch(error => {
-        //         console.log(error);
-        //     });
-
-        //     // this.axios.post('http://127.0.0.1:8000/api/hdonline/thanhtoanhdtq/' + this.id).then(response => {
-        //     //     console.log(response.data);
-        //     //     this.getHD();
-        //     //     $('#detailhdonline').modal('hide');
-        //     // }).catch(error => {
-        //     //     console.log(error);
-        //     // });
-        // },
-
-        deleteMon(id) {
-            let data = {
-                id: id,
-            }
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.post('http://127.0.0.1:8000/api/order/deleteOrder', data, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
-                // console.log(response);
-                this.cthd = response.data.saleDetails;
-                this.tong = response.data.tong;
-
-                this.getBan();
-            }).catch(error => {
-            });
-        },
-
-        // updateSoluong(id, soluong) {
-        //     let data = {
-        //         id: id,
-        //         soluong: soluong,
-        //     }
-        //     let token = window.localStorage.getItem('token');
-        //     if (token == null) {
-        //         this.$router.push('/login');
-        //     }
-        //     this.axios.post('http://127.0.0.1:8000/api/order/updateSoluong', data, {
-        //         headers: {
-        //             Authorization: 'Bearer ' + token
-        //         }
-        //     }).then(response => {
-        //         this.product_quantity = data.soluong;
-        //         this.cthd = response.data.saleDetails;
-        //         this.tong = response.data.tong;
-
-        //         this.getBan();
-        //     }).catch(error => {
-        //         // this.showMessage('Sửa thất bại');
-        //     });
-        // },
-
         format_date(value) {
             if (value) {
                 return moment(String(value)).format('DD-MM-YYYY')
@@ -175,7 +86,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete('http://127.0.0.1:8000/api/hdonline/deleteHD/' + id, {
+                    this.axios.delete(this.api + 'hdonline/deleteHD/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
@@ -193,13 +104,12 @@ export default {
 
         },
 
-        
         getHD() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/hdonline', {
+            this.axios.get(this.api + 'hdonline', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -215,7 +125,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/hdonline/' + id, {
+            this.axios.get(this.api + 'hdonline/' + id, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

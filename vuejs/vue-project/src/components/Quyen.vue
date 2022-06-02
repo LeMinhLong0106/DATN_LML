@@ -32,7 +32,7 @@
                         </tbody>
                     </table>
                 </div>
-                <button class="btn btn-primary" @click="phanQuyen">Thêm</button>
+                <button class="btn btn-primary" @click="phanQuyen">Cập nhật</button>
             </div>
         </div>
     </div>
@@ -49,11 +49,6 @@ export default {
             },
             ds_q: {},
             ds_vt: {},
-            // resources: [
-            //     { resourcesName: 'ban', read: false, write: false, update: false, delete: false, name: 'ban' },
-            //     { resourcesName: 'danhmuc', read: false, write: false, update: false, delete: false, name: 'danhmuc' },
-            //     { resourcesName: 'monan', read: false, write: false, update: false, delete: false, name: 'monan' },
-            // ]
         }
     },
     methods: {
@@ -129,6 +124,7 @@ export default {
                 this.$router.push('/');
             })
         },
+        
     },
 
     created() {

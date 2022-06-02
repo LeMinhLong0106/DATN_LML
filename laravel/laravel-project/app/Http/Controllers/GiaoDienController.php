@@ -27,7 +27,7 @@ class GiaoDienController extends Controller
     public function menu()
     {
         $danhmucs = DanhMuc::with(['monan'])->get();
-        $monans = MonAn::all();
+        $monans = MonAn::where('tinhtrang', '=', 1)->with(['danhmucmonss'])->get();
         return response()->json([
             'danhmucs' => $danhmucs,
             'monans' => $monans
@@ -36,38 +36,23 @@ class GiaoDienController extends Controller
 
     public function detail($id)
     {
-        $data = MonAn::find($id);
-        // return view('detail', compact('data'));
-        return response()->json([
-            'data' => $data
-        ]);
+        $data = Monan::with(['danhmucmonss'])->find($id);
+        return response()->json($data);
     }
 
-    // public function about()
+    // public function search(Request $request)
     // {
-    //     return view('about');
+    //     $keyword = $request->timkiem;
+    //     $data = $keyword;
+    //     $monans = MonAn::where('tenmonan', 'like', '%' . $keyword . '%')->get();
+    //     return response()->json([
+    //         'data' => $data,
+    //         'monans' => $monans
+    //     ]);
     // }
-
-    public function search(Request $request)
-    {
-        $keyword = $request->timkiem;
-        $data = $keyword;
-        $monans = MonAn::where('tenmonan', 'like', '%' . $keyword . '%')->get();
-        return response()->json([
-            'data' => $data,
-            'monans' => $monans
-        ]);
-
-
-        // return view('search', compact('monans', 'data'));
-        // dd($monans);
-    }
 
     public function addToCart($id)
     {
-        // session()->forget('cart');
-        // session()->flush('cart');
-
         $monans = MonAn::find($id);
         $cart = session()->get('cart');
 
@@ -127,14 +112,15 @@ class GiaoDienController extends Controller
     {
         $this->validate($request, [
             'hoten' => 'required',
-            'sdt' => 'required',
+            'sdt' => 'required|digits_between:10,11',
             'diachi' => 'required',
         ], [
             'hoten.required' => 'Vui lòng nhập tên khách hàng',
             'sdt.required' => 'Vui lòng nhập số điện thoại',
+            'sdt.digits_between' => 'Số điện thoại phải từ 10 đến 11 số',
             'diachi.required' => 'Vui lòng nhập địa chỉ',
         ]);
-        
+
         $order = new HoaDon;
         $order->khachhang_id = $request->idKH;
         $order->tongtien = $request->tongtien;

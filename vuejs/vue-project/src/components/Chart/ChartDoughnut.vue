@@ -1,5 +1,5 @@
 <template>
-  <Doughnut v-if="loaded" :chart-data="chartData" :width="width" :height="height" />
+  <Doughnut v-if="loaded" :chart-data="chartData" width="10px" height="10px" />
 </template>
 
 <script>
@@ -22,11 +22,11 @@ export default {
   props: {
     width: {
      type: Number,
-      default: 100
+      default: 0
     },
     height: {
       type: Number,
-      default: 100
+      default: 0
     },
   },
   data: () => ({

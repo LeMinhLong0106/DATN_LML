@@ -23,6 +23,7 @@ class OrderController extends Controller
         $this->middleware('auth:api');
         $this->middleware('checkQuyen');
     }
+    
     public function index()
     {
         return response()->json(CTHD::with(['monanss'])->get());
@@ -70,7 +71,6 @@ class OrderController extends Controller
             'hd' => $hd
         ], 200);
     }
-
 
     public function getSaleDetails($table_id) //nhấn vào bàn thì hiển thị danh sách món ăn
     {

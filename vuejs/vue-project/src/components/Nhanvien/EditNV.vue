@@ -103,7 +103,7 @@
                             </div>
                             <!-- Submit button-->
                             <button type="submit" class="btn btn-primary">Cập nhật</button>
-                            <router-link to="/admin/nhanvien"  class="btn btn-primary float-right">Quay lại</router-link>
+                            <router-link to="/nhanvien"  class="btn btn-primary float-right">Quay lại</router-link>
                         </div>
                     </div>
                 </div>
@@ -147,7 +147,7 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                this.$router.push('/admin/nhanvien');
+                this.$router.push('/nhanvien');
                 this.$swal(
                     'Thành công!',
                     'nhân viên đã được thêm.',

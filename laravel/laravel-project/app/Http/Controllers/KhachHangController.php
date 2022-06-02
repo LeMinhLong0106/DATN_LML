@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 
 class KhachHangController extends Controller
 {
-    
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -23,6 +22,7 @@ class KhachHangController extends Controller
             'email' => $data['email'],
             'sdt' => $data['sdt'],
             'diachi' => $data['diachi'],
+            'google_id' => '',
             'matkhau' => Hash::make($data['matkhau']),
         ]);
 
@@ -111,9 +111,16 @@ class KhachHangController extends Controller
      * @param  \App\Models\KhachHang  $khachHang
      * @return \Illuminate\Http\Response
      */
-    public function show(KhachHang $khachHang)
+    public function show($khachHang)
     {
-        //
+        $data = KhachHang::find($khachHang);
+        return response()->json($data, 200);
+    }
+    
+    public function getKH(Request $request)
+    {
+        $user = KhachHang::find($request->user('api')->id);
+        return response()->json($user, 200);
     }
 
     /**

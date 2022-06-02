@@ -1,5 +1,9 @@
 <template>
-  <div>
-    <h1>HOME</h1>
+  <div class="text-center">
+    <div class="error mx-auto" data-text="404">404</div>
+    <p class="lead text-gray-800 mb-5">Page Not Found</p>
+    <p class="text-gray-500 mb-0">Trang không tồn tại mời bạn quay lại nhée</p>
+    <!-- <a href="index.html">&larr; Back to Dashboard</a> -->
+    <router-link to="/">&larr; Trở về</router-link>
   </div>
 </template>

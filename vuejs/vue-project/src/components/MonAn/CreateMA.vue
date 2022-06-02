@@ -5,12 +5,12 @@
                 <div class="col-xl-4">
                     <!-- Profile picture card-->
                     <div class="card mb-4 mb-xl-0">
-                        <div class="card-header">Profile Picture</div>
+                        <div class="card-header">Hình ảnh</div>
                         <div class="card-body text-center">
                             <!-- Profile picture image-->
                             <!-- <img class="img-account-profile rounded-circle mb-2" :src="getIMG()"> -->
                             <!-- Profile picture help block-->
-                            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                            <!-- <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div> -->
                             <!-- Profile picture upload button-->
                             <!-- <button class="btn btn-primary" type="button">Upload new image</button> -->
                             <input @change="saveImage" type="file" class="form-control" name="hinhanh">
@@ -25,15 +25,14 @@
                         <div class="card-header">Chi tiết món ăn</div>
                         <div class="card-body">
                             <!-- Form Row-->
-                            <div class="mb-3">
-                                <label class="small mb-1" for="tenmonan">Tên món ăn</label>
-                                <input v-model="form.tenmonan" type="text" class="form-control" name="tenmonan"
-                                    placeholder="Tên món">
-                                <div class="text-danger error-text " v-if="form.errors.has('tenmonan')"
-                                    v-html="form.errors.get('tenmonan')"></div>
-                            </div>
-
                             <div class="row gx-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="tenmonan">Tên món ăn</label>
+                                    <input v-model="form.tenmonan" type="text" class="form-control" name="tenmonan"
+                                        placeholder="Tên món">
+                                    <div class="text-danger error-text " v-if="form.errors.has('tenmonan')"
+                                        v-html="form.errors.get('tenmonan')"></div>
+                                </div>
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="gia">Giá</label>
                                     <input v-model="form.gia" type="number" class="form-control" name="gia"
@@ -42,14 +41,6 @@
                                         v-html="form.errors.get('gia')">
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-6">
-                                    <label class="small mb-1" for="tinhtrang">Tình trạng</label>
-                                    <br>
-                                    <input type="radio" value="1" checked v-model="form.tinhtrang" />
-                                    Còn
-                                    <input type="radio" value="0" v-model="form.tinhtrang" />
-                                    Hết
-                                </div> -->
                             </div>
 
                             <div class="mb-3">
@@ -61,35 +52,38 @@
                                     v-html="form.errors.get('tenmonan')"></div>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="small mb-1" for="donvitinh">Đơn vị tính</label>
-                                <select class="form-control" v-model="form.donvitinh" name="donvitinh">
-                                    <option value="" class="form-control">Đơn vị tính</option>
-                                    <option value="Suất">Suất</option>
-                                    <option value="Đĩa">Đĩa</option>
-                                    <option value="Phần">Phần</option>
-                                    <option value="Con">Con</option>
-                                    <option value="Kg">Kg</option>
-                                    <option value="Chén">Chén</option>
-                                </select>
-                                <div class="text-danger error-text " v-if="form.errors.has('donvitinh')"
-                                    v-html="form.errors.get('donvitinh')"></div>
+
+                            <div class="row gx-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="donvitinh">Đơn vị tính</label>
+                                    <select class="form-control" v-model="form.donvitinh" name="donvitinh">
+                                        <option value="" class="form-control">Đơn vị tính</option>
+                                        <option value="Suất">Suất</option>
+                                        <option value="Đĩa">Đĩa</option>
+                                        <option value="Phần">Phần</option>
+                                        <option value="Con">Con</option>
+                                        <option value="Kg">Kg</option>
+                                        <option value="Chén">Chén</option>
+                                    </select>
+                                    <div class="text-danger error-text " v-if="form.errors.has('donvitinh')"
+                                        v-html="form.errors.get('donvitinh')"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="danhmuc">Danh mục</label>
+                                    <select class="form-control" name="danhmuc" v-model="form.danhmuc">
+                                        <option value="" class="form-control">Danh mục</option>
+                                        <option v-for="item in ds_dm" v-bind:value="item.id">
+                                            {{ item.tendm }}
+                                        </option>
+                                    </select>
+                                    <div class="text-danger error-text " v-if="form.errors.has('danhmuc')"
+                                        v-html="form.errors.get('danhmuc')"></div>
+                                </div>
                             </div>
-                            <!-- Form Group (Roles)-->
-                            <div class="mb-3">
-                                <label class="small mb-1" for="danhmuc">Danh mục</label>
-                                <select class="form-control" name="danhmuc" v-model="form.danhmuc">
-                                    <option value="" class="form-control">Danh mục</option>
-                                    <option v-for="item in ds_dm" v-bind:value="item.id">
-                                        {{ item.tendm }}
-                                    </option>
-                                </select>
-                                <div class="text-danger error-text " v-if="form.errors.has('danhmuc')"
-                                    v-html="form.errors.get('danhmuc')"></div>
-                            </div>
+
                             <!-- Submit button-->
                             <button type="submit" class="btn btn-primary">Thêm</button>
-
+                            <router-link to="/monan" class="btn btn-primary float-right">Quay lại</router-link>
                         </div>
                     </div>
                 </div>
@@ -143,8 +137,7 @@ export default {
                         'Món ăn đã được thêm.',
                         'success'
                     )
-                    this.$router.push('/admin/monan')
-
+                    this.$router.push('/monan')
                 })
                 .catch(error => {
                     this.$swal(

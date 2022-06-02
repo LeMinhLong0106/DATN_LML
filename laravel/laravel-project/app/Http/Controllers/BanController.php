@@ -13,22 +13,13 @@ class BanController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        // $this->middleware('isAdmin');
         $this->middleware('checkQuyen');
     }
 
     public function index()
     {
         $data = Ban::all();
-        // $routeName = Route::currentRouteName();
-        // $routeName = explode('.', $routeName);
-        // $routeName = $routeName[0];
-
-        // $route = DB::table('quyen')->where('tenquyen', $routeName)->get();
-        // return $route;
-
         return response()->json($data, 200);
-
     }
 
     /**
@@ -36,6 +27,7 @@ class BanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         //
@@ -47,6 +39,7 @@ class BanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         $this->validate($request, [

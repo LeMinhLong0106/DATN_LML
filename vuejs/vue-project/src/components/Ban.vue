@@ -90,7 +90,6 @@
 
 <script>
 import Form from 'vform'
-
 export default {
     data() {
         return {
@@ -219,6 +218,7 @@ export default {
                 console.log(response.data);
                 this.ds_ban = response.data
             }).catch(error => {
+                // console.log(error.message);
                 this.$router.push('/');
             })
         },
@@ -226,6 +226,8 @@ export default {
     created() {
         this.getBan();
     },
+
+
     // mounted() {
     //     this.getBan();
     // },

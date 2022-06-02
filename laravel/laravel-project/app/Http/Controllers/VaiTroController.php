@@ -17,7 +17,7 @@ class VaiTroController extends Controller
         $this->middleware('auth:api');
         $this->middleware('checkQuyen');
     }
-    
+
     public function index()
     {
         $data = VaiTro::with(['quyens'])->get();
@@ -42,24 +42,15 @@ class VaiTroController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
-        $request->validate([
-            'tenvaitro' => 'required|unique:vaitro,tenvaitro',
+        $this->validate($request, [
+            'tenvaitro' => 'required',
             'mota' => 'required',
         ], [
-            'tenvaitro.required' => 'Tên vai trò không được để trống',
-            'tenvaitro.unique' => 'Tên vai trò đã tồn tại',
-            'mota.required' => 'Mô tả không được để trống',
+            'tenvaitro.required' => 'Nhập tên vai trò',
+            'mota.required' => 'Nhập mô tả vai trò',
         ]);
-        $vaitro = VaiTro::create(
-            [
-                'tenvaitro' => $request->tenvaitro,
-                'mota' => $request->mota,
-            ]
-        );
-        // $vaitro->quyens()->attach($request->quyen);
-        return $vaitro;
-        // return response()->json($vaitro);
+        $data = VaiTro::create($request->all());
+        return response()->json($data);
     }
 
     /**
@@ -94,16 +85,15 @@ class VaiTroController extends Controller
      */
     public function update(Request $request, $vaiTro)
     {
-        $request->validate([
+        $this->validate($request, [
             'tenvaitro' => 'required',
             'mota' => 'required',
         ], [
-            'tenvaitro.required' => 'Tên vai trò không được để trống',
-            'mota.required' => 'Mô tả không được để trống',
+            'tenvaitro.required' => 'Nhập tên vai trò',
+            'mota.required' => 'Nhập mô tả vai trò',
         ]);
-        $vaitro = VaiTro::find($vaiTro);
-        $vaitro->update($request->all());
-        return response()->json($vaitro);
+        $data = VaiTro::find($vaiTro);
+        return response()->json($data->update($request->all()));
     }
 
     /**

@@ -50,16 +50,19 @@
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">Tình trạng bàn</div>
-            <div class="card-body">
-
+            <div class="card-body" v-if="ds_ban.length > 0">
                 <span v-for="todo in ds_ban">
                     <button v-if="todo.tinhtrang == 0" class="mb-2 mr-2 btn btn-secondary"
                         @click="showmodal(todo.id)">Bàn {{ todo.id }}
                         <br> {{
-                        todo.ghe
+                                todo.ghe
                         }} ghế</button>
                 </span>
             </div>
+            <div class="card-body" v-else>
+                <h4 class="text-center">Hiện tại hết bàn</h4>
+            </div>
+
         </div>
 
         <!-- Modal -->
@@ -130,21 +133,28 @@
                             <div class="form-group">
                                 <label>Tên khách hàng</label>
                                 <input type="text" class="form-control" v-model="hoten">
+                                <div class="text-danger error-text " v-if="errors['hoten']" v-html="errors['hoten']">
+                                </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Số điện thoại</label>
-                                <input type="text" class="form-control" v-model="sdt">
+                                <input type="number" class="form-control" v-model="sdt">
+                                <div class="text-danger error-text " v-if="errors['sdt']" v-html="errors['sdt']">
+                                </div>
                             </div>
 
                             <div class="form-group" id="form_people">
                                 <label>Số lượng người</label>
-                                <input type="number" class="form-control" min="1" v-model="songuoi">
+                                <input type="number" class="form-control" id="songuoi" min="1" v-model="songuoi">
                             </div>
 
                             <div class="form-group">
                                 <label>Thời gian đến</label>
                                 <input type="time" class="form-control" v-model="thoigianden">
+                                <div class="text-danger error-text " v-if="errors['thoigianden']"
+                                    v-html="errors['thoigianden']">
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -172,6 +182,7 @@ export default {
             ds_ban: {},
             ds_hd: {},
             cthd: {},
+            errors: {},
 
             hoten: '',
             sdt: '',
@@ -182,6 +193,8 @@ export default {
             id: '',
             tong: '',
             product_quantity: '',
+
+            api: 'http://localhost:8000/api/hdtaiquay',
         }
     },
 
@@ -209,6 +222,7 @@ export default {
                 }
             }).then(response => {
                 this.getHD();
+                this.getBan();
                 $('#editHD').modal('hide');
             }).catch(error => {
                 console.log(error);
@@ -290,7 +304,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete('http://127.0.0.1:8000/api/hdtaiquay/deleteHD/' + id, {
+                    this.axios.delete(this.api + '/deleteHD/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
@@ -309,6 +323,10 @@ export default {
         showmodal(id) {
             $('#orderModal').modal('show')
             $('#modal_title').text('Khách hàng đặt bàn:' + id)
+            let dsb = this.ds_ban.find(a => a.id == id);
+            this.table_ghe = dsb.ghe;
+            $('#songuoi').attr('max', this.table_ghe);
+
             this.table_id = id;
             this.hoten = '';
             this.sdt = '';
@@ -330,17 +348,28 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.post('http://127.0.0.1:8000/api/hdtaiquay/khdattruoc', data, {
+            this.axios.post(this.api + '/khdattruoc', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
             }).then(response => {
-                console.log(response);
+                // console.log(response);
+                this.$swal(
+                    'Thành công!',
+                    'Đặt bàn thành công.',
+                    'success'
+                )
                 $('#orderModal').modal('hide')
                 this.getHD();
                 this.getBan();
             }).catch(error => {
+                this.errors = error.response.data.errors;
                 // this.showMessage('Sửa thất bại');
+                this.$swal(
+                    'Thất bại!',
+                    'Có gì đó sai òi!!.',
+                    'error'
+                )
             });
         },
 
@@ -365,7 +394,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/hdtaiquay', {
+            this.axios.get(this.api, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -381,7 +410,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/hdtaiquay/' + id, {
+            this.axios.get(this.api + '/' + id, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

@@ -44,20 +44,20 @@ class BaoCaoController extends Controller
         $date_from = date('d-m-Y', strtotime('-1 month'));
         $date_to = date('d-m-Y');
 
-        if (request()->date_from && request()->date_to) {
-            $date_from =  request()->date_from;
-            $date_to = request()->date_to;
-            $hdtq = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 1)->whereBetween('created_at', [$date_from, $date_to])->get();
-            $tttq = HoaDon::whereBetween('created_at', [$date_from, $date_to])->sum('tongtien');
+        // if (request()->date_from && request()->date_to) {
+        //     $date_from =  request()->date_from;
+        //     $date_to = request()->date_to;
+        //     $hdtq = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 1)->whereBetween('created_at', [$date_from, $date_to])->get();
+        //     $tttq = HoaDon::whereBetween('created_at', [$date_from, $date_to])->sum('tongtien');
 
-            $soluongmon = CTHD::select(['monan_id', 'created_at'], DB::raw('sum(soluong) as total'))
-                ->whereBetween('created_at', [$date_from, $date_to])
-                ->groupBy('monan_id')
-                ->orderBy('total', 'desc')
-                ->get();
-            // $soluongmon = CTHD::whereBetween('created_at', [$date_from, $date_to])->get();
-            $songuoi = HoaDon::whereBetween('created_at', [$date_from, $date_to])->where('loaihd_id', 0)->sum('songuoi');
-        }
+        //     $soluongmon = CTHD::select(['monan_id', 'created_at'], DB::raw('sum(soluong) as total'))
+        //         ->whereBetween('created_at', [$date_from, $date_to])
+        //         ->groupBy('monan_id')
+        //         ->orderBy('total', 'desc')
+        //         ->get();
+        //     // $soluongmon = CTHD::whereBetween('created_at', [$date_from, $date_to])->get();
+        //     $songuoi = HoaDon::whereBetween('created_at', [$date_from, $date_to])->where('loaihd_id', 0)->sum('songuoi');
+        // }
 
 
         return response()->json([

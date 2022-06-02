@@ -19,7 +19,8 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="ctht in ds_cthd">
-                                        <td>{{ ctht.ban_id }}</td>
+                                        <td v-if="ctht.ban_id">{{ ctht.ban_id }}</td>
+                                        <td v-else>Online</td>
                                         <td> {{ ctht.tenmonan }} </td>
                                         <td>{{ ctht.soluong }}</td>
                                         <td>{{ ctht.ghichu }}</td>

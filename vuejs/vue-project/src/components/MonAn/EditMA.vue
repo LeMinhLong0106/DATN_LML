@@ -6,12 +6,12 @@
                 <div class="col-xl-4">
                     <!-- Profile picture card-->
                     <div class="card mb-4 mb-xl-0">
-                        <div class="card-header">Profile Picture</div>
+                        <div class="card-header">Hình ảnh</div>
                         <div class="card-body text-center">
                             <!-- Profile picture image-->
                             <img class="img-account-profile mb-2 w-100" :src="getIMG(ds_ma.hinhanh)">
                             <!-- Profile picture help block-->
-                            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                            <!-- <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div> -->
                             <!-- Profile picture upload button-->
                             <!-- <button class="btn btn-primary" type="button">Upload new image</button> -->
                             <input @change="updateImage" type="file" class="form-control" name="hinhanh">
@@ -38,8 +38,7 @@
                                     <label class="small mb-1" for="gia">Giá</label>
                                     <input v-model="ds_ma.gia" type="number" class="form-control" name="gia"
                                         placeholder="Giá">
-                                    <div class="text-danger error-text " v-if="errors['gia']"
-                                        v-html="errors['gia']">
+                                    <div class="text-danger error-text " v-if="errors['gia']" v-html="errors['gia']">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -59,38 +58,39 @@
 
                             </div>
 
-                            <div class="mb-3">
-                                <label class="small mb-1" for="donvitinh">Đơn vị tính</label>
-                                <select class="form-control" v-model="ds_ma.donvitinh" name="donvitinh">
-                                    <option value="" class="form-control">Đơn vị tính</option>
-                                    <option value="Suất">Suất</option>
-                                    <option value="Đĩa">Đĩa</option>
-                                    <option value="Phần">Phần</option>
-                                    <option value="Con">Con</option>
-                                    <option value="Kg">Kg</option>
-                                    <option value="Chén">Chén</option>
-                                </select>
-                                <div class="text-danger error-text " v-if="errors['donvitinh']"
-                                    v-html="errors['donvitinh']">
+                            <div class="row gx-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="donvitinh">Đơn vị tính</label>
+                                    <select class="form-control" v-model="ds_ma.donvitinh" name="donvitinh">
+                                        <option value="" class="form-control">Đơn vị tính</option>
+                                        <option value="Suất">Suất</option>
+                                        <option value="Đĩa">Đĩa</option>
+                                        <option value="Phần">Phần</option>
+                                        <option value="Con">Con</option>
+                                        <option value="Kg">Kg</option>
+                                        <option value="Chén">Chén</option>
+                                    </select>
+                                    <div class="text-danger error-text " v-if="errors['donvitinh']"
+                                        v-html="errors['donvitinh']">
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- Form Group (Roles)-->
-                            <div class="mb-3">
-                                <label class="small mb-1" for="danhmuc">Danh mục</label>
-                                <select class="form-control" name="danhmuc" v-model="ds_ma.danhmuc">
-                                    <option value="" class="form-control">Danh mục</option>
-                                    <option v-for="item in ds_dm" v-bind:value="item.id">
-                                        {{ item.tendm }}
-                                    </option>
-                                </select>
-                                <div class="text-danger error-text " v-if="errors['danhmuc']"
-                                    v-html="errors['danhmuc']">
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="danhmuc">Danh mục</label>
+                                    <select class="form-control" name="danhmuc" v-model="ds_ma.danhmuc">
+                                        <option value="" class="form-control">Danh mục</option>
+                                        <option v-for="item in ds_dm" v-bind:value="item.id">
+                                            {{ item.tendm }}
+                                        </option>
+                                    </select>
+                                    <div class="text-danger error-text " v-if="errors['danhmuc']"
+                                        v-html="errors['danhmuc']">
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Submit button-->
                             <button type="submit" class="btn btn-primary">Cập nhật</button>
-                            <router-link to="/admin/nhanvien" class="btn btn-primary float-right">Quay lại</router-link>
+                            <router-link to="/nhanvien" class="btn btn-primary float-right">Quay lại</router-link>
                         </div>
                     </div>
                 </div>
@@ -133,16 +133,14 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                this.$router.push('/admin/monan');
+                this.$router.push('/monan');
                 this.$swal(
                     'Thành công!',
                     'Món ăn đã được thêm.',
                     'success'
                 )
             }).catch(err => {
-                // console(err);
                 this.errors = err.response.data.errors;
-                // console.log(this.errors);
                 this.$swal(
                     'Thất bại!',
                     'Món ăn chưa được thêm.',
@@ -156,39 +154,71 @@ export default {
             this.hinhanh = e.target.files[0]
         },
 
-        getNV() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get(this.api + '/' + this.$route.params.id, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
-                // console.log(response.data)
-                this.ds_ma = response.data;
-            })
-        },
+        // getMA() {
+        //     let token = window.localStorage.getItem('token');
+        //     if (token == null) {
+        //         this.$router.push('/login');
+        //     }
+        //     this.axios.get(this.api + '/' + this.$route.params.id, {
+        //         headers: {
+        //             Authorization: 'Bearer ' + token
+        //         }
+        //     }).then(response => {
+        //         // console.log(response.data)
+        //         this.ds_ma = response.data;
+        //     })
+        // },
 
-        getVT() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
+        // getDM() {
+        //     let token = window.localStorage.getItem('token');
+        //     if (token == null) {
+        //         this.$router.push('/login');
+        //     }
+        //     this.axios.get('http://127.0.0.1:8000/api/danhmuc', {
+        //         headers: {
+        //             Authorization: 'Bearer ' + token
+        //         }
+        //     }).then(res => {
+        //         this.ds_dm = res.data
+        //     })
+        // },
+    },
+
+    // created() {
+    //     this.getMA();
+    //     this.getDM();
+    // },
+
+    async created() {
+        let token = window.localStorage.getItem('token');
+        if (token == null) {
+            this.$router.push('/login');
+        }
+
+        const id = parseInt(this.$route.params.id);
+        // console.log('idd:' + id);
+        if (!id) {
+            this.$router.push('/monan');
+        }
+        const [monan, danhmuc] = await Promise.all([
+            this.axios.get(this.api + '/' + id, {
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem('token')
+                }
+            }),
             this.axios.get('http://127.0.0.1:8000/api/danhmuc', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-            }).then(res => {
-                this.ds_dm = res.data
-            })
-        },
-    },
-
-    created() {
-        this.getNV();
-        this.getVT();
+            }),
+        ]);
+        // console.log(monan.data.id);
+        if (!monan.data.id) {//nếu không tồn tại id trong database
+            this.$router.push('/monan');
+        }else{
+            this.ds_ma = monan.data;
+            this.ds_dm = danhmuc.data;
+        }
     },
 
 }      

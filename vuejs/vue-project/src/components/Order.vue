@@ -99,7 +99,7 @@
                             <div class="form-group">
                                 <label>Món ăn</label>
                                 <select name="product_name" id="product_name" class="form-control"
-                                    v-model="product_name">
+                                    v-model="product_name" required>
                                     <option value="">Chọn món ăn</option>
                                     <option v-for="item in ds_monan" v-bind:value="item.id">
                                         {{ item.tenmonan }}
@@ -176,6 +176,8 @@ export default {
             ds_mon: {},
             ds_hdkd: {},
             tong: '',
+
+            api: 'http://localhost:8000/api/',
         }
     },
 
@@ -190,7 +192,6 @@ export default {
                 ghe: this.table_ghe,
                 tinhtrang: this.table_status
             }
-
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
@@ -212,7 +213,7 @@ export default {
                 this.product_note = '',
                 this.people_quantity = '',
 
-                this.axios.get('http://127.0.0.1:8000/api/order/getSaleDetails/' + this.table_id, data, {
+                this.axios.get('http://127.0.0.1:8000/api/order/getSaleDetails/' + this.table_id, {
                     headers: {
                         Authorization: 'Bearer ' + token
                     }
@@ -241,7 +242,7 @@ export default {
                 this.$router.push('/login');
             }
 
-            this.axios.post('http://127.0.0.1:8000/api/order/orderFood', data, {
+            this.axios.post(this.api + 'order/orderFood', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -252,7 +253,7 @@ export default {
 
                 this.getBan();
             }).catch(error => {
-                this.$router.push('/');
+                // this.$router.push('/');
             })
         },
 
@@ -265,7 +266,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.post('http://127.0.0.1:8000/api/order/confirmOrder', data, {
+            this.axios.post(this.api + 'order/confirmOrder', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -276,10 +277,9 @@ export default {
 
                 this.getBan();
             }).catch(error => {
-                this.$router.push('/');
+                // this.$router.push('/');
             })
         },
-
         // xóa món ăn
         deleteMon(id) {
             let data = {
@@ -333,14 +333,14 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/ban', {
+            this.axios.get(this.api + 'indexBan', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
                 this.ds_ban = res.data
             }).catch(error => {
-                this.$router.push('/');
+                // this.$router.push('/');
             })
         },
 
@@ -349,14 +349,14 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/monan', {
+            this.axios.get(this.api + 'indexMonan', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                this.ds_monan = res.data.monan
+                this.ds_monan = res.data
             }).catch(error => {
-                this.$router.push('/');
+                // this.$router.push('/');
             })
         },
 
@@ -365,7 +365,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/getHDKD', {
+            this.axios.get(this.api + 'getHDKD', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -373,7 +373,8 @@ export default {
                 // console.log(res.data);
                 this.ds_hdkd = res.data
             }).catch(error => {
-                this.$router.push('/');
+                console.log(error);
+                // this.$router.push('/');
             })
         },
 

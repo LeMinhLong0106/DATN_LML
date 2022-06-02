@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ban;
+use App\Models\MonAn;
 use App\Models\VaiTroQuyen;
 use Illuminate\Http\Request;
 
@@ -12,6 +14,18 @@ class VaiTroQuyenController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function indexBan()
+    {
+        $data = Ban::all();
+        return response()->json($data, 200);
+    }
+
+    public function indexMonan()
+    {
+        $data = MonAn::all();
+        return response()->json($data, 200);
+    }
+
     public function index()
     {
         //

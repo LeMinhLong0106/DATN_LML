@@ -35,8 +35,8 @@ class SocialController extends Controller
         } else {
             $appUser = KhachHang::create([ //tao user moi
                 'tenkh' => $user->name,
-                'diachi' => 'diachi',
-                'sdt' => 'sdt',
+                'diachi' => 'null',
+                'sdt' => 'null',
                 'email' => $user->email,
                 'google_id' => $user->id,
                 'matkhau' => Hash::make('12345678'),
@@ -51,10 +51,4 @@ class SocialController extends Controller
         ], 201);
     }
 
-    // public function social($provider) {
-    //     $auth = Socialite::driver($provider)->stateless()->user();
-    //     $email = $auth->getEmail();
-    //     $avatar = $auth->getAvatar();
-    //     return response()->json(compact('token', 'avatar'));
-    // }
 }

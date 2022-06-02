@@ -103,12 +103,6 @@ class MonanController extends Controller
         return response()->json($data);
     }
 
-    public function show_mon($monan)
-    {
-        $data = Monan::with(['danhmucmonss'])->find($monan);
-        return response()->json($data);
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -170,18 +164,18 @@ class MonanController extends Controller
     public function update(Request $request, $monan)
     {
         $this->validate($request, [
-            'tenmonan' => 'required',
+            'tenmonan' => 'required|unique:monan,tenmonan,' . $monan,
             'gia' => 'required|max:255',
             'donvitinh' => 'required|max:255',
             'danhmuc' => 'required|max:255',
-            // 'hinhanh' => 'required|max:255',
+            'hinhanh' => 'required',
         ], [
             'tenmonan.required' => 'Tên món ăn không được để trống',
             'tenmonan.unique' => 'Tên món ăn đã tồn tại',
             'gia.required' => 'Giá không được để trống',
             'donvitinh.required' => 'Đơn vị tính không được để trống',
             'danhmuc.required' => 'Danh mục không được để trống',
-            // 'hinhanh.required' => 'Hình ảnh không được để trống',
+            'hinhanh.required' => 'Hình ảnh không được để trống',
         ]);
 
         $data = Monan::find($monan);
