@@ -227,7 +227,6 @@ export default {
         this.getBan();
     },
 
-
     // mounted() {
     //     this.getBan();
     // },

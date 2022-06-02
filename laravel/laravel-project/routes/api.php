@@ -16,8 +16,8 @@ Route::get('login/google', 'SocialController@redirectToProvider');
 Route::get('login/google/callback', 'SocialController@handleProviderCallback');
 
 // khách hàng
-Route::post('/khachhang/register', 'KhachHangController@register')->name('khachhang.register');
-Route::post('/khachhang/login', 'KhachHangController@login')->name('khachhang.login');
+Route::post('/khachhang/register', 'GiaoDienController@register')->name('khachhang.register');
+Route::post('/khachhang/login', 'GiaoDienController@login')->name('khachhang.login');
 Route::post('checkout', 'GiaoDienController@checkout')->name('checkout');
 
 // báo cáo
@@ -39,33 +39,40 @@ Route::post('/update_nv/{id}', 'UserController@update_nv');
 Route::post('/update_ma/{id}', 'MonanController@update_ma');
 
 // hóa đơn
-Route::get('hdtaiquay', 'HoaDonController@indexHDTQ')->name('hdtaiquay.indexHDTQ');
-Route::get('hdonline', 'HoaDonController@indexHDO')->name('hdonline.indexHDO');
-Route::get('hdtaiquay/{id}', 'HoaDonController@showHDTQ')->name('hdtaiquay.showHDTQ');
-Route::get('hdonline/{id}', 'HoaDonController@showHDO')->name('hdonline.showHDO');
-Route::delete('hdtaiquay/deleteHD/{id}', 'HoaDonController@deleteHD')->name('hdtaiquay.deleteHD');
-Route::delete('hdonline/deleteHDO/{id}', 'HoaDonController@deleteHDO')->name('hdonline.deleteHDO');
-Route::delete('hdtaiquay/deleteCTHD/{id}', 'HoaDonController@deleteCTHD')->name('hdtaiquay.deleteCTHD');
+Route::group(['prefix' => 'hdtaiquay'], function () {
+    Route::get('/', 'HoaDonController@indexHDTQ')->name('hdtaiquay.indexHDTQ');
+    Route::get('/{id}', 'HoaDonController@showHDTQ')->name('hdtaiquay.showHDTQ');
+    Route::delete('/deleteHD/{id}', 'HoaDonController@deleteHD')->name('hdtaiquay.deleteHD');
+    Route::delete('/deleteCTHD/{id}', 'HoaDonController@deleteCTHD')->name('hdtaiquay.deleteCTHD');
+    Route::put('/{id}/thanhtoan', 'HoaDonController@thanhtoanhdtq');
+    Route::get('/showReceipt/{id}', 'HoaDonController@showReceipt')->name('hdtaiquay.showReceipt');
+    Route::post('/khdattruoc', 'HoaDonController@khdattruoc')->name('hdtaiquay.khdattruoc');
+});
 
-Route::put('hdtaiquay/{id}/thanhtoan', 'HoaDonController@thanhtoanhdtq');
-Route::get('hdonline/{id}/thanhtoanon', 'HoaDonController@thanhtoanon');
-Route::get('hdtaiquay/showReceipt/{id}', 'HoaDonController@showReceipt')->name('hdtaiquay.showReceipt');
+Route::group(['prefix' => 'hdonline'], function () {
+    Route::get('/', 'HoaDonController@indexHDO')->name('hdonline.indexHDO');
+    Route::get('/{id}', 'HoaDonController@showHDO')->name('hdonline.showHDO');
+    Route::delete('/deleteHDO/{id}', 'HoaDonController@deleteHDO')->name('hdonline.deleteHDO');
+    Route::get('/{id}/thanhtoanon', 'HoaDonController@thanhtoanon');
+});
 
-Route::post('hdtaiquay/khdattruoc', 'HoaDonController@khdattruoc')->name('hdtaiquay.khdattruoc');
 Route::get('/getBanTrong', 'BanController@getBanTrong')->name('getBanTrong');
 Route::get('/getHDKD', 'HoaDonController@getHDKD')->name('getHDKD');
 
 // thực đơn
-Route::resource('order', 'OrderController');
-Route::get('giaodienDB', 'OrderController@giaodienDB')->name('giaodienDB');
-Route::get('order/table_status', 'OrderController@table_status')->name('order.table_status');
-Route::get('order/getSaleDetails/{id}', 'OrderController@getSaleDetails')->name('order.getSaleDetails');
-Route::post('order/orderFood', 'OrderController@orderFood')->name('order.orderFood');
-Route::post('order/deleteOrder', 'OrderController@deleteOrder')->name('order.deleteOrder');
-Route::post('order/updateSoluong', 'OrderController@updateSoluong')->name('order.updateSoluong');
-Route::post('order/changeQuantityIn', 'OrderController@changeQuantityIn')->name('order.changeQuantityIn');
-Route::post('order/changeQuantityDe', 'OrderController@changeQuantityDe')->name('order.changeQuantityDe');
-Route::post('order/confirmOrder', 'OrderController@confirmOrder')->name('order.confirmOrder');
+Route::group(['prefix' => 'order'], function () {
+    Route::get('/', 'OrderController@order')->name('order');
+    Route::get('table_status', 'OrderController@table_status')->name('order.table_status');
+    Route::get('getSaleDetails/{id}', 'OrderController@getSaleDetails')->name('order.getSaleDetails');
+    Route::post('orderFood', 'OrderController@orderFood')->name('order.orderFood');
+    Route::post('deleteOrder', 'OrderController@deleteOrder')->name('order.deleteOrder');
+    Route::post('updateSoluong', 'OrderController@updateSoluong')->name('order.updateSoluong');
+    Route::post('changeQuantityIn', 'OrderController@changeQuantityIn')->name('order.changeQuantityIn');
+    Route::post('changeQuantityDe', 'OrderController@changeQuantityDe')->name('order.changeQuantityDe');
+    Route::post('confirmOrder', 'OrderController@confirmOrder')->name('order.confirmOrder');
+});
+
+Route::get('daubep', 'DauBepController@daubep')->name('daubep');
 
 Route::get('/user', 'UserController@getUser');
 Route::get('/getKH', 'KhachHangController@getKH');
@@ -73,6 +80,3 @@ Route::post('/logout', 'UserController@logout');
 
 Route::post('/khachhang/logout', 'KhachHangController@logout')->name('khachhang.logout');
 // });
-
-
-

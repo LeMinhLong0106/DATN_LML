@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Ban;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Validator;
 
 class BanController extends Controller
 {
@@ -20,6 +17,7 @@ class BanController extends Controller
     {
         $data = Ban::all();
         return response()->json($data, 200);
+
     }
 
     /**

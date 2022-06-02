@@ -105,18 +105,18 @@ const router = createRouter({
           component: Quyen,
         },
         {
-          path: '/hoadontq',
-          name: 'hoadontq',
+          path: '/hdtaiquay',
+          name: 'hdtaiquay',
           component: HoaDonTQ,
         },
         {
-          path: '/hoadontq/detail/:id',
-          name: 'hoadontq.detail',
+          path: '/hdtaiquay/detail/:id',
+          name: 'hdtaiquay.detail',
           component: DetailHDTQ,
         },
         {
-          path: '/hoadononline',
-          name: 'hoadononline',
+          path: '/hdonline',
+          name: 'hdonline',
           component: HoaDonOn,
         },
         {
@@ -125,8 +125,8 @@ const router = createRouter({
           component: BaoCao,
         },
         {
-          path: '/hoadononline/edit/:id',
-          name: 'hoadononline.edit',
+          path: '/hdonline/edit/:id',
+          name: 'hdonline.edit',
           component: DetailHDOn,
         },
       ]

@@ -4,65 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\KhachHang;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class KhachHangController extends Controller
 {
-    public function register(Request $request)
+    public function __construct()
     {
-        $data = $request->validate([
-            'tenkh' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:khachhang',
-            'sdt' => 'required|string|max:255',
-            'diachi' => 'required|string|max:255',
-            'matkhau' => 'required|string|min:6',
-        ]);
-        $user = KhachHang::create([
-            'tenkh' => $data['tenkh'],
-            'email' => $data['email'],
-            'sdt' => $data['sdt'],
-            'diachi' => $data['diachi'],
-            'google_id' => '',
-            'matkhau' => Hash::make($data['matkhau']),
-        ]);
-
-        return response()->json(
-            [
-                'message' => 'User created successfully',
-                'user' => $user,
-            ],
-            201
-        );
-    }
-
-    public function login(Request $request)
-    {
-        $data = $request->validate([
-            'email' => 'required|string|email|max:255',
-            'matkhau' => 'required|string|min:6',
-        ]);
-        // check email and matkhau
-        $user = KhachHang::where('email', $data['email'])->first();
-        if ($user) {
-            if (Hash::check($data['matkhau'], $user->matkhau)) {
-                $user->token = $user->createToken('authToken')->accessToken;
-                return response()->json($user, 200);
-            } else {
-                return response()->json(['error' => 'Password is incorrect'], 401);
-            }
-        } else {
-            return response()->json(['error' => 'User is not found'], 404);
-        }
-
-        $user->token = $user->createToken('authToken')->accessToken;
-
-        return response()->json($user, 201);
-    }
-
-    public function logout(Request $request)
-    {
-        $request->user()->tokens()->delete();
-        return response()->json(['message' => 'Successfully logged out'], 200);
+        $this->middleware('auth:api');
+        $this->middleware('checkQuyen');
     }
 
     /**
@@ -78,8 +26,6 @@ class KhachHangController extends Controller
 
     public function index()
     {
-        // $this->middleware('auth:api');
-        // $this->middleware('checkQuyen');
         $data = KhachHang::all();
         return response()->json($data, 200);
     }
@@ -116,7 +62,7 @@ class KhachHangController extends Controller
         $data = KhachHang::find($khachHang);
         return response()->json($data, 200);
     }
-    
+
     public function getKH(Request $request)
     {
         $user = KhachHang::find($request->user('api')->id);

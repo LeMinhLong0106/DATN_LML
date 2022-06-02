@@ -182,6 +182,22 @@ export default {
     },
 
     methods: {
+        getCTHD() {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.axios.get('http://127.0.0.1:8000/api/order', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then(res => {
+                console.log(res.data);
+            }).catch(error => {
+                this.$router.push('/');
+            })
+        },
+
         showmodal(id) {
             let dsb = this.ds_ban.find(a => a.id == id);
             this.table_id = id;
@@ -380,10 +396,12 @@ export default {
 
     },
 
+
     created() {
         this.getBan();
         this.getMonAn();
         this.getHDKD();
+        this.getCTHD()
     },
 
 }    

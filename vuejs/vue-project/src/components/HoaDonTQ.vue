@@ -37,7 +37,7 @@
                         <div v-else>
                             <button type="button" class="btn btn-danger btn-circle btn-sm" @click="deleteHD(item.id)"><i
                                     class="fas fa-times"></i></button>
-                            <router-link :to="{ name: 'hoadontq.detail', params: { id: item.id } }">
+                            <router-link :to="{ name: 'hdtaiquay.detail', params: { id: item.id } }">
                                 <button type="button" class="btn btn-warning btn-circle btn-sm">
                                     <i class="fas fa-eye"></i></button>
                             </router-link>
@@ -228,13 +228,6 @@ export default {
                 console.log(error);
             });
 
-            // this.axios.post('http://127.0.0.1:8000/api/hdtaiquay/thanhtoanhdtq/' + this.id).then(response => {
-            //     console.log(response.data);
-            //     this.getHD();
-            //     $('#editHD').modal('hide');
-            // }).catch(error => {
-            //     console.log(error);
-            // });
         },
 
         deleteMon(id) {

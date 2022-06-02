@@ -56,7 +56,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/giaodienDB', {
+            this.axios.get('http://127.0.0.1:8000/api/daubep', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

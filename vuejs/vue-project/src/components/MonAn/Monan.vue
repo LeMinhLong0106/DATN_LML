@@ -123,6 +123,7 @@ export default {
                Authorization: 'Bearer ' + token
             }
          }).then(res => {
+            console.log(res.data);
             this.ds_mon = res.data.datamonan
          }).catch(error => {
             this.$router.push('/');
