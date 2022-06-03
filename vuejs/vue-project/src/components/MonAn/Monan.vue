@@ -125,34 +125,18 @@ export default {
          }).then(res => {
             console.log(res.data);
             this.ds_mon = res.data.datamonan
+            this.$nextTick(() => {
+               $('#dataTable').DataTable();
+            })
          }).catch(error => {
             this.$router.push('/');
          })
       },
 
-      getDM() {
-         let token = window.localStorage.getItem('token');
-         if (token == null) {
-            this.$router.push('/login');
-         }
-         this.axios.get('http://127.0.0.1:8000/api/danhmuc', {
-            headers: {
-               Authorization: 'Bearer ' + token
-            }
-         }).then(res => {
-            this.ds_dm = res.data.data
-         }).catch(error => {
-            this.$router.push('/');
-         })
-      },
    },
 
-   created() {
+   mounted() {
       this.getMon();
-      this.getDM();
    },
-
-
-
 }      
 </script>

@@ -13,4 +13,9 @@ class Ban extends Model
     protected $fillable = [
         'ghe', 'tinhtrang', 'created_at', 'updated_at'
     ];
+
+    public function hoadonss()
+    {
+        return $this->hasMany(HoaDon::class, 'ban_id', 'id');
+    }
 }

@@ -131,10 +131,8 @@ export default {
                 }
             }).then(res => {
                 // console.log(res.data);
-
                 this.homnay = res.data.tongtienhomnay
                 this.homqua = res.data.tongtienhomqua
-
                 // console.log(res.data.tongtienhomnay);
             })
         },

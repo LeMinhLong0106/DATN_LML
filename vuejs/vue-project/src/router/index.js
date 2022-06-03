@@ -17,6 +17,7 @@ import Order from '../components/Order.vue';
 import GiaoDienDB from '../components/GiaoDienDB.vue';
 import HoaDonTQ from '../components/HoaDonTQ.vue';
 import HoaDonOn from '../components/HoaDonOn.vue';
+import EditHDOn from '../components/EditHDOn.vue';
 import DetailHDOn from '../components/DetailHDOn.vue';
 import DetailHDTQ from '../components/DetailHDTQ.vue';
 import BaoCao from '../components/BaoCao.vue';
@@ -120,14 +121,19 @@ const router = createRouter({
           component: HoaDonOn,
         },
         {
+          path: '/hdonline/edit/:id',
+          name: 'hdonline.edit',
+          component: EditHDOn,
+        },
+        {
+          path: '/hdonline/:id',
+          name: 'hdonline.detail',
+          component: DetailHDOn,
+        },
+        {
           path: '/baocao',
           name: 'baocao',
           component: BaoCao,
-        },
-        {
-          path: '/hdonline/edit/:id',
-          name: 'hdonline.edit',
-          component: DetailHDOn,
         },
       ]
     },

@@ -104,7 +104,14 @@ class VaiTroController extends Controller
      */
     public function destroy($vaiTro)
     {
-        $vaitro = VaiTro::find($vaiTro)->delete();
-        return response()->json($vaitro);
+        $a = VaiTro::with(['users'])->find($vaiTro);
+        if(count($a->users) > 0){
+            return response()->json(['error' => 'Không thể xóa vai trò này'], 500);
+        }
+        else{
+            $data = VaiTro::find($vaiTro);
+            return response()->json($data->delete());
+        }
+
     }
 }

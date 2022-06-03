@@ -21,7 +21,7 @@
                     <table class="table table-bordered" width="100%" cellspacing="0" id="dataTable">
                         <thead>
                             <tr>
-                                <th>Mã nhân viên</th>
+                                <th>Mã</th>
                                 <th>Hình ảnh</th>
                                 <th>Tên nhân viên</th>
                                 <th>Giới tính</th>
@@ -37,7 +37,7 @@
                                 <td>{{ item.id }}</td>
                                 <td><img :src="getIMG(item.hinhanh)" style="width: 5rem; "></td>
                                 <td>{{ item.hoten }}</td>
-                                
+
                                 <td v-if="item.gioitinh == 1">Nam</td>
                                 <td v-else>Nữ</td>
                                 <td>{{ item.diachi }}</td>
@@ -120,11 +120,14 @@ export default {
                 }
             }).then(res => {
                 this.ds_nv = res.data
+                this.$nextTick(() => {
+                    $('#dataTable').DataTable();
+                })
             }).catch(error => {
                 this.$router.push('/');
             })
         },
-        
+
         getVT() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
@@ -143,8 +146,10 @@ export default {
 
     },
 
-    created() {
+    mounted() {
         this.getNV();
+    },
+    created() {
         this.getVT();
     },
 

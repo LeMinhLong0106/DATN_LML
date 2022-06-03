@@ -96,6 +96,9 @@ export default {
                 }
             }).then(res => {
                 this.ds_kh = res.data
+                this.$nextTick(() => {
+                    $('#dataTable').DataTable();
+                })
             }).catch(error => {
                 this.$router.push('/');
             })
@@ -103,7 +106,7 @@ export default {
 
     },
 
-    created() {
+    mounted() {
         this.getKH();
     },
 

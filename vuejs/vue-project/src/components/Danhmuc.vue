@@ -180,13 +180,13 @@ export default {
                 this.$router.push('/login');
             }
             this.$swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Bạn chắc chứ?',
+                text: "Bạn muốn xóa danh mục này!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.form.delete(this.api + '/' + id, {
@@ -194,12 +194,21 @@ export default {
                             Authorization: 'Bearer ' + token
                         }
                     }).then(() => {
+                        // console.log(res.data);
                         this.$swal(
-                            'Deleted!',
-                            'Your file has been deleted.',
+                            'Đã xóa!',
+                            'Danh mục đã xóa.',
                             'success'
                         )
                     })
+                        .catch(() => {
+                            // console.log(error.response.data);
+                            this.$swal(
+                                'Lỗi!',
+                                'Danh mục tồn tại món ăn, không xóa được.',
+                                'error'
+                            )
+                        })
                     this.getDM();
                 }
 
@@ -217,14 +226,18 @@ export default {
                 }
             }).then(res => {
                 this.ds_dm = res.data
+                this.$nextTick(() => {
+                    $('#dataTable').DataTable();
+                })
             }).catch(error => {
                 this.$router.push('/');
             })
         },
 
+
     },
 
-    created() {
+    mounted() {
         this.getDM();
     },
 

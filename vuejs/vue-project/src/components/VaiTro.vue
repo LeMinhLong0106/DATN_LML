@@ -175,13 +175,13 @@ export default {
                 this.$router.push('/login');
             }
             this.$swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Bạn chắc chứ?',
+                text: "Bạn muốn xóa vai trò này!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.form.delete(this.api + '/' + id, {
@@ -189,12 +189,21 @@ export default {
                             Authorization: 'Bearer ' + token
                         }
                     }).then(() => {
+                        // console.log(res);
                         this.$swal(
-                            'Deleted!',
-                            'Your file has been deleted.',
+                            'Đã xóa!',
+                            'Vai trò đã xóa.',
                             'success'
                         )
                     })
+                        .catch(error => {
+                            console.log(error.response.data);
+                            this.$swal(
+                                'Lỗi!',
+                                'Tồn tại nhân viên giữ vai trò này, không xóa được.',
+                                'error'
+                            )
+                        })
                     this.getVT();
                 }
 
@@ -213,13 +222,16 @@ export default {
             }).then(res => {
                 // console.log(res.data);
                 this.ds_vt = res.data
+                this.$nextTick(() => {
+                    $('#dataTable').DataTable();
+                })
             }).catch(error => {
                 this.$router.push('/');
             })
         },
     },
 
-    created() {
+    mounted() {
         this.getVT();
     },
 

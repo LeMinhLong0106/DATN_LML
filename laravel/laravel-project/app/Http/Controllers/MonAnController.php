@@ -20,13 +20,22 @@ class MonanController extends Controller
         $this->middleware('auth:api');
         $this->middleware('checkQuyen');
     }
+
+    // public function index()
+    // {
+    //     $pageLength = request('pageLength') ?? 10;
+    //     $users = Monan::with('danhmuc')->paginate($pageLength);
+
+    //     return response()->json($users, 200);
+    // }
+
     public function index()
     {
-        // dd($danhsachmon);
+        // $monans = Monan::with(['danhmucmonss'])->paginate(10);
+        // return response()->json($monans, 200);
+
         $data = Monan::with(['danhmucmonss'])->get();
         $monan = Monan::with(['danhmucmonss'])->where('tinhtrang', 1)->get();
-        // dd($data);
-        // return Monan::latest()->paginate(10);
         return response()->json([
             'datamonan' => $data,
             'monan' => $monan

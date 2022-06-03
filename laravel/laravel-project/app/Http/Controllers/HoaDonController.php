@@ -112,7 +112,7 @@ class HoaDonController extends Controller
                 'tinhtrang' => 1
             ]);
         });
-        
+
         return $this->indexHDO();
     }
 
@@ -161,6 +161,8 @@ class HoaDonController extends Controller
     {
         $data = HoaDon::find($hDOnline);
         $data->delete();
-        return redirect()->back();
+        return response()->json([
+            'message' => 'Xóa thành công'
+        ]);
     }
 }

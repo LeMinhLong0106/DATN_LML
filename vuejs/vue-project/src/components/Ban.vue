@@ -1,7 +1,6 @@
 <template>
     <div class="container-fluid">
         <h1 class="h3 mb-4 text-gray-800">Quản lý bàn</h1>
-        <div id="message"></div>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <div class="row">
@@ -179,13 +178,13 @@ export default {
                 this.$router.push('/login');
             }
             this.$swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Bạn chắc chứ?',
+                text: "Bạn muốn xóa bàn này!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.form.delete(this.api + '/' + id, {
@@ -194,11 +193,19 @@ export default {
                         }
                     }).then(() => {
                         this.$swal(
-                            'Deleted!',
-                            'Your file has been deleted.',
+                            'Đã xóa!',
+                            'Đã xóa bàn.',
                             'success'
                         )
                     })
+                        .catch(() => {
+                            // console.log(error.response.data);
+                            this.$swal(
+                                'Lỗi!',
+                                'Bàn tồn tại trong hóa đơn, không xóa được.',
+                                'error'
+                            )
+                        })
                     this.getBan();
                 }
 
@@ -215,20 +222,19 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(response => {
-                console.log(response.data);
+                // console.log(response.data);
                 this.ds_ban = response.data
+                this.$nextTick(() => {
+                    $('#dataTable').DataTable();
+                })
             }).catch(error => {
                 // console.log(error.message);
                 this.$router.push('/');
             })
         },
     },
-    created() {
+    mounted() {
         this.getBan();
     },
-
-    // mounted() {
-    //     this.getBan();
-    // },
 }      
 </script>

@@ -53,6 +53,7 @@
 
                         <div style="text-align:center;">
                             <div>
+                                <input type="submit" name="them" value="Thanh toán" class="btn btn-primary" />
                                 <router-link to="/hdonline" class="btn btn-primary">Trở về</router-link>
                             </div>
                         </div>
@@ -101,6 +102,25 @@ export default {
                 this.cthd = res.data.cthd
                 this.tong = res.data.tong
             })
+        },
+        thanhtoan() {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.axios.get(this.api + this.hd.id + '/thanhtoanon', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then(res => {
+                this.$swal(
+                    'Thành công!',
+                    'Hóa đơn đã được xử lý',
+                    'success'
+                )
+                this.$router.push('/hdonline')
+            })
+
         },
     },
     created() {

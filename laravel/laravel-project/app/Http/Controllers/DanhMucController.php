@@ -106,9 +106,16 @@ class DanhMucController extends Controller
      */
     public function destroy($danhMuc)
     {
-        // return response()->json($danhMuc->delete());
-        $data = DanhMuc::find($danhMuc);
-        $data->delete();
-        return response()->json($data);
+        $a = DanhMuc::with(['monan'])->find($danhMuc);
+        if(count($a->monan) > 0){
+            return response()->json(['error' => 'Không thể xóa danh mục này'], 500);
+        }
+        else{
+            $data = DanhMuc::find($danhMuc);
+            return response()->json($data->delete());
+        }
+        // $data = DanhMuc::find($danhMuc);
+        // $data->delete();
+        // return response()->json($data);
     }
 }

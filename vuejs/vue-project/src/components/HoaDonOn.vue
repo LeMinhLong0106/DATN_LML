@@ -1,50 +1,68 @@
 <template>
     <div class="container-fluid">
-        <h3 class="text-center">DANH SÁCH HÓA ĐƠN</h3>
-        <table class="table table-striped table-class" id="dataTable">
-            <thead>
-                <tr>
-                    <th>Mã hóa đơn</th>
-                    <th>Họ tên</th>
-                    <th>Số điện thoại</th>
-                    <th>Địa chỉ</th>
-                    <th>Tổng tiền</th>
-                    <th>Ngày mua</th>
-                    <th>Tình trạng</th>
-                    <th>Chức năng</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item in ds_hd">
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.hoten }}</td>
-                    <td>{{ item.sdt }}</td>
-                    <td>{{ item.diachi }}</td>
-                    <td>{{ item.tongtien.toLocaleString() }} đ</td>
-                    <td>{{ format_date(item.created_at) }}</td>
-                    <td>
-                        <span v-if="item.tinhtrang == 0" class="badge badge-danger">Chưa xử lý</span>
-                        <span v-else class="badge badge-success">Đã xử lý</span>
-                    </td>
-                    <td>
-                        <div v-if="item.tinhtrang == 0">
-                            <router-link :to="{ name: 'hoadononline.edit', params: { id: item.id } }">
-                                <button type="button" class="btn btn-primary btn-circle btn-sm">
-                                    <i class="fas fa-edit"></i></button>
-                            </router-link>
-                            <!-- <button type="button" class="btn btn-primary btn-circle btn-sm" @click="detailhdonline(item.id)">
-                                <i class="fas fa-edit"></i></button> -->
-                        </div>
-                        <div v-else>
-                            <button type="button" class="btn btn-danger btn-circle btn-sm" @click="deleteHD(item.id)"><i
-                                    class="fas fa-times"></i></button>
-                            <a class="btn btn-warning btn-circle btn-sm" href="#">
-                                <i class="fas fa-eye"></i></a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <h1 class="h3 mb-4 text-gray-800 text-center">DANH SÁCH HÓA ĐƠN</h1>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <div class="row">
+                    <div class="col">
+                        <h6 class="m-0 font-weight-bold text-primary">Danh sách bàn</h6>
+                    </div>
+                    <div class="col" align="right">
+                        <button type="button" class="btn btn-success btn-circle btn-sm" @click="newModal()">
+                            <i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-class" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>Mã hóa đơn</th>
+                                <th>Họ tên</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Tổng tiền</th>
+                                <th>Ngày mua</th>
+                                <th>Tình trạng</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in ds_hd">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.hoten }}</td>
+                                <td>{{ item.sdt }}</td>
+                                <td>{{ item.diachi }}</td>
+                                <td>{{ item.tongtien.toLocaleString() }} đ</td>
+                                <td>{{ format_date(item.created_at) }}</td>
+                                <td>
+                                    <span v-if="item.tinhtrang == 0" class="badge badge-danger">Chưa xử lý</span>
+                                    <span v-else class="badge badge-success">Đã xử lý</span>
+                                </td>
+                                <td>
+                                    <div v-if="item.tinhtrang == 0">
+                                        <router-link :to="{ name: 'hdonline.edit', params: { id: item.id } }">
+                                            <button type="button" class="btn btn-primary btn-circle btn-sm">
+                                                <i class="fas fa-edit"></i></button>
+                                        </router-link>
+                                    </div>
+                                    <div v-else>
+                                        <button type="button" class="btn btn-danger btn-circle btn-sm"
+                                            @click="deleteHD(item.id)"><i class="fas fa-times"></i></button>
+                                        <router-link :to="{ name: 'hdonline.detail', params: { id: item.id } }">
+                                            <button type="button" class="btn btn-warning btn-circle btn-sm">
+                                                <i class="fas fa-eye"></i></button>
+                                        </router-link>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -86,7 +104,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete(this.api + 'hdonline/deleteHD/' + id, {
+                    this.axios.delete(this.api + 'hdonline/deleteHDO/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
@@ -114,7 +132,11 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
+                // console.log(res.data.data)
                 this.ds_hd = res.data.data
+                this.$nextTick(() => {
+                    $('#dataTable').DataTable();
+                })
             }).catch(error => {
                 this.$router.push('/');
             })
@@ -139,7 +161,7 @@ export default {
         },
     },
 
-    created() {
+    mounted() {
         this.getHD();
     },
 

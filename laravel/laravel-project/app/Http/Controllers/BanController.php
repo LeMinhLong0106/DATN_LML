@@ -97,9 +97,14 @@ class BanController extends Controller
      */
     public function destroy($ban)
     {
-        $data = Ban::find($ban);
-        $data->delete();
-        return response()->json($data);
+        $a = Ban::with(['hoadonss'])->find($ban);
+        if (count($a->hoadonss) > 0) {
+            return response()->json(['error' => 'Không thể xóa bàn này'], 500);
+        }
+        else {
+            $data = Ban::find($ban);
+            return response()->json($data->delete());
+        }
     }
 
     public function getBanTrong()

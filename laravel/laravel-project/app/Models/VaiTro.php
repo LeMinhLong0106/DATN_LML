@@ -18,12 +18,13 @@ class VaiTro extends Model
         return $this->hasMany(VaiTroQuyen::class, 'vaitro_id');
     }
 
-    public function quyens(){
+    public function quyens()
+    {
         return $this->belongsToMany(Quyen::class, 'vaitro_quyen', 'vaitro_id', 'quyen_id');
     }
 
-    // public function users(){
-    //     return $this->belongsTo(User::class, 'user_id');
-    // }
-
+    public function users()
+    {
+        return $this->hasMany(User::class, 'vaitro_id', 'id');
+    }
 }
