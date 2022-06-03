@@ -19,7 +19,7 @@ class BaoCaoController extends Controller
         $soluongmon = CTHD::with(['monanss'])->select(['monan_id', DB::raw('sum(soluong) as total')])
             ->groupBy('monan_id')
             ->orderBy('total', 'desc')
-            // ->take(4)
+            ->take(4)
             ->get();
 
         $tongtienhomnay = HoaDon::select('created_at', DB::raw('sum(tongtien) as total'))
@@ -31,11 +31,15 @@ class BaoCaoController extends Controller
 
         $tongtienhomqua = HoaDon::select('created_at', DB::raw('sum(tongtien) as total'))
             ->groupBy('created_at')
-            ->where('created_at', '=', date('Y-m-d', strtotime('-1 day')))
+            ->where('created_at', '=', date('Y-m-d', strtotime('-1 month')))
             ->where('loaihd_id', 0)->where('tinhtrang', 1)
             ->first('total');
 
-        $hd = HoaDon::where('tinhtrang', 1)->get();
+        $hd = HoaDon::where('tinhtrang', 0)->get();
+        $hdtqcxl = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 0)->count();
+        $hdoncxl = HoaDon::where('loaihd_id', 1)->where('tinhtrang', 0)->count();
+
+        $monanchuanau = CTHD::where('tinhtrang',0)->count();
 
         $hdtq = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 1)->get();
         $tttq = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 1)->sum('tongtien');
@@ -64,6 +68,9 @@ class BaoCaoController extends Controller
             'hd' => $hd,
             'hdtq' => $hdtq,
             'tttq' => $tttq,
+            'hdtqcxl' => $hdtqcxl,
+            'hdoncxl' => $hdoncxl,
+            'monanchuanau' => $monanchuanau,
             'date_from' => $date_from,
             'date_to' => $date_to,
             'soluongmon' => $soluongmon,

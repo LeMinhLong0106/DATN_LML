@@ -30,7 +30,7 @@
                 <!-- <div class="sidebar-heading">
                     Nhà hàng
                 </div> -->
-                <li class="nav-item" v-for="u in ds_q">
+                <li class="nav-item" v-for="u in quyen">
                     <router-link class="nav-link" :to="u.tenquyen">
                         <i class="fas fa-fw fa-table"></i>
                         <span>{{ u.mota }}</span>
@@ -133,7 +133,7 @@
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-                            <a class="btn btn-primary" href="#" data-dismiss="modal"  @click="logout()">Đăng xuất</a>
+                            <a class="btn btn-primary" href="#" data-dismiss="modal" @click="logout()">Đăng xuất</a>
                         </div>
                     </div>
                 </div>
@@ -150,6 +150,12 @@ export default {
             ds_q: [],
         }
     },
+    computed: {
+        quyen() {
+            return this.$store.state.quyen
+        },
+    },
+
     methods: {
         getIMG(hinhanh) {
             return `http://localhost:8000/images/${hinhanh}`
@@ -166,6 +172,8 @@ export default {
             }).then(res => {
                 this.user = res.data;
                 this.ds_q = this.user['userquyen'];
+                this.$store.dispatch('quyen', this.ds_q);
+
                 // this.user['test'] = 'test';
                 // console.log(this.ds_q);
             }).catch(err => {

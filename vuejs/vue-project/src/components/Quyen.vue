@@ -75,7 +75,9 @@ export default {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-            }).then(res => {
+            }).then(response => {
+                console.log(response.data['quyens']);
+                this.$store.dispatch('quyen', response.data['quyens']);
                 this.$swal(
                     'Thành công!',
                     'Cập nhật phân quyền.',
@@ -95,9 +97,9 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                // console.log(res.data);
-                console.log(this.$route);
+                // console.log(this.$route);
                 this.ds_q = res.data
+
             }).catch(error => {
                 this.$router.push('/');
             })
@@ -113,13 +115,13 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 this.ds_vt = res.data
                 this.data.vaitro_id = this.ds_vt[0].id
                 if (this.ds_vt[0].quyens != null) {
                     this.data.quyen = this.ds_vt[0].quyens.map(item => item.id)
                 }
-                // console.log(this.ds_vt);
+                
             }).catch(error => {
                 this.$router.push('/');
             })

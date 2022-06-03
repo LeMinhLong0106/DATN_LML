@@ -55,7 +55,8 @@ class QuyenController extends Controller
         $data = VaiTro::find($request->vaitro_id);
         // lưu vào bản vaittro_quyen
         $data->quyens()->sync($request->quyen);
-
+        $a = VaiTro::with(['quyens'])->find($request->vaitro_id);
+        return response()->json($a);
         // $vaitro = VaiTro::find($request->vaitro_id);
         // $vaitro->quyens()->attach($request->quyen);
         // return response()->json($vaitro);

@@ -222,8 +222,26 @@ export default {
             }).then(res => {
                 // console.log(res.data);
                 this.ds_vt = res.data
+                $('#dataTable').DataTable().destroy();
                 this.$nextTick(() => {
-                    $('#dataTable').DataTable();
+                    $('#dataTable').DataTable(
+                        {
+                            "language": {
+                                "lengthMenu": "Hiển thị _MENU_ bản ghi",
+                                "zeroRecords": "Không có vai trò cần tìm",
+                                "info": "Hiển thị _PAGE_ trong _PAGES_",
+                                "infoEmpty": "Không có vai trò cần tìm",
+                                "infoFiltered": "(Lọc từ _MAX_ bản ghi)",
+                                "search": "Tìm kiếm:",
+                                "paginate": {
+                                    "first": "Đầu",
+                                    "last": "Cuối",
+                                    "next": "Sau",
+                                    "previous": "Trước"
+                                }
+                            }
+                        }
+                    );
                 })
             }).catch(error => {
                 this.$router.push('/');

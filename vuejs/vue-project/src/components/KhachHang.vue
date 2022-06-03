@@ -96,8 +96,26 @@ export default {
                 }
             }).then(res => {
                 this.ds_kh = res.data
+                $('#dataTable').DataTable().destroy();
                 this.$nextTick(() => {
-                    $('#dataTable').DataTable();
+                    $('#dataTable').DataTable(
+                        {
+                            "language": {
+                                "lengthMenu": "Hiển thị _MENU_ bản ghi",
+                                "zeroRecords": "Không có khách hàng cần tìm",
+                                "info": "Hiển thị _PAGE_ trong _PAGES_",
+                                "infoEmpty": "Không có khách hàng cần tìm",
+                                "infoFiltered": "(Lọc từ _MAX_ bản ghi)",
+                                "search": "Tìm kiếm:",
+                                "paginate": {
+                                    "first": "Đầu",
+                                    "last": "Cuối",
+                                    "next": "Sau",
+                                    "previous": "Trước"
+                                }
+                            }
+                        }
+                    );
                 })
             }).catch(error => {
                 this.$router.push('/');

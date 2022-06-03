@@ -222,10 +222,29 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(response => {
-                // console.log(response.data);
+                console.log(response.data);
                 this.ds_ban = response.data
+                $('#dataTable').DataTable().destroy();
                 this.$nextTick(() => {
-                    $('#dataTable').DataTable();
+                    $('#dataTable').DataTable(
+                        {
+                            "language": {
+                                "lengthMenu": "Hiển thị _MENU_ bàn",
+                                "zeroRecords": "Không có bàn cần tìm",
+                                "info": "Hiển thị _PAGE_ trong _PAGES_",
+                                "infoEmpty": "Không có bàn cần tìm",
+                                "infoFiltered": "(Lọc từ _MAX_ bàn)",
+                                "search": "Tìm kiếm:",
+                                "paginate": {
+                                    "first": "Đầu",
+                                    "last": "Cuối",
+                                    "next": "Sau",
+                                    "previous": "Trước"
+                                }
+                            }
+                        }
+
+                    );
                 })
             }).catch(error => {
                 // console.log(error.message);

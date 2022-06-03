@@ -134,8 +134,26 @@ export default {
             }).then(res => {
                 // console.log(res.data.data)
                 this.ds_hd = res.data.data
+                $('#dataTable').DataTable().destroy();
                 this.$nextTick(() => {
-                    $('#dataTable').DataTable();
+                    $('#dataTable').DataTable(
+                        {
+                            "language": {
+                                "lengthMenu": "Hiển thị _MENU_ bản ghi",
+                                "zeroRecords": "Không có hóa đơn cần tìm",
+                                "info": "Hiển thị _PAGE_ trong _PAGES_",
+                                "infoEmpty": "Không có hóa đơn cần tìm",
+                                "infoFiltered": "(Lọc từ _MAX_ bản ghi)",
+                                "search": "Tìm kiếm:",
+                                "paginate": {
+                                    "first": "Đầu",
+                                    "last": "Cuối",
+                                    "next": "Sau",
+                                    "previous": "Trước"
+                                }
+                            }
+                        }
+                    );
                 })
             }).catch(error => {
                 this.$router.push('/');

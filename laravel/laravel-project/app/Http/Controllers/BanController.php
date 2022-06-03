@@ -17,7 +17,6 @@ class BanController extends Controller
     {
         $data = Ban::all();
         return response()->json($data, 200);
-
     }
 
     /**
