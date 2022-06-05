@@ -11,8 +11,9 @@
         <router-link class="text-decoration-none" to="/menu">Thực đơn</router-link>
       </nav>
 
-      <div @click="menu" id="menu-btn"><img src="../assets/menu.svg" aria-haspopup="true" aria-expanded="false"
-          style="width: 26px;"></div>
+      <div @click="menu" id="menu-btn">
+        <img src="../assets/menu.svg" aria-haspopup="true" aria-expanded="false" style="width: 26px;">
+      </div>
 
       <ul class="navbar-item d-flex align-items-end list-unstyled">
         <!-- Nav Item - User Information -->
@@ -81,7 +82,7 @@ export default {
       window.localStorage.removeItem('idKH');
       this.$store.dispatch('user', null);
       this.$store.commit('clearCart');
-      
+
       this.$router.push('/login');
     },
   },

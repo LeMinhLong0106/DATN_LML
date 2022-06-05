@@ -6,7 +6,7 @@
                     <h3 class="title">Thông tin giỏ hàng</h3>
                     <div class="box-container">
                         <div class="box" v-for="item in $store.state.cart" :key="item.id">
-                            <i class="fas fa-times" @click.prevent="removeFromCart(item)">x</i>
+                            <i class="fas fa-times" @click.prevent="removeFromCart(item)"></i>
                             <!-- <img src="images/menu-1.png" alt=""> -->
                             <img :src="getIMG(item.hinhanh)">
                             <div class="content">

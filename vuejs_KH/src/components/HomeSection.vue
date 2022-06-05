@@ -7,7 +7,7 @@
       <span>Chào mừng</span>
       <h3>quý khách đã đến với nhà hàng Majestic 😋</h3>
       <p>được xây dựng theo phong cách kiến trúc hiện đại, không gian thoáng mát, luôn gần gũi với thiên nhiên và môi
-        trường.</p>
+        trường, đem lại sự thỏa mãn khi ăn cho mọi người.</p>
       <!-- <a href="#" class="btn">order now</a> -->
       <router-link to="/menu" class="btn">Menu</router-link>
 

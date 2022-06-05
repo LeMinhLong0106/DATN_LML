@@ -104,15 +104,15 @@ class QuyenController extends Controller
      */
     public function update(Request $request, $quyen)
     {
-        $request->validate([
-            'tenquyen' => 'required',
-            'mota' => 'required',
-        ], [
-            'tenquyen.required' => 'Tên quyền không được để trống',
-            'mota.required' => 'Mô tả không được để trống',
-        ]);
-        $quyen = Quyen::find($quyen)->update($request->all());
-        return response()->json($quyen);
+        // $request->validate([
+        //     'tenquyen' => 'required',
+        //     'mota' => 'required',
+        // ], [
+        //     'tenquyen.required' => 'Tên quyền không được để trống',
+        //     'mota.required' => 'Mô tả không được để trống',
+        // ]);
+        // $quyen = Quyen::find($quyen)->update($request->all());
+        // return response()->json($quyen);
     }
 
     /**

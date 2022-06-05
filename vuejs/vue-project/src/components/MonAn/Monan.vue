@@ -8,7 +8,11 @@
                   <h6 class="m-0 font-weight-bold text-primary">Danh sách món ăn</h6>
                </div>
                <div class="col" align="right">
-                  <router-link :to="{ name: 'createMA' }">
+                  <!-- <router-link :to="{ name: 'createMA' }">
+                     <button type="button" class="btn btn-success btn-circle btn-sm">
+                        <i class="fas fa-plus"></i></button>
+                  </router-link> -->
+                  <router-link to="/monan/create">
                      <button type="button" class="btn btn-success btn-circle btn-sm">
                         <i class="fas fa-plus"></i></button>
                   </router-link>

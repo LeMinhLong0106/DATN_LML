@@ -19,8 +19,8 @@
                     <table class="table table-striped table-class" id="dataTable">
                         <thead>
                             <tr>
-                                <th>Mã hóa đơn</th>
-                                <th>Họ tên</th>
+                                <th>Mã</th>
+                                <th>Khách hàng</th>
                                 <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>
                                 <th>Tổng tiền</th>
@@ -49,7 +49,7 @@
                                         </router-link>
                                     </div>
                                     <div v-else>
-                                        <button type="button" class="btn btn-danger btn-circle btn-sm"
+                                        <button type="button" class="btn btn-danger btn-circle btn-sm mr-2" 
                                             @click="deleteHD(item.id)"><i class="fas fa-times"></i></button>
                                         <router-link :to="{ name: 'hdonline.detail', params: { id: item.id } }">
                                             <button type="button" class="btn btn-warning btn-circle btn-sm">

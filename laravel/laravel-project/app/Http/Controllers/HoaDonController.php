@@ -116,17 +116,17 @@ class HoaDonController extends Controller
         return $this->indexHDO();
     }
 
-    public function showReceipt($id)
-    {
-        $sale = HoaDon::find($id);
-        $cthd = CTHD::where('hoadon_id', $id)->get();
-        return response()->json([
-            'sale' => $sale,
-            'cthd' => $cthd,
-            'tong' => $sale->tongtien
-        ]);
-        // return view('admin.hdtaiquay.showReceipt', compact('sale', 'cthd'));
-    }
+    // public function showReceipt($id)
+    // {
+    //     $sale = HoaDon::find($id);
+    //     $cthd = CTHD::where('hoadon_id', $id)->get();
+    //     return response()->json([
+    //         'sale' => $sale,
+    //         'cthd' => $cthd,
+    //         'tong' => $sale->tongtien
+    //     ]);
+    //     // return view('admin.hdtaiquay.showReceipt', compact('sale', 'cthd'));
+    // }
 
     public function deleteHD($hDTaiQuay)
     {

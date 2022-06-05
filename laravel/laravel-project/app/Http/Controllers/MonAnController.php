@@ -67,6 +67,7 @@ class MonanController extends Controller
             'tenmonan' => 'required|unique:monan,tenmonan',
             'gia' => 'required|max:255',
             'donvitinh' => 'required|max:255',
+            'mota' => 'required|max:255',
             'danhmuc' => 'required|max:255',
             'hinhanh' => 'required',
         ], [
@@ -74,6 +75,7 @@ class MonanController extends Controller
             'tenmonan.unique' => 'Tên món ăn đã tồn tại',
             'gia.required' => 'Giá không được để trống',
             'donvitinh.required' => 'Đơn vị tính không được để trống',
+            'mota.required' => 'Mô tả không được để trống',
             'danhmuc.required' => 'Danh mục không được để trống',
             'hinhanh.required' => 'Hình ảnh không được để trống',
         ]);

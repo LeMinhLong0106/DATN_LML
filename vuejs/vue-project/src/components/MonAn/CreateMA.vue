@@ -44,12 +44,12 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="small mb-1" for="tenmonan">Mô tả</label>
+                                <label class="small mb-1" for="mota">Mô tả</label>
                                 <textarea v-model="form.mota" class="form-control" name="mota"
                                     placeholder="Mô tả"></textarea>
 
-                                <div class="text-danger error-text " v-if="form.errors.has('tenmonan')"
-                                    v-html="form.errors.get('tenmonan')"></div>
+                                <div class="text-danger error-text " v-if="form.errors.has('mota')"
+                                    v-html="form.errors.get('mota')"></div>
                             </div>
 
 

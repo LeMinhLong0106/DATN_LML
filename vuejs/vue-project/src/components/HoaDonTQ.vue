@@ -51,8 +51,9 @@
                                 <i class="fas fa-times"></i></button> -->
                                     </div>
                                     <div v-else>
-                                        <button type="button" class="btn btn-danger btn-circle btn-sm"
+                                        <button type="button" class="btn btn-danger btn-circle btn-sm mr-2"
                                             @click="deleteHD(item.id)"><i class="fas fa-times"></i></button>
+
                                         <router-link :to="{ name: 'hdtaiquay.detail', params: { id: item.id } }">
                                             <button type="button" class="btn btn-warning btn-circle btn-sm">
                                                 <i class="fas fa-eye"></i></button>

@@ -99,7 +99,7 @@
                             </div>
                             <!-- Submit button-->
                             <button type="submit" class="btn btn-primary">Thêm</button>
-
+                            <router-link to="/nhanvien" class="btn btn-primary float-right">Quay lại</router-link>
                         </div>
                     </div>
                 </div>

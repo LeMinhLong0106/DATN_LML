@@ -7,7 +7,9 @@
                 <!-- Sidebar - Brand -->
                 <router-link class="sidebar-brand d-flex align-items-center justify-content-center" to="/">
                     <div class="sidebar-brand-icon rotate-n-15">
-                        <i class="fas fa-laugh-wink"></i>
+                        <!-- <i class="fas fa-laugh-wink"></i> -->
+                        <img class="mr-2 filter" src="public/assets/images/nhahang.svg" aria-haspopup="true"
+                            aria-expanded="false" style="width: 2.5em;">
                     </div>
                     <div class="sidebar-brand-text mx-3">Majestic</div>
                 </router-link>
@@ -18,7 +20,10 @@
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item active">
                     <router-link class="nav-link" to="/">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+                        <img class="mr-2 filter" src="public/assets/images/home.svg" aria-haspopup="true"
+                            aria-expanded="false" style="width: 1.25em;">
+
                         <span>Trang chủ</span>
                     </router-link>
                 </li>
@@ -32,7 +37,8 @@
                 </div> -->
                 <li class="nav-item" v-for="u in quyen">
                     <router-link class="nav-link" :to="u.tenquyen">
-                        <i class="fas fa-fw fa-table"></i>
+                        <img class="mr-2 filter" :src="getSVG(u.tenquyen)" aria-haspopup="true" aria-expanded="false"
+                            style="width: 1.25em;">
                         <span>{{ u.mota }}</span>
                     </router-link>
                 </li>
@@ -157,6 +163,13 @@ export default {
     },
 
     methods: {
+        // faClass(icon) {
+        //     return 'fa-' + icon;
+        // },
+        getSVG(hinhanh) {
+            return `../assets/images/${hinhanh}.svg`;
+        },
+
         getIMG(hinhanh) {
             return `http://localhost:8000/images/${hinhanh}`
         },
@@ -198,3 +211,9 @@ export default {
     // }
 }
 </script>
+
+<style>
+.filter {
+    filter: invert(1)
+}
+</style>

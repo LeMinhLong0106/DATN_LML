@@ -1,66 +1,46 @@
 <template>
-  <Line v-if="loaded" :chart-data="chartData" :width="width" :height="height" />
-
+  <div>
+    <h2 class="h3 mb-4 text-gray-800 text-center">Thống kê doanh thu</h2>
+    <canvas id="myLine"></canvas>
+  </div>
 </template>
 
 <script>
-import { Line } from 'vue-chartjs'
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement
-} from 'chart.js'
-
-ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement)
+import moment from 'moment'
 
 export default {
-  name: 'LineChart',
-  components: { Line },
-  props: {
-    width: {
-      type: Number,
-      default: 0
-    },
-    height: {
-      type: Number,
-      default: 0
+  methods: {
+    format_date(value) {
+      if (value) {
+        return moment(String(value)).format('DD-MM-YYYY')
+      }
     },
   },
-  data: () => ({
-    loaded: false,
-    chartData: null
-  }),
   async mounted() {
-    this.loaded = false
+    const ctx = document.getElementById('myLine');
 
     try {
       let token = window.localStorage.getItem('token');
-      const response = await this.axios.get('http://127.0.0.1:8000/api/ban', {
+      const response = await this.axios.get('http://127.0.0.1:8000/api/baocao', {
         headers: {
           Authorization: 'Bearer ' + token
         }
       })
-      // console.log(response.data)
-      this.chartData = {
-        labels: response.data.map(item => item.id),
-        datasets: [{
-          label: 'Số lượng bàn',
-          data: response.data.map(item => item.ghe),
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-          ],
+      console.log(response.data.hd)
+      const myLine = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: response.data.hd.map(item => this.format_date(item.created_at)),
+          datasets: [{
+            label: 'Doanh thu',
+            data: response.data.hd.map(item => item.total),
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+          }]
         },
-        ],
-      }
-
-      this.loaded = true
+      });
+      myLine
     } catch (e) {
       console.error(e)
     }

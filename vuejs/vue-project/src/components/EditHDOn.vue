@@ -53,8 +53,10 @@
 
                         <div style="text-align:center;">
                             <div>
-                                <input type="submit" name="them" value="Thanh toán" class="btn btn-primary" />
-                                <router-link to="/hdonline" class="btn btn-primary">Trở về</router-link>
+                                <!-- <input type="submit" name="them" value="Thanh toán" class="btn btn-primary" /> -->
+                                <button type="submit" class="btn btn-primary">Thanh toán</button>
+                                <router-link to="/nhanvien" class="btn btn-primary float-right">Quay lại</router-link>
+
                             </div>
                         </div>
                     </form>

@@ -46,6 +46,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <router-link to="/hdtaiquay" class="btn btn-primary ">Quay lại</router-link>
 
                         </div>
                     </div>
