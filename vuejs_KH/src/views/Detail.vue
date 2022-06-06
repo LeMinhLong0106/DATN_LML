@@ -1,49 +1,30 @@
 <template>
-    <div>
-        <div class="container">
-            <div class="row mb-5 mt-5">
-                <div class="col6 col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                    <img class="img-fluid" :src="getIMG(monans.hinhanh)">
-                </div>
+    <div class="container detail">
+        <div class="row mb-5 mt-5">
+            <div class="col6 col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                <img class="img-fluid" :src="getIMG(monans.hinhanh)">
+            </div>
 
-                <div class="col6 col-xl-6 col-lg-6 col-md-12 col-sm-12 align-items-center ">
-                    <div class="info pt-xl-0 pt-lg-0 pt-5">
-                        <h1 class="font-weight-bold text-uppercase pt-3">{{ monans.tenmonan }}</h1>
-                        <h4>{{ monans.gia }}/{{ monans.donvitinh }}</h4>
-                        <h4>Danh mục: {{ monans.danhmucmonss.tendm }}</h4>
-                        <h4>Mô tả: {{ monans.mota }}</h4>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span style="font-size: 1.5rem;" class="input-group-text">Số lượng, ghi chú</span>
-                            </div>
-                            <input style="height: 40px; font-size: 1.5rem;" type="number" v-model="monans.quantity" class="form-control" min="1">
-                            <input style="height: 40px; font-size: 1.5rem;" type="text" v-model="monans.note" class="form-control">
+            <div class="col6 col-xl-6 col-lg-6 col-md-12 col-sm-12 align-items-center ">
+                <div class="info pt-xl-0 pt-lg-0 pt-5">
+                    <h1 class="font-weight-bold text-uppercase pt-3">{{ monans.tenmonan }}</h1>
+                    <h4>{{ monans.gia }}/{{ monans.donvitinh }}</h4>
+                    <h4>Danh mục: {{ monans.danhmucmonss.tendm }}</h4>
+                    <h4>Mô tả: {{ monans.mota }}</h4>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span style="font-size: 1.5rem;" class="input-group-text">Số lượng, ghi chú</span>
                         </div>
-
-                        <button class="btn btn-danger" @click="addToCart(monans)">Thêm vào giỏ hàng</button>
+                        <input style="height: 40px; font-size: 1.5rem;" type="number" v-model="monans.quantity"
+                            class="form-control" min="1">
+                        <input style="height: 40px; font-size: 1.5rem;" type="text" v-model="monans.note"
+                            class="form-control">
                     </div>
+
+                    <button class="btn btn-danger" @click="addToCart(monans)">Thêm vào giỏ hàng</button>
                 </div>
             </div>
         </div>
-        <!-- <section class="food-preview-container">
-            <div class="food-preview">
-                <img :src="getIMG(monans.hinhanh)">
-                <h3>{{ monans.tenmonan }}</h3>
-                <p>{{ monans.mota }}</p>
-                <p>Danh mục: {{ monans.danhmucmonss.tendm }}</p>
-                <div class="price">{{ monans.gia }}/{{ monans.donvitinh }}</div>
-                <div v-if="monans.tinhtrang == 1">
-                    Số lượng:<input type="number" v-model="monans.quantity" class="form-control" min="1"
-                        style="width: 100px;">
-                    Ghi chú:<input type="text" v-model="monans.note" class="form-control" style="width: 100px;">
-                    <button class="btn btn-danger" @click="addToCart(monans)">Thêm vào giỏ hàng</button>
-                </div>
-                <div v-else>
-                    <button class="btn btn-danger" disabled>Đã hết hàng</button>
-                </div>
-            </div>
-
-        </section> -->
     </div>
 </template>
 
@@ -127,3 +108,8 @@ export default {
     },
 }
 </script>
+<style>
+.detail {
+    margin-top: 100px;
+}
+</style>

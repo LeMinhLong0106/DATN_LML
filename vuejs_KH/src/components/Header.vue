@@ -1,14 +1,14 @@
 <template>
 
   <div>
-    <header class="header">
+    <header class="header sticky-top">
       <!-- <a href="#" class="logo"> <img src="images/majestic.png"> Majestic </a> -->
       <router-link class="text-decoration-none logo" to="/"><img src="../assets/majestic.png">Majestic</router-link>
 
       <nav class="navbar">
-        <router-link class="text-decoration-none" to="/">Trang chủ</router-link>
-        <router-link class="text-decoration-none" to="/about">Thông tin</router-link>
-        <router-link class="text-decoration-none" to="/menu">Thực đơn</router-link>
+        <router-link class="text-decoration-none navlink" @click="removeNav" to="/">Trang chủ</router-link>
+        <router-link class="text-decoration-none navlink" @click="removeNav" to="/about">Thông tin</router-link>
+        <router-link class="text-decoration-none navlink" @click="removeNav" to="/menu">Thực đơn</router-link>
       </nav>
 
       <div @click="menu" id="menu-btn">
@@ -69,14 +69,20 @@ export default {
 
     bagItemscount() {
       return this.$store.getters.itemsNumber
-    }
+    },
+
+
   },
 
   methods: {
+    removeNav() {
+      document.querySelector('.header .navbar').classList.toggle('active')
+    },
+
     menu() {
       document.querySelector('.header .navbar').classList.toggle('active')
-      document.querySelector('.search-form-container').classList.remove('active')
     },
+
     logout() {
       window.localStorage.removeItem('token');
       window.localStorage.removeItem('idKH');
@@ -90,6 +96,7 @@ export default {
   async created() {
     const res = await this.axios.get('getKH')
     this.$store.dispatch('user', res.data)
+    this.removeNav()
     // this.user = res.data
     // console.log(res.data)
   }
@@ -107,6 +114,63 @@ export default {
 </script>
 
 <style scoped>
+.header {
+  position: fixed;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 9%;
+}
+
+.header .logo {
+  font-size: 2.5rem;
+  font-weight: bolder;
+  color: #130f40;
+  display: flex;
+  align-items: center;
+}
+
+.header .logo img {
+  width: 5rem;
+}
+
+.header .logo i {
+  padding-right: .5rem;
+  color: #fdd117;
+}
+
+.header .navbar a {
+  font-size: 1.7rem;
+  margin: 0 1rem;
+  color: #666;
+}
+
+.header .navbar a:hover {
+  color: #fdd117;
+}
+
+.header .icons div {
+  height: 4.5rem;
+  width: 4.5rem;
+  line-height: 4.5rem;
+  font-size: 2rem;
+  background: #f7f7f7;
+  color: #130f40;
+  border-radius: .5rem;
+  margin-left: .3rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+.header .icons div:hover {
+  color: #fff;
+  background: #fdd117;
+}
+
+
 nav {
   z-index: 100;
 }

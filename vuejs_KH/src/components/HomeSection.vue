@@ -9,7 +9,7 @@
       <p>được xây dựng theo phong cách kiến trúc hiện đại, không gian thoáng mát, luôn gần gũi với thiên nhiên và môi
         trường, đem lại sự thỏa mãn khi ăn cho mọi người.</p>
       <!-- <a href="#" class="btn">order now</a> -->
-      <router-link to="/menu" class="btn">Menu</router-link>
+      <router-link to="/menu" class="btn">Thực đơn</router-link>
 
       <!-- <router-link>hi</router-link> -->
     </div>

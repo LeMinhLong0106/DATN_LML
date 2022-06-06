@@ -1,24 +1,6 @@
 <template>
     <div>
-        <!-- <div>
-        <section class="popular">
-            <input type="search" name="timkiem" v-model="search" placeholder="Tìm kiếm..." id="search-box">
-            
-            <div class="box-container">
-                <div class="box" v-for="ma in danhsachmonan">
-                    <div class="image">
-                        <img :src="getIMG(ma.hinhanh)">
-                    </div>
-                    <div class="content">
-                        <h3>{{ ma.tenmonan }}</h3>
-                        <div class="price">{{ ma.gia }}/{{ ma.donvitinh }}</div>
-                        <button type="button" class="btn" @click="detail(ma)">Chi tiết</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div> -->
-        <div class="container grid">
+        <div class="container grid menu">
             <div class="input-group mb-3 mt-3">
                 <input type="search" class="form-control" style="height: 40px; font-size: 16px;"
                     placeholder="Tìm kiếm..." v-model="search">
@@ -47,9 +29,9 @@
                                 id="MenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Danh
                                 mục</button>
                             <div class="dropdown-menu" aria-labelledby="MenuLink">
-                                <a class="dropdown-item" v-for="item in danhmucs" @click="sortI(item.tendm)">{{
-                                        item.tendm
-                                }}</a>
+                                <a class="dropdown-item" v-for="item in danhmucs" @click="sortI(item.tendm)">
+                                    {{ item.tendm }}
+                                </a>
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" @click="reSet">Tất cả</a>
@@ -207,6 +189,10 @@ export default {
 
 
 <style>
+.menu {
+    margin-top: 100px;
+}
+
 .container.grid {
     min-height: 60rem;
 }
@@ -225,6 +211,10 @@ export default {
 .dropdown-menu {
     background-color: #eee;
     color: #2c3539;
+}
+
+.dropdown-item {
+    font-size: 1.6rem;
 }
 
 .dropdown-menu>a:hover {

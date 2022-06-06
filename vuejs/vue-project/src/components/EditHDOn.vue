@@ -51,13 +51,10 @@
                             <h4>Tổng tiền: {{ hd.tongtien }}</h4>
                         </div>
 
-                        <div style="text-align:center;">
-                            <div>
-                                <!-- <input type="submit" name="them" value="Thanh toán" class="btn btn-primary" /> -->
-                                <button type="submit" class="btn btn-primary">Thanh toán</button>
-                                <router-link to="/nhanvien" class="btn btn-primary float-right">Quay lại</router-link>
-
-                            </div>
+                        <div>
+                            <!-- <input type="submit" name="them" value="Thanh toán" class="btn btn-primary" /> -->
+                            <button type="submit" class="btn btn-primary">Thanh toán</button>
+                            <router-link to="/nhanvien" class="btn btn-primary float-right">Quay lại</router-link>
                         </div>
                     </form>
                 </div>

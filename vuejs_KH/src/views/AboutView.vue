@@ -43,6 +43,7 @@
 
 <style scoped>
 .about {
+  margin-top: 90px;
   display: flex;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
