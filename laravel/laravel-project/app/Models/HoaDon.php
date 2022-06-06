@@ -16,6 +16,11 @@ class HoaDon extends Model
         return $this->hasMany(CTHD::class, 'hoadon_id');
     }
 
+    public function monanss()
+    {
+        return $this->belongsToMany(MonAn::class, 'cthd', 'hoadon_id', 'monan_id');
+    }
+
     public function nhanvien()
     {
         return $this->belongsTo(User::class, 'nhanvien_id');

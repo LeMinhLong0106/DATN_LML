@@ -20,7 +20,6 @@
                                                     class="form-control form-control-user"
                                                     :class="{ 'is-invalid': errors.email }"
                                                     placeholder="Email Address...">
-
                                                 <div v-if="errors.email" class="invalid-feedback">
                                                     <strong>{{ errors.email[0] }}</strong>
                                                 </div>
@@ -55,7 +54,7 @@
                                         </button> -->
                                         <!-- <button @click.prevent="authProvider('google')">Sign up with Google</button> -->
                                         <div class="text-center">
-                                            <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                            <router-link class="small" to="/forgot">Forgot Password?</router-link>
                                         </div>
                                         <div class="text-center">
                                             <router-link to="/registor" class="small" href="register.html">Create an
@@ -80,7 +79,7 @@ export default {
                 email: '',
                 password: ''
             },
-            errors: {}
+            errors: {},
         }
     },
 
@@ -91,7 +90,7 @@ export default {
                 window.localStorage.setItem('token', response.data.token);//store token in local storage
                 this.$router.push('/');//redirect to home page
             }).catch(error => {
-                console.log(error.response.data.errors);
+                // console.log(error.response.status);
                 this.errors = error.response.data.errors;
             })
         },

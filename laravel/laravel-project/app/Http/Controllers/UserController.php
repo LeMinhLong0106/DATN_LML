@@ -40,7 +40,13 @@ class UserController extends Controller
         $data = $request->validate([
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6',
+        ], [
+            'email.required' => 'Nhập email',
+            'email.email' => 'Email không hợp lệ',
+            'password.required' => 'Nhập mật khẩu',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
         ]);
+
         // check email and password
         $user = User::where('email', $data['email'])->first();
         if ($user) {
@@ -48,10 +54,10 @@ class UserController extends Controller
                 $user->token = $user->createToken('authToken')->accessToken;
                 return response()->json($user, 200);
             } else {
-                return response()->json(['error' => 'Password is incorrect'], 401);
+                return response()->json(['errors' => 'Mật khẩu không đúng'], 401);
             }
         } else {
-            return response()->json(['error' => 'User is not found'], 404);
+            return response()->json(['errors' => 'Email không tồn tại'], 404);
         }
 
         $user->token = $user->createToken('authToken')->accessToken;
@@ -67,7 +73,7 @@ class UserController extends Controller
 
     public function getUser(Request $request)
     {
-        $user = User::find($request->user('api')->id);
+        $user = User::with(['vaitross'])->find($request->user('api')->id);
         $user -> userquyen = User::find($request->user('api')->id)->vaitross->quyens;
         // $user = DB::table('users')->find($request->user('api')->id);
         return response()->json($user, 200);

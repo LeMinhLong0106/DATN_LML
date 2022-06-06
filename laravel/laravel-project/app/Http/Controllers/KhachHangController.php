@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CTHD;
+use App\Models\HoaDon;
 use App\Models\KhachHang;
 use Illuminate\Http\Request;
 
@@ -67,6 +69,16 @@ class KhachHangController extends Controller
     {
         $user = KhachHang::find($request->user('api')->id);
         return response()->json($user, 200);
+    }
+
+    public function getOrder(Request $request)
+    {
+        $user = KhachHang::find($request->user('api')->id);
+        $order = HoaDon::with(['cthds','monanss'])->where('khachhang_id', $user->id)->get();
+        
+        return response()->json($order,
+            200
+        );
     }
 
     /**

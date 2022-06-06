@@ -11,15 +11,18 @@ const store = createStore({
         cart: cart ? JSON.parse(cart) : [],
         cartCount: cartCount ? parseInt(cartCount) : 0,
         user: null,
+        order: null,
     },
 
     getters: {
         user(state) {
             return state.user;
         },
-        // itemsNumber(state) {
-        //     return state.cartCount;
-        // },
+
+        order(state) {
+            return state.order;
+        },
+
         itemsNumber(state) { // Cart Component
             return state.cartCount
         },
@@ -27,17 +30,26 @@ const store = createStore({
     },
 
     actions: {
-        // user(context, user){
-        //     context.commit('user', user);
-        // }
+        
         user: ({
             commit
         }, user) => {
             commit('user', user);
         },
+
+        order: ({
+            commit
+        }, order) => {
+            commit('order', order);
+        },
     },
 
     mutations: {
+        order(state, order) {
+            // console.log(order);
+            state.order = order;
+        },
+
         user(state, user) {
             // console.log(user);
             state.user = user;

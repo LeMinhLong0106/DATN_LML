@@ -8,6 +8,8 @@ import Ban from '../components/Ban.vue';
 import Dashboard from '../components/Dashboard.vue';
 import Login from '../views/Login.vue';
 import Registor from '../views/Registor.vue';
+import Forgot from '../views/Forgot.vue';
+import Reset from '../components/Reset.vue';
 import Admin from '../views/Admin.vue';
 import Danhmuc from '../components/Danhmuc.vue';
 import Monan from '../components/MonAn/Monan.vue';
@@ -27,6 +29,7 @@ import CreateNV from '../components/Nhanvien/CreateNV.vue';
 import EditNV from '../components/Nhanvien/EditNV.vue';
 import VaiTro from '../components/VaiTro.vue';
 import Quyen from '../components/Quyen.vue';
+import Thongtin from '../components/Thongtin.vue';
 
 const router = createRouter({
   history: createWebHistory(
@@ -135,6 +138,11 @@ const router = createRouter({
           name: 'baocao',
           component: BaoCao,
         },
+        {
+          path: '/thongtin',
+          name: 'thongtin',
+          component: Thongtin,
+        },
       ]
     },
     {
@@ -150,6 +158,16 @@ const router = createRouter({
       path: '/registor',
       name: 'registor',
       component: Registor
+    },
+    {
+      path: '/forgot',
+      name: 'forgot',
+      component: Forgot
+    },
+    {
+      path: '/reset/:token',
+      name: 'reset',
+      component: Reset
     },
     {
       path: '/auth/:provider/callback',

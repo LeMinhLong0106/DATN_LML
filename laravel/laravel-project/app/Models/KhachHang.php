@@ -14,4 +14,10 @@ class KhachHang extends Model
     protected $fillable = [
         'tenkh',    'email',    'sdt',    'diachi',    'matkhau',    'google_id',
     ];
+
+    public function hoadonss()
+    {
+        return $this->hasMany(HoaDon::class, 'khachhang_id');
+    }
+    
 }

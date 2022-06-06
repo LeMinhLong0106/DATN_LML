@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+Auth::routes();
 
 Route::get('/majestic', 'GiaoDienController@majestic')->name('majestic');
 Route::get('/menu', 'GiaoDienController@menu')->name('menu');
@@ -12,6 +14,8 @@ Route::get('/user', 'UserController@getUser');
 Route::post('/register', 'UserController@register');
 Route::post('/login', 'UserController@login');
 Route::post('/logout', 'UserController@logout');
+Route::post('/forgot', 'VaiTroQuyenController@forgot');
+Route::post('/reset', 'VaiTroQuyenController@reset');
 
 // đăng nhập với gg
 Route::get('login/google', 'SocialController@redirectToProvider');
@@ -22,6 +26,7 @@ Route::post('/khachhang/register', 'GiaoDienController@register')->name('khachha
 Route::post('/khachhang/login', 'GiaoDienController@login')->name('khachhang.login');
 Route::post('checkout', 'GiaoDienController@checkout')->name('checkout');
 Route::get('/getKH', 'KhachHangController@getKH');
+Route::get('/getOrder', 'KhachHangController@getOrder');
 Route::post('/khachhang/logout', 'KhachHangController@logout')->name('khachhang.logout');
 
 // báo cáo

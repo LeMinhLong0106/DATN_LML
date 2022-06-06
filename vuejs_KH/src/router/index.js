@@ -9,6 +9,8 @@ import Login from '../views/Login.vue'
 import LoginGG from '../views/LoginGG.vue'
 import Registor from '../views/Registor.vue'
 import Detail from '../views/Detail.vue'
+import Profile from '../views/Profile.vue'
+import Order from '../views/Order.vue'
 
 const router = createRouter({
   history: createWebHistory(
@@ -55,6 +57,16 @@ const router = createRouter({
       path: '/detail/:id',
       name: 'detail',
       component: Detail
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Profile
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: Order
     },
   ]
 })

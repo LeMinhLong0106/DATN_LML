@@ -2,18 +2,6 @@
     <div class="container-fluid">
         <h1 class="h3 mb-4 text-gray-800 text-center">DANH SÁCH HÓA ĐƠN</h1>
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <div class="row">
-                    <div class="col">
-                        <h6 class="m-0 font-weight-bold text-primary">Danh sách bàn</h6>
-                    </div>
-                    <div class="col" align="right">
-                        <button type="button" class="btn btn-success btn-circle btn-sm" @click="newModal()">
-                            <i class="fas fa-plus"></i></button>
-                    </div>
-                </div>
-            </div>
-
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-class" id="dataTable">

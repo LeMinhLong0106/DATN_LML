@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "moment": "^2.29.3",
     "swiper": "^8.2.1",
     "vue": "^3.2.33",
     "vue-awesome-swiper": "^5.0.1",

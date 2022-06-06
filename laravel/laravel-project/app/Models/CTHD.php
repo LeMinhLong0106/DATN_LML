@@ -22,4 +22,6 @@ class CTHD extends Model
     {
         return $this->belongsTo(HoaDon::class, 'hoadon_id');
     }
+
+    
 }

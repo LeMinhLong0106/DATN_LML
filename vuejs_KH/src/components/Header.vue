@@ -18,20 +18,28 @@
       <ul class="navbar-item d-flex align-items-end list-unstyled">
         <!-- Nav Item - User Information -->
         <li v-if="user" class="nav-item">
+
           <a class="nav-link" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
             <h5>Chào, {{ user.tenkh }}</h5>
           </a>
-          <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <button class="dropdown-item">
-              Profile
-            </button>
+            <router-link class="text-decoration-none" to="/profile">
+              <button class="dropdown-item">
+                Thông tin
+              </button>
+            </router-link>
+            <router-link class="text-decoration-none" to="/order">
+              <button class="dropdown-item">
+                Đơn hàng
+              </button>
+            </router-link>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item" @click="logout()">
               Đăng xuất
             </button>
           </div>
+
         </li>
         <li v-else>
           <router-link to="/login" class="text-decoration-none">
@@ -51,8 +59,6 @@
 </template>
 
 <script>
-
-
 export default {
   data() {
     return {
@@ -95,7 +101,9 @@ export default {
 
   async created() {
     const res = await this.axios.get('getKH')
+    console.log(res.data)
     this.$store.dispatch('user', res.data)
+    // this.$store.dispatch('order', res.data.order)
     this.removeNav()
     // this.user = res.data
     // console.log(res.data)
@@ -235,6 +243,44 @@ h5 {
 
 .user:hover {
   text-decoration: underline;
+}
+
+
+.header .profile {
+  width: 30rem;
+  position: absolute;
+  top: 120%;
+  right: 2rem;
+  background-color: var(--white);
+  border: var(--border);
+  padding: 1.5rem;
+  text-align: center;
+  display: none;
+  animation: fadeIn .2s linear;
+}
+
+.header .profile.active {
+  display: block;
+}
+
+.header .profile .name {
+  font-size: 1.7rem;
+  margin-bottom: .5rem;
+}
+
+.header .profile .account {
+  font-size: 1.7rem;
+  color: var(--light-color);
+  margin-top: 1.5rem;
+}
+
+.header .profile .account a {
+  color: var(--black);
+  text-decoration: underline;
+}
+
+.header .profile .account a:hover {
+  color: var(--yellow);
 }
 </style>
 
