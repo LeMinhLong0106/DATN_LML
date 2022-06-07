@@ -1,7 +1,6 @@
 <template>
     <div class="container-fluid">
         <h1 class="h3 mb-4 text-gray-800">Danh sách đặt món</h1>
-
         <div class="row">
             <div class="col">
                 <div class="card">
@@ -49,7 +48,6 @@ export default {
             ds_cthd: {},
         }
     },
-
     methods: {
         getCTHD() {
             let token = window.localStorage.getItem('token');
@@ -63,14 +61,17 @@ export default {
             }).then(res => {
                 this.ds_cthd = res.data.cthd
             }).catch(error => {
-                this.$router.push('/');
+                // this.$router.push('/');
             })
         },
 
     },
 
     created() {
-        this.getCTHD();
+        // this.getCTHD();
+        setInterval(() => {
+            this.getCTHD();
+        }, 3000);
     },
 
 

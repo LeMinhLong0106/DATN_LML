@@ -56,7 +56,7 @@ class UserMiddleware
                 } 
                 else {
                     return response()->json([
-                        'message' => 'You are not authorized to access this resource.'
+                        'message' => 'Bạn không có quyền truy cập.'
                     ], 403);
                 }
             }

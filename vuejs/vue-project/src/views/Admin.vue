@@ -1,6 +1,55 @@
 <template>
     <div>
-        <div id="wrapper">
+        <div v-if="user.vaitro_id == 4">
+            <div id="content-wrapper" class="d-flex flex-column">
+                <!-- Main Content -->
+                <div id="content">
+                    <!-- Topbar -->
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                        <!-- Sidebar Toggle (Topbar) -->
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+                        <!-- Topbar Navbar -->
+                        <ul class="navbar-nav ml-auto">
+                            <!-- Nav Item - User Information -->
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Chào, {{ user.hoten
+                                    }}</span>
+                                    <img class="img-profile rounded-circle" :src="getIMG(user.hinhanh)">
+                                </a>
+                                <!-- Dropdown - User Information -->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="userDropdown">
+                                    <router-link class="dropdown-item" to="/thongtin">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Thông tin
+                                    </router-link>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Đăng xuất
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- End of Topbar -->
+
+                    <!-- Begin Page Content -->
+                    <div>
+                        <router-view name="a"></router-view>
+                    </div>
+                    <!-- /.container-fluid -->
+
+                </div>
+                <!-- End of Main Content -->
+            </div>
+        </div>
+        <div id="wrapper" v-else>
             <!-- Sidebar -->
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -116,23 +165,23 @@
             <a class="scroll-to-top rounded" href="#page-top">
                 <i class="fas fa-angle-up"></i>
             </a>
-            <!-- Logout Modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Bạn muốn rời trang?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn đã sẵn sàng kết thúc.
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-                            <a class="btn btn-primary" href="#" data-dismiss="modal" @click="logout()">Đăng xuất</a>
-                        </div>
+        </div>
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Bạn muốn rời trang?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn đã sẵn sàng kết thúc.
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+                        <a class="btn btn-primary" href="#" data-dismiss="modal" @click="logout()">Đăng xuất</a>
                     </div>
                 </div>
             </div>
@@ -175,6 +224,7 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
+                console.log(res.data);
                 this.user = res.data;
                 this.ds_q = this.user['userquyen'];
                 this.$store.dispatch('quyen', this.ds_q);

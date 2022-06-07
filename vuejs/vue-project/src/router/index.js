@@ -41,7 +41,10 @@ const router = createRouter({
       children: [{
           path: '/',
           name: 'dashboard',
-          component: Dashboard,
+          components: {
+            default: Dashboard,
+            a: GiaoDienDB,
+          },
         },
         {
           path: '/ban',
@@ -73,11 +76,11 @@ const router = createRouter({
           name: 'order',
           component: Order,
         },
-        {
-          path: '/daubep',
-          name: 'daubep',
-          component: GiaoDienDB,
-        },
+        // {
+        //   path: '/daubep',
+        //   name: 'daubep',
+        //   component: GiaoDienDB,
+        // },
         {
           path: '/khachhang',
           name: 'khachhang',
