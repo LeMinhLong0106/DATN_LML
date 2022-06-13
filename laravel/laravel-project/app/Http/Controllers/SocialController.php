@@ -18,6 +18,7 @@ class SocialController extends Controller
         // return Socialite::driver('google')->stateless()->redirect();
         $url =  Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
         return response()->json([
+            'note' => 'bên dưới là đường dẫn để chọn tài khoản Google',
             'url' => $url,
         ], 201);
     }

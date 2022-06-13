@@ -33,7 +33,7 @@
                     <div class="card-header py-3" id="showSelectedTable"></div>
                     <div class="card-body">
                         <div class="table-responsive showSelectedMenuAndTable" v-if="ds_mon != null">
-                            <table class="table table-bordered" width="100%" cellspacing="0" id="dataTable">
+                            <table class="table table-bordered" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>Tên món</th>

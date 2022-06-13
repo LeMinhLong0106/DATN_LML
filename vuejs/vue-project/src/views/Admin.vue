@@ -194,7 +194,6 @@ export default {
         return {
             user: [],
             ds_vt: [],
-            ds_q: [],
         }
     },
     computed: {
@@ -224,13 +223,8 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                console.log(res.data);
                 this.user = res.data;
-                this.ds_q = this.user['userquyen'];
-                this.$store.dispatch('quyen', this.ds_q);
-
-                // this.user['test'] = 'test';
-                // console.log(this.ds_q);
+                this.$store.dispatch('quyen', this.user['userquyen']);
             }).catch(err => {
                 console.log(err);
             })
@@ -241,16 +235,9 @@ export default {
             this.$router.push('/login');
         },
     },
-    // beforeCreate() {
-    //     this.getUser();
-    // },
     created() {
         this.getUser();
-        // this.getVT();
     },
-    // mounted() {
-    //     this.getUser();
-    // }
 }
 </script>
 

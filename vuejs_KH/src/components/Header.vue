@@ -100,7 +100,7 @@ export default {
   },
 
   async created() {
-    const res = await this.axios.get('getKH')
+    const res = await this.axios.get('getCus')
     console.log(res.data)
     this.$store.dispatch('user', res.data)
     // this.$store.dispatch('order', res.data.order)

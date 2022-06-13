@@ -67,6 +67,7 @@ class KhachHangController extends Controller
 
     public function getKH(Request $request)
     {
+        // return $request->all();
         $user = KhachHang::find($request->user('api')->id);
         return response()->json($user, 200);
     }

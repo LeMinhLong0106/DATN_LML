@@ -46,6 +46,9 @@
                                             <button type="button" class="btn btn-warning btn-circle btn-sm">
                                                 <i class="fas fa-eye"></i></button>
                                         </router-link>
+
+                                        <!-- <button type="button" class="btn btn-danger btn-circle btn-sm mr-2"
+                                            @click="printDownload(item.id)"><i class="fas fa-fax"></i></button> -->
                                     </div>
                                 </td>
                             </tr>
@@ -380,7 +383,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/getBanTrong', {
+            this.axios.get('http://127.0.0.1:8000/api/getEmptyTable', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

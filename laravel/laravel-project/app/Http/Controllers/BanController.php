@@ -56,7 +56,7 @@ class BanController extends Controller
      */
     public function show(Ban $ban)
     {
-        return response()->json($ban, 200);
+        // return response()->json($ban, 200);
     }
 
     /**
@@ -85,7 +85,9 @@ class BanController extends Controller
             'ghe.required' => 'Nhập số ghế',
         ]);
         $data = Ban::find($ban);
-        return response()->json($data->update($request->all()));
+        $data->update($request->all());
+        return response()->json($data);
+        // return response()->json($data->update($request->all()));
     }
 
     /**
@@ -102,7 +104,12 @@ class BanController extends Controller
         }
         else {
             $data = Ban::find($ban);
-            return response()->json($data->delete());
+            return response()->json(
+                [
+                    'message' => 'Xóa thành công',
+                    'data' => $data->delete()
+                ],
+            );
         }
     }
 

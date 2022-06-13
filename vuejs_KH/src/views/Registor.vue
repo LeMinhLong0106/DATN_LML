@@ -57,7 +57,7 @@ export default {
     // }
 
     async registorsubmit() {
-      await this.axios.post('khachhang/register', this.user)
+      await this.axios.post('customer/register', this.user)
       this.$router.push('/login')
       // console.log(res)
     }

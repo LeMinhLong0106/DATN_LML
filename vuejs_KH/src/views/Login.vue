@@ -49,7 +49,7 @@ export default {
         },
 
         loginsubmit() {
-            this.axios.post('http://127.0.0.1:8000/api/khachhang/login', this.user).then(response => {
+            this.axios.post('http://127.0.0.1:8000/api/customer/login', this.user).then(response => {
                 // console.log(response.data);
 
                 this.idKH = response.data.id;

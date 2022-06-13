@@ -93,7 +93,7 @@ export default {
     data() {
         return {
             editmode: true,
-            api: 'http://localhost:8000/api/ban',
+            api: 'http://localhost:8000/api/table',
             form: new Form({
                 id: '',
                 ghe: '',

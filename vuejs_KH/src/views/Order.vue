@@ -4,9 +4,7 @@
         <br>
         <!-- oorder {{ order }} -->
         <h1 class="title">Đơn hàng</h1>
-
-        <div class="box-container">
-
+        <div class="box-container" v-if="orders.length > 0">
             <div class="box" v-for="item in orders">
                 <p> Ngày đặt: <span>{{ format_date(item.created_at) }}</span> </p>
                 <p> Tên người nhận: <span>{{ item.hoten }}</span> </p>
@@ -20,10 +18,12 @@
                     <span class="text-danger " v-else>đang chờ xử lý</span>
                 </p>
             </div>
-
-
         </div>
-
+        <div class="box-container" v-else>
+            <div class="box">
+                <h2> Hiện chưa có đơn nào </h2>
+            </div>
+        </div>
     </section>
 
 </template>
@@ -81,6 +81,11 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
 .title {
     text-align: center;
     margin-bottom: 3rem;

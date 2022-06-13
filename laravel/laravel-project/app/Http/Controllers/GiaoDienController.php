@@ -77,7 +77,7 @@ class GiaoDienController extends Controller
         // món chính mới nhất
         $monan_moi = MonAn::where('danhmuc', '=', 1)->orderBy('created_at', 'desc')->take(8)->get();
         // món đặc biệt
-        $monan_db = MonAn::with(['danhmucmonss'])->where('danhmuc', '=', 2)->get();
+        $monan_db = MonAn::with(['danhmucmonss'])->where('danhmuc', '=', 4)->get();
         return response()->json([
             'monan_db' => $monan_db,
             'monan_moi' => $monan_moi
