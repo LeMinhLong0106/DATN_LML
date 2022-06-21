@@ -64,17 +64,24 @@ export default {
             })
         },
 
-        checkLogin() {
-            let token = window.localStorage.getItem('token');
-            if (token) {
-                this.$router.push('/');
-            }
-        },
+        // checkLogin() {
+        //     let token = window.localStorage.getItem('token');
+        //     if (token) {
+        //         this.$router.push('/');
+        //     }
+        // },
 
     },
-    created() {
-        this.checkLogin();
-    }
+    // created() {
+    //     this.checkLogin();
+    // }
 
 }
 </script>
+<style scoped>
+.btn-google{
+    color: #fff;
+    background-color: #ea4335;
+    border-color: #fff;
+}
+</style>

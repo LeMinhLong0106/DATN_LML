@@ -55,7 +55,11 @@ class HoaDonController extends Controller
         $tabs = Ban::find($sale->ban_id);
         $tabs->tinhtrang = 0;
         $tabs->save();
-        return response()->json();
+        return response()->json(
+            [
+                'message' => 'Thanh toán thành công',
+            ],
+        );
     }
 
     public function getHDKD()
@@ -69,12 +73,14 @@ class HoaDonController extends Controller
         $this->validate($request, [
             'hoten' => 'required',
             'sdt' => 'required|numeric|digits_between:10,11',
+            'songuoi' => 'required|numeric',
             'thoigianden' => 'required',
         ], [
             'hoten.required' => 'Nhập họ tên',
             'sdt.required' => 'Nhập số điện thoại',
             'sdt.numeric' => 'Số điện thoại phải là số',
             'sdt.digits_between' => 'Số điện thoại phải từ 10 đến 11 số',
+            'songuoi.required' => 'Nhập số người',
             'thoigianden.required' => 'Chọn thời gian đến',
         ]);
         $user = Auth::user();
@@ -94,7 +100,9 @@ class HoaDonController extends Controller
             'tinhtrang' => 0,
         ]);
         return response()->json([
+            'message' => 'Đặt bàn thành công',
             'hoadon' => $hoadon,
+
         ]);
     }
 
@@ -133,7 +141,6 @@ class HoaDonController extends Controller
         $data = HoaDon::find($hDTaiQuay);
         $data->delete();
         return response()->json([
-            'status' => 200,
             'message' => 'Xóa thành công'
         ]);
     }
@@ -164,5 +171,38 @@ class HoaDonController extends Controller
         return response()->json([
             'message' => 'Xóa thành công'
         ]);
+    }
+
+    public function updateSoluong(Request $request)
+    {
+        // dd($request->all());
+        $id_cthd = $request->id;
+        $cthd = CTHD::find($id_cthd);
+
+        $cthd->soluong = $request->soluong;
+        $cthd->tongtien = $request->soluong * $cthd->giaban;
+        $cthd->save();
+        $tong = CTHD::where('hoadon_id', $cthd->hoadon_id)->sum('tongtien');
+
+        $id_hd = $cthd->hoadon_id;
+        $hd = HoaDon::find($id_hd);
+
+        $hd->tongtien = $tong;
+
+        $hd->save();
+
+        $html =  $this->xyz($id_hd);
+        return  $html;
+    }
+
+    private function xyz($sale_id)
+    {
+        // hiển thị bên chi tiết
+        $saleDetails =  CTHD::where('hoadon_id', $sale_id)->with(['monanss'])->get();
+        $sale_tp = HoaDon::find($sale_id);
+        return response()->json([
+            'saleDetails' => $saleDetails,
+            'tong' => $sale_tp->tongtien
+        ], 200);
     }
 }

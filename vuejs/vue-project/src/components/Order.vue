@@ -105,7 +105,6 @@
                                         {{ item.tenmonan }}
                                     </option>
                                 </select>
-
                             </div>
                             <div class="form-group">
                                 <label>Số lượng</label>
@@ -193,7 +192,7 @@ export default {
                 }
             }).then(res => {
                 console.log(res.data);
-            }).catch(error => {
+            }).catch(() => {
                 this.$router.push('/');
             })
         },
@@ -203,11 +202,11 @@ export default {
             this.table_id = id;
             this.table_ghe = dsb.ghe;
             this.table_status = dsb.tinhtrang;
-            let data = {
-                id: id,
-                ghe: this.table_ghe,
-                tinhtrang: this.table_status
-            }
+            // let data = {
+            //     id: id,
+            //     ghe: this.table_ghe,
+            //     tinhtrang: this.table_status
+            // }
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
@@ -240,9 +239,7 @@ export default {
 
                     $('#showSelectedTable').html("Tình trạng order bàn: " + this.table_id);
 
-                }).catch(error => {
-                    // this.showMessage('Sửa thất bại');
-                });
+                })
         },
 
         saveDSmon() {
@@ -266,10 +263,7 @@ export default {
                 this.ds_mon = response.data.saleDetails;
                 this.tong = response.data.tong;
                 $('#orderModal').modal('hide')
-
                 this.getBan();
-            }).catch(error => {
-                // this.$router.push('/');
             })
         },
 
@@ -292,8 +286,8 @@ export default {
                 $('#orderModal').modal('hide')
 
                 this.getBan();
-            }).catch(error => {
-                // this.$router.push('/');
+            }).catch(() => {
+                this.$router.push('/');
             })
         },
         // xóa món ăn
@@ -305,7 +299,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.post('http://127.0.0.1:8000/api/order/deleteOrder', data, {
+            this.axios.post(this.api + 'order/deleteOrder', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -315,9 +309,7 @@ export default {
                 this.tong = response.data.tong;
 
                 this.getBan();
-            }).catch(error => {
-                // this.showMessage('Sửa thất bại');
-            });
+            })
         },
 
         updateSoluong(id, soluong) {
@@ -329,7 +321,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.post('http://127.0.0.1:8000/api/order/updateSoluong', data, {
+            this.axios.post(this.api+ 'order/updateSoluong', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -339,9 +331,7 @@ export default {
                 this.tong = response.data.tong;
 
                 this.getBan();
-            }).catch(error => {
-                // this.showMessage('Sửa thất bại');
-            });
+            })
         },
 
         getBan() {
@@ -355,8 +345,6 @@ export default {
                 }
             }).then(res => {
                 this.ds_ban = res.data
-            }).catch(error => {
-                // this.$router.push('/');
             })
         },
 
@@ -371,8 +359,6 @@ export default {
                 }
             }).then(res => {
                 this.ds_monan = res.data
-            }).catch(error => {
-                // this.$router.push('/');
             })
         },
 
@@ -388,9 +374,6 @@ export default {
             }).then(res => {
                 // console.log(res.data);
                 this.ds_hdkd = res.data
-            }).catch(error => {
-                console.log(error);
-                // this.$router.push('/');
             })
         },
 

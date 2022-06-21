@@ -8,7 +8,7 @@
             <div class="col6 col-xl-6 col-lg-6 col-md-12 col-sm-12 align-items-center ">
                 <div class="info pt-xl-0 pt-lg-0 pt-5">
                     <h1 class="font-weight-bold text-uppercase pt-3">{{ monans.tenmonan }}</h1>
-                    <h4>{{ monans.gia }}/{{ monans.donvitinh }}</h4>
+                    <h4 class="gia">{{ monans.gia }}/{{ monans.donvitinh }}</h4>
                     <h4>Danh mục: {{ monans.danhmucmonss.tendm }}</h4>
                     <h4>Mô tả: {{ monans.mota }}</h4>
                     <div class="input-group">
@@ -108,8 +108,17 @@ export default {
     },
 }
 </script>
-<style>
+<style scoped>
 .detail {
     margin-top: 100px;
+}
+
+.gia {
+    color: #fdd117;
+    font-size: 2rem;
+}
+
+h4 {
+    font-size: 1.9rem;
 }
 </style>

@@ -29,7 +29,6 @@
                             <tr v-for="(todo, index) in ds_ban" :key="index">
                                 <td>{{ todo.id }}</td>
                                 <td>{{ todo.ghe }}</td>
-
                                 <td v-if="todo.tinhtrang == 0">
                                     <span class="badge badge-success">Trống</span>
                                 </td>
@@ -66,7 +65,7 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="ghe">Số ghế</label>
-                                <input v-model="form.ghe" type="text" class="form-control" name="ghe">
+                                <input v-model="form.ghe" type="number" class="form-control" name="ghe">
                                 <div class="text-danger error-text " v-if="form.errors.has('ghe')"
                                     v-html="form.errors.get('ghe')"></div>
                             </div>
@@ -93,7 +92,7 @@ export default {
     data() {
         return {
             editmode: true,
-            api: 'http://localhost:8000/api/table',
+            api: 'http://localhost:8000/api/ban',
             form: new Form({
                 id: '',
                 ghe: '',
@@ -103,40 +102,6 @@ export default {
         }
     },
     methods: {
-        editModal(ban) {
-            this.editmode = true
-            $('#addModal').modal('show')
-            this.form.fill(ban);//gán giá trị
-            $('#modal_title').html('Sửa bàn');
-        },
-
-        updateDM() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            // console.log('update');
-            this.form.put(this.api + '/' + this.form.id, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }, this.form).then(() => {
-                $('#addModal').modal('hide')
-                this.$swal(
-                    'Thành công!',
-                    'Bàn đã dược cập nhật.',
-                    'success'
-                )
-                this.getBan();
-            }).catch(error => {
-                this.$swal(
-                    'Error!',
-                    'Your file has been deleted.',
-                    'error'
-                )
-            })
-        },
-
         newModal() {
             this.editmode = false
             this.form.reset();
@@ -154,22 +119,55 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             })
-                .then(() => {
+                .then(res => {
                     $('#addModal').modal('hide')
                     this.$swal(
                         'Thành công!',
-                        'Bàn đã được thêm.',
+                        res.data.message,
                         'success'
                     )
                     this.getBan();
                 })
-                .catch(error => {
+                .catch(() => {
                     this.$swal(
-                        'Error!',
-                        'Your file has been deleted.',
+                        'Lỗi!',
+                        'Có lỗi xảy ra.',
                         'error'
                     )
                 })
+        },
+
+        editModal(ban) {
+            this.editmode = true
+            $('#addModal').modal('show')
+            this.form.fill(ban);//gán giá trị
+            $('#modal_title').html('Sửa bàn');
+        },
+
+        updateDM() {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.form.put(this.api + '/' + this.form.id, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }, this.form).then(res => {
+                $('#addModal').modal('hide')
+                this.$swal(
+                    'Thành công!',
+                    res.data.message,
+                    'success'
+                )
+                this.getBan();
+            }).catch(() => {
+                this.$swal(
+                    'Lỗi!',
+                    'Có lỗi xảy ra.',
+                    'error'
+                )
+            })
         },
 
         deleteDM(id) {
@@ -182,6 +180,7 @@ export default {
                 text: "Bạn muốn xóa bàn này!",
                 icon: 'warning',
                 showCancelButton: true,
+                cancelButtonText: 'Hủy',
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Xóa'
@@ -191,21 +190,19 @@ export default {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
-                    }).then(() => {
+                    }).then(res => {
                         this.$swal(
                             'Đã xóa!',
-                            'Đã xóa bàn.',
+                            res.data.message,
                             'success'
                         )
+                    }).catch(e => {
+                        this.$swal(
+                            'Lỗi!',
+                            e.response.data.error,
+                            'error'
+                        )
                     })
-                        .catch(() => {
-                            // console.log(error.response.data);
-                            this.$swal(
-                                'Lỗi!',
-                                'Bàn tồn tại trong hóa đơn, không xóa được.',
-                                'error'
-                            )
-                        })
                     this.getBan();
                 }
 
@@ -246,13 +243,12 @@ export default {
 
                     );
                 })
-            }).catch(error => {
-                // console.log(error.message);
+            }).catch(() => {
                 this.$router.push('/');
             })
         },
     },
-    mounted() {
+    created() {
         this.getBan();
     },
 }      

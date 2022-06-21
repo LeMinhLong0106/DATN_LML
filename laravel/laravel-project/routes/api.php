@@ -35,7 +35,7 @@ Route::get('/indexBan', 'VaiTroQuyenController@indexBan')->name('indexBan');
 Route::get('/indexMonan', 'VaiTroQuyenController@indexMonan')->name('indexMonan');
 
 // quản trị viên
-Route::resource('/table', 'BanController');
+Route::resource('/ban', 'BanController');
 Route::resource('/danhmuc', 'DanhMucController');
 Route::resource('/monan', 'MonanController');
 Route::resource('/customer', 'KhachHangController');
@@ -52,6 +52,7 @@ Route::group(['prefix' => 'hdtaiquay'], function () {
     Route::delete('/deleteHD/{id}', 'HoaDonController@deleteHD')->name('hdtaiquay.deleteHD');
     Route::put('/{id}/thanhtoan', 'HoaDonController@thanhtoanhdtq');
     Route::post('/khdattruoc', 'HoaDonController@khdattruoc')->name('hdtaiquay.khdattruoc');
+    Route::post('/updateSoluong', 'HoaDonController@updateSoluong')->name('hdtaiquay.updateSoluong');
 });
 
 Route::group(['prefix' => 'hdonline'], function () {

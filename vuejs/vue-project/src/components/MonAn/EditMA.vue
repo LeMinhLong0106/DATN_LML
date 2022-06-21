@@ -100,7 +100,6 @@
 </template>
 
 <script>
-
 export default {
     data() {
         return {
@@ -132,18 +131,19 @@ export default {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-            }).then(res => {
+            }
+            ).then(res => {
                 this.$router.push('/monan');
                 this.$swal(
                     'Thành công!',
-                    'Món ăn đã được thêm.',
+                    res.data.message,
                     'success'
                 )
             }).catch(err => {
                 this.errors = err.response.data.errors;
                 this.$swal(
-                    'Thất bại!',
-                    'Món ăn chưa được thêm.',
+                    'Lỗi!',
+                    'Có lỗi xảy ra.',
                     'error'
                 )
             })
@@ -153,48 +153,13 @@ export default {
         updateImage(e) {
             this.hinhanh = e.target.files[0]
         },
-
-        // getMA() {
-        //     let token = window.localStorage.getItem('token');
-        //     if (token == null) {
-        //         this.$router.push('/login');
-        //     }
-        //     this.axios.get(this.api + '/' + this.$route.params.id, {
-        //         headers: {
-        //             Authorization: 'Bearer ' + token
-        //         }
-        //     }).then(response => {
-        //         // console.log(response.data)
-        //         this.ds_ma = response.data;
-        //     })
-        // },
-
-        // getDM() {
-        //     let token = window.localStorage.getItem('token');
-        //     if (token == null) {
-        //         this.$router.push('/login');
-        //     }
-        //     this.axios.get('http://127.0.0.1:8000/api/danhmuc', {
-        //         headers: {
-        //             Authorization: 'Bearer ' + token
-        //         }
-        //     }).then(res => {
-        //         this.ds_dm = res.data
-        //     })
-        // },
     },
-
-    // created() {
-    //     this.getMA();
-    //     this.getDM();
-    // },
 
     async created() {
         let token = window.localStorage.getItem('token');
         if (token == null) {
             this.$router.push('/login');
         }
-
         const id = parseInt(this.$route.params.id);
         // console.log('idd:' + id);
         if (!id) {
@@ -215,7 +180,7 @@ export default {
         // console.log(monan.data.id);
         if (!monan.data.id) {//nếu không tồn tại id trong database
             this.$router.push('/monan');
-        }else{
+        } else {
             this.ds_ma = monan.data;
             this.ds_dm = danhmuc.data;
         }

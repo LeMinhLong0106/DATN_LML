@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <h1 class="h3 mb-4 text-gray-800 text-center">DANH SÁCH HÓA ĐƠN</h1>
+        <h1 class="h3 mb-4 text-gray-800 text-center">DANH SÁCH HÓA ĐƠN TẠI QUẦY</h1>
         <div class="card shadow mb-4">
             <div class="card-body">
                 <div class="table-responsive">
@@ -33,7 +33,7 @@
                                 <td>
                                     <div v-if="item.tinhtrang == 0">
                                         <button type="button" class="btn btn-primary btn-circle btn-sm"
-                                            @click="editHD(item.id)">
+                                            @click="editHD(item)">
                                             <i class="fas fa-edit"></i></button>
                                         <!-- <button type="button" class="btn btn-danger btn-circle btn-sm" @click="deleteHD(item.id)">
                                 <i class="fas fa-times"></i></button> -->
@@ -59,7 +59,7 @@
             </div>
         </div>
 
-
+        <!-- Danh sách bàn  -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">Tình trạng bàn</div>
             <div class="card-body" v-if="ds_ban.length > 0">
@@ -77,7 +77,7 @@
 
         </div>
 
-        <!-- Modal -->
+        <!-- Modal thanh toán -->
         <div class="modal fade" id="editHD">
             <div class="modal-dialog" style="max-width: 700px;">
                 <div class="modal-content">
@@ -91,13 +91,9 @@
                         <table id="cthd_table" class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <!-- <th>#</th> -->
                                     <th>Tên món ăn</th>
                                     <th>Số lượng</th>
-                                    <!-- <th>Ghi chú</th> -->
                                     <th>Tổng tiền</th>
-                                    <!-- <th>Chức năng</th> -->
-
                                 </tr>
                             </thead>
                             <tbody id="cthd_table_body">
@@ -109,14 +105,14 @@
                                             style="width: 70px;">
                                     </td>
                                     <td>{{ item.tongtien.toLocaleString() }}</td>
-                                    <td>
+                                    <!-- <td>
                                         <div v-if="item.tinhtrang == 0">
                                             <button class="btn btn-danger btn-circle btn-sm mr-2"
                                                 @click="deleteMon(item.id)"><i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                         <div v-else></div>
-                                    </td>
+                                    </td> -->
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="text-right"><b>Tổng:</b></td>
@@ -127,7 +123,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" @click="thanhToan()">Thanh toán</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                     </div>
                 </div>
             </div>
@@ -159,6 +155,9 @@
                             <div class="form-group" id="form_people">
                                 <label>Số lượng người</label>
                                 <input type="number" class="form-control" id="songuoi" min="1" v-model="songuoi">
+                                <div class="text-danger error-text " v-if="errors['songuoi']"
+                                    v-html="errors['songuoi']">
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -175,7 +174,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="submit" class="btn btn-success" value="Add" />
+                            <input type="submit" class="btn btn-success" value="Thêm" />
                         </div>
                     </div>
                 </form>
@@ -211,11 +210,19 @@ export default {
     },
 
     methods: {
+        
+        format_date(value) {
+            if (value) {
+                return moment(String(value)).format('DD-MM-YYYY')
+            }
+        },
 
-        editHD(id) {
+        editHD(item) {
+            console.log(item['id'])
             $('#editHD').modal('show');
-            this.id = id;
-            this.getCTHD(id);
+            this.id = item['id'];
+            $('#editHDLabel').text('Thanh toán hóa đơn: ' + item['id'] + ' - bàn ' + item['ban_id']);
+            this.getCTHD(item['id']);
         },
 
         thanhToan() {
@@ -232,7 +239,7 @@ export default {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-            }).then(response => {
+            }).then(() => {
                 this.getHD();
                 this.getBan();
                 $('#editHD').modal('hide');
@@ -242,27 +249,25 @@ export default {
 
         },
 
-        deleteMon(id) {
-            let data = {
-                id: id,
-            }
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.post('http://127.0.0.1:8000/api/order/deleteOrder', data, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
-                // console.log(response);
-                this.cthd = response.data.saleDetails;
-                this.tong = response.data.tong;
+        // deleteMon(id) {
+        //     let data = {
+        //         id: id,
+        //     }
+        //     let token = window.localStorage.getItem('token');
+        //     if (token == null) {
+        //         this.$router.push('/login');
+        //     }
+        //     this.axios.post('http://127.0.0.1:8000/api/hdtaiquay/deleteOrder', data, {
+        //         headers: {
+        //             Authorization: 'Bearer ' + token
+        //         }
+        //     }).then(response => {
+        //         this.cthd = response.data.saleDetails;
+        //         this.tong = response.data.tong;
 
-                this.getBan();
-            }).catch(error => {
-            });
-        },
+        //         this.getBan();
+        //     });
+        // },
 
         updateSoluong(id, soluong) {
             let data = {
@@ -273,7 +278,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.post('http://127.0.0.1:8000/api/order/updateSoluong', data, {
+            this.axios.post('http://127.0.0.1:8000/api/hdtaiquay/updateSoluong', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -288,11 +293,7 @@ export default {
             });
         },
 
-        format_date(value) {
-            if (value) {
-                return moment(String(value)).format('DD-MM-YYYY')
-            }
-        },
+
 
         deleteHD(id) {
             let token = window.localStorage.getItem('token');
@@ -300,23 +301,24 @@ export default {
                 this.$router.push('/login');
             }
             this.$swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Bạn chắc chứ?',
+                text: "Bạn muốn xóa hóa đơn này!",
                 icon: 'warning',
                 showCancelButton: true,
+                cancelButtonText: 'Hủy',
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.axios.delete(this.api + '/deleteHD/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
-                    }).then(() => {
+                    }).then(res => {
                         this.$swal(
-                            'Deleted!',
-                            'Your file has been deleted.',
+                            'Đã xóa!',
+                            res.data.message,
                             'success'
                         )
                     })
@@ -358,10 +360,9 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(response => {
-                // console.log(response);
                 this.$swal(
                     'Thành công!',
-                    'Đặt bàn thành công.',
+                    response.data.message,
                     'success'
                 )
                 $('#orderModal').modal('hide')
@@ -372,7 +373,7 @@ export default {
                 // this.showMessage('Sửa thất bại');
                 this.$swal(
                     'Thất bại!',
-                    'Có gì đó sai òi!!.',
+                    'Kiểm tra lại thông tin!',
                     'error'
                 )
             });
@@ -389,8 +390,6 @@ export default {
                 }
             }).then(res => {
                 this.ds_ban = res.data
-            }).catch(error => {
-                this.$router.push('/');
             })
         },
 
@@ -426,8 +425,6 @@ export default {
                         }
                     );
                 })
-            }).catch(error => {
-                this.$router.push('/');
             })
         },
 
@@ -444,16 +441,12 @@ export default {
                 // console.log(res.data.cthd)
                 this.cthd = res.data.cthd
                 this.tong = res.data.tong
-            }).catch(error => {
-                this.$router.push('/');
             })
         },
     },
 
-    mounted() {
-        this.getHD();
-    },
     created() {
+        this.getHD();
         this.getBan();
     },
 

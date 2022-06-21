@@ -3,7 +3,7 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <h1 class="h3 mb-0 text-gray-800">Trang chủ</h1>
             <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                         class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
         </div>
@@ -41,15 +41,15 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Hôm qua</div>
+                                    Trong năm</div>
                                 <!-- <div class="h5 mb-0 font-weight-bold text-gray-800" v-for="i in homqua">
                                     {{ i.total.toLocaleString() }} VNĐ</div> -->
 
-                                <div class="h5 mb-0 font-weight-bold text-gray-800" v-if="homqua == null">
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" v-if="tongtien == null">
                                     Chưa có đơn
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800" v-else>
-                                    {{ homqua.total }} VNĐ
+                                    {{ tongtien.toLocaleString() }} VNĐ
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -110,12 +110,14 @@
 </template>
 
 <script>
+
 export default {
 
     data() {
         return {
             homnay: {},
             homqua: {},
+            tongtien: 0,
             hdtqcxl: 0,
             hdoncxl: 0,
             monanchuanau: 0,
@@ -135,10 +137,11 @@ export default {
             }).then(res => {
                 console.log(res.data);
                 this.homnay = res.data.tongtienhomnay
-                this.homqua = res.data.tongtienhomqua
+                // this.homqua = res.data.tongtienhomqua
                 this.hdtqcxl = res.data.hdtqcxl
                 this.hdoncxl = res.data.hdoncxl
                 this.monanchuanau = res.data.monanchuanau
+                this.tongtien = res.data.tongtien
                 // console.log(res.data.tongtienhomnay);
             })
         },

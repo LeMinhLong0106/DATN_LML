@@ -45,7 +45,13 @@ class BanController extends Controller
             'ghe.required' => 'Nhập số ghế',
         ]);
         $data = Ban::create($request->all());
-        return response()->json($data);
+        return response()->json(
+            [
+                'message' => 'Thêm bàn thành công',
+                'data' => $data,
+            ],
+            201
+        );
     }
 
     /**
@@ -86,8 +92,13 @@ class BanController extends Controller
         ]);
         $data = Ban::find($ban);
         $data->update($request->all());
-        return response()->json($data);
-        // return response()->json($data->update($request->all()));
+        return response()->json(
+            [
+                'message' => 'Cập nhật bàn thành công',
+                'data' => $data,
+            ],
+            200
+        );
     }
 
     /**
@@ -100,14 +111,13 @@ class BanController extends Controller
     {
         $a = Ban::with(['hoadonss'])->find($ban);
         if (count($a->hoadonss) > 0) {
-            return response()->json(['error' => 'Không thể xóa bàn này'], 500);
-        }
-        else {
+            return response()->json(['error' => 'Không thể xóa bàn này.'], 500);
+        } else {
             $data = Ban::find($ban);
+            $data->delete();
             return response()->json(
                 [
-                    'message' => 'Xóa thành công',
-                    'data' => $data->delete()
+                    'message' => 'Xóa bàn thành công',
                 ],
             );
         }

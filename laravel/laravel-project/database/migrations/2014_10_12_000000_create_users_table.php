@@ -17,10 +17,10 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('hoten');
             $table->tinyInteger('gioitinh')->default(0);
-            $table->date('ngaysinh')->nullable();
+            $table->date('ngaysinh');
             $table->string('diachi');
             $table->string('sdt')->unique();
-            $table->string('hinhanh')->nullable();
+            $table->string('hinhanh');
             $table->string('email')->unique();
             $table->string('password');
             $table->string('vaitro_id')->default(1);

@@ -26,7 +26,7 @@
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
             <router-link class="text-decoration-none" to="/profile">
               <button class="dropdown-item">
-                Thông tin
+                Cá nhân
               </button>
             </router-link>
             <router-link class="text-decoration-none" to="/order">

@@ -51,7 +51,7 @@
         </div>
         <div id="wrapper" v-else>
             <!-- Sidebar -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion noprint" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
                 <router-link class="sidebar-brand d-flex align-items-center justify-content-center" to="/">
@@ -151,10 +151,10 @@
                 <!-- End of Main Content -->
 
                 <!-- Footer -->
-                <footer class="sticky-footer bg-white">
+                <footer class="sticky-footer bg-white noprint">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2021</span>
+                            <span>Copyright &copy; Your Website 2022</span>
                         </div>
                     </div>
                 </footer>
@@ -244,5 +244,30 @@ export default {
 <style>
 .filter {
     filter: invert(1)
+}
+
+@media print {
+    h4 {
+        font-size: 2.5rem;
+    }
+
+    h5 {
+        font-size: 2rem;
+    }
+
+    p,
+    .table {
+        font-size: 1.5rem;
+    }
+
+    .printHD {
+        width: 100%;
+        margin-left: 50px;
+    }
+
+    .noprint,
+    .noprint * {
+        display: none !important;
+    }
 }
 </style>

@@ -37,7 +37,6 @@
                                 <td>{{ item.id }}</td>
                                 <td><img :src="getIMG(item.hinhanh)" style="width: 5rem; "></td>
                                 <td>{{ item.hoten }}</td>
-
                                 <td v-if="item.gioitinh == 1">Nam</td>
                                 <td v-else>Nữ</td>
                                 <td>{{ item.diachi }}</td>
@@ -78,23 +77,24 @@ export default {
                 this.$router.push('/login');
             }
             this.$swal({
-                title: 'Bạn chắc chắn xóa?',
-                text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
+                title: 'Bạn chắc chứ?',
+                text: "Bạn muốn xóa nhân viên này!",
                 icon: 'warning',
                 showCancelButton: true,
+                cancelButtonText: 'Hủy',
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ye, xóaaaa!'
+                confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.axios.delete(this.api + '/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
-                    }).then(() => {
+                    }).then(res => {
                         this.$swal(
                             'Đã xóa!',
-                            'Thông tin nhân viên.',
+                            res.data.message,
                             'success'
                         )
                     })
@@ -140,7 +140,7 @@ export default {
                         }
                     );
                 })
-            }).catch(error => {
+            }).catch(() => {
                 this.$router.push('/');
             })
         },
@@ -156,17 +156,12 @@ export default {
                 }
             }).then(res => {
                 this.ds_vt = res.data
-            }).catch(error => {
-                this.$router.push('/');
             })
         },
-
     },
 
-    mounted() {
-        this.getNV();
-    },
     created() {
+        this.getNV();
         this.getVT();
     },
 

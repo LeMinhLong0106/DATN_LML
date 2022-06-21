@@ -18,7 +18,7 @@ class DanhMucController extends Controller
         $this->middleware('auth:api');
         $this->middleware('checkQuyen');
     }
-    
+
     public function index()
     {
         $data = DanhMuc::all();
@@ -46,14 +46,22 @@ class DanhMucController extends Controller
     {
         $this->validate($request, [
             'tendm' => 'required|unique:danhmucmon,tendm',
-            'uutien' => 'required|max:255',
-        ],[
+            'uutien' => 'required|numeric|min:1|max:10',
+        ], [
             'tendm.required' => 'Tên danh mục không được để trống',
             'tendm.unique' => 'Tên danh mục đã tồn tại',
             'uutien.required' => 'Ưu tiên không được để trống',
+            'uutien.min' => 'Ưu tiên phải lớn hơn 1',
+            'uutien.max' => 'Ưu tiên phải nhỏ hơn 10',
         ]);
         $data = DanhMuc::create($request->all());
-        return response()->json($data);
+        return response()->json(
+            [
+                'message' => 'Thêm danh mục thành công',
+                'data' => $data,
+            ],
+            201
+        );
     }
 
     /**
@@ -64,7 +72,6 @@ class DanhMucController extends Controller
      */
     public function show(DanhMuc $danhMuc)
     {
-        
     }
 
     /**
@@ -90,12 +97,19 @@ class DanhMucController extends Controller
         $this->validate($request, [
             'tendm' => 'required',
             'uutien' => 'required|max:255',
-        ],[
+        ], [
             'tendm.required' => 'Tên danh mục không được để trống',
             'uutien.required' => 'Ưu tiên không được để trống',
         ]);
         $data = DanhMuc::find($danhMuc);
-        return response()->json($data->update($request->all()));
+        $data->update($request->all());
+        return response()->json(
+            [
+                'message' => 'Cập nhật danh mục thành công',
+                'data' => $data,
+            ],
+            200
+        );
     }
 
     /**
@@ -107,15 +121,14 @@ class DanhMucController extends Controller
     public function destroy($danhMuc)
     {
         $a = DanhMuc::with(['monan'])->find($danhMuc);
-        if(count($a->monan) > 0){
+        if (count($a->monan) > 0) {
             return response()->json(['error' => 'Không thể xóa danh mục này'], 500);
-        }
-        else{
+        } else {
             $data = DanhMuc::find($danhMuc);
-            return response()->json($data->delete());
+            $data->delete();
+            return response()->json([
+                'message' => 'Xóa danh mục thành công',
+            ],);
         }
-        // $data = DanhMuc::find($danhMuc);
-        // $data->delete();
-        // return response()->json($data);
     }
 }

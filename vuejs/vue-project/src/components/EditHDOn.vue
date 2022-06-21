@@ -1,5 +1,5 @@
 <template>
-    <div class="row container d-flex justify-content-center">
+    <div class="row container d-flex justify-content-center ml-auto mr-auto mb-4">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
@@ -54,7 +54,7 @@
                         <div>
                             <!-- <input type="submit" name="them" value="Thanh toán" class="btn btn-primary" /> -->
                             <button type="submit" class="btn btn-primary">Thanh toán</button>
-                            <router-link to="/nhanvien" class="btn btn-primary float-right">Quay lại</router-link>
+                            <router-link to="/hdonline" class="btn btn-primary float-right">Quay lại</router-link>
                         </div>
                     </form>
                 </div>

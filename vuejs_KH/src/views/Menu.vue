@@ -65,7 +65,7 @@
                             </h4>
                         </div>
 
-                        <div v-for="item in monans" class="col-6 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-4 pb-3"
+                        <div v-for="item in slicedCards" class="col-6 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-4 pb-3"
                             :key="item.id">
                             <div class="card">
                                 <img class="card-img-top" :src="getIMG(item.hinhanh)">
@@ -84,11 +84,10 @@
                             </div>
                         </div>
 
-                        <!-- <div class="col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 py-5">
+                        <div class="col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 py-5">
                             <button type="button" @click="incCardNumber"
-                                class="btn btn-outline-secondary btn-lg btn-block">More
-                                +</button>
-                        </div> -->
+                                class="btn btn-outline-secondary btn-lg btn-block">Xem thêm</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,6 +105,7 @@ export default {
     data() {
         return {
             monans: [],
+            showMonans: 6,
             monanss: [],
             danhmucs: [],
             detailmonan: {},
@@ -117,23 +117,22 @@ export default {
             sortButton: '',
         }
     },
-    // computed: {
-    //     danhsachmonan() {
-    //         // return this.monans = this.monanss.filter(monan => {
-    //         //     return monan.tenmonan.toLowerCase().indexOf(this.search.toLowerCase()) !== -1;
-    //         // })
-    //         return this.monans.filter(monan => {
-    //             return monan.tenmonan.toLowerCase().indexOf(this.search.toLowerCase()) !== -1;
-    //         })
-    //     },
-    // },
+    computed: {
+        slicedCards() {
+            return this.monans.slice(0, this.showMonans);
+        }
+    },
     methods: {
+        incCardNumber() {
+            return this.showMonans += 6
+        },
+
         getIMG(hinhanh) {
             return `http://localhost:8000/images/${hinhanh}`
         },
         getData() {
             this.axios.get('http://127.0.0.1:8000/api/menu').then(res => {
-                console.log(res.data.danhmucs);
+                // console.log(res.data.danhmucs);
                 this.monans = res.data.monans;
                 this.monanss = res.data.monans;
                 this.danhmucs = res.data.danhmucs;

@@ -131,18 +131,18 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             })
-                .then(() => {
+                .then(res => {
                     this.$swal(
                         'Thành công!',
-                        'Món ăn đã được thêm.',
+                        res.data.message,
                         'success'
                     )
                     this.$router.push('/monan')
                 })
-                .catch(error => {
+                .catch(() => {
                     this.$swal(
-                        'Thất bại!',
-                        'Hình như có lỗi dồi!!!',
+                        'Lỗi!',
+                        'Có lỗi xảy ra.',
                         'error'
                     )
                 })
@@ -158,7 +158,7 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 this.ds_dm = res.data
             })
         },
@@ -168,8 +168,6 @@ export default {
     created() {
         this.getDM();
     },
-
-
 
 }      
 </script>

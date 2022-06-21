@@ -50,7 +50,13 @@ class VaiTroController extends Controller
             'mota.required' => 'Nhập mô tả vai trò',
         ]);
         $data = VaiTro::create($request->all());
-        return response()->json($data);
+        return response()->json(
+            [
+                'message' => 'Thêm vai trò thành công',
+                'data' => $data,
+            ],
+            201
+        );
     }
 
     /**
@@ -93,7 +99,14 @@ class VaiTroController extends Controller
             'mota.required' => 'Nhập mô tả vai trò',
         ]);
         $data = VaiTro::find($vaiTro);
-        return response()->json($data->update($request->all()));
+        $data->update($request->all());
+        return response()->json(
+            [
+                'message' => 'Cập nhật vai trò thành công',
+                'data' => $data,
+            ],
+            201
+        );
     }
 
     /**
@@ -105,13 +118,16 @@ class VaiTroController extends Controller
     public function destroy($vaiTro)
     {
         $a = VaiTro::with(['users'])->find($vaiTro);
-        if(count($a->users) > 0){
+        if (count($a->users) > 0) {
             return response()->json(['error' => 'Không thể xóa vai trò này'], 500);
-        }
-        else{
+        } else {
             $data = VaiTro::find($vaiTro);
-            return response()->json($data->delete());
+            $data->delete();
+            return response()->json(
+                [
+                    'message' => 'Xóa thành công vai trò',
+                ],
+            );
         }
-
     }
 }

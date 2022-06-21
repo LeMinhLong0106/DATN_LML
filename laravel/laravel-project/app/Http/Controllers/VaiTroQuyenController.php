@@ -28,10 +28,9 @@ class VaiTroQuyenController extends Controller
 
     public function indexMonan()
     {
-        $data = MonAn::all();
+        $data = MonAn::where('tinhtrang', 1)->get();
         return response()->json($data, 200);
     }
-
 
     public function forgot(Request $request)
     {

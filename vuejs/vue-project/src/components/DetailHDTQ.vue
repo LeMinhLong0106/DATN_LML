@@ -2,7 +2,7 @@
     <div class="padding">
         <div class="row container d-flex justify-content-center">
             <div class="col-lg-8 grid-margin stretch-card">
-                <div class="card">
+                <div class="card printHD">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-8">
@@ -46,8 +46,11 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <router-link to="/hdtaiquay" class="btn btn-primary ">Quay lại</router-link>
-
+                             <h5 class="text-center">Cám ơn quý khách, hẹn gặp lại!</h5>
+                            <div class="noprint">
+                                <button @click="printHD()" class="btn btn-primary ">In hóa đơn</button>
+                                <router-link to="/hdtaiquay" class="btn btn-primary float-right">Quay lại</router-link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -69,6 +72,9 @@ export default {
         }
     },
     methods: {
+        printHD() {
+            window.print()
+        },
         format_date(value) {
             if (value) {
                 return moment(String(value)).format('DD-MM-YYYY')

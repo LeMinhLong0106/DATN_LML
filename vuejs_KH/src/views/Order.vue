@@ -58,19 +58,21 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://localhost:8000/api/getOrder', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
-                console.log(response.data);
-                // console.log(response.data['0'].monanss['0'].tenmonan);
-                this.orders = response.data;
-                // this.monan = response.data.monans;
-            }).catch(error => {
-                // console.log(error.message);
-                this.$router.push('/');
-            })
+            else {
+                this.axios.get('http://localhost:8000/api/getOrder', {
+                    headers: {
+                        Authorization: 'Bearer ' + token
+                    }
+                }).then(response => {
+                    console.log(response.data);
+                    // console.log(response.data['0'].monanss['0'].tenmonan);
+                    this.orders = response.data;
+                    // this.monan = response.data.monans;
+                }).catch(() => {
+                    // console.log(error.message);
+                    this.$router.push('/login');
+                })
+            }
         },
     },
 
@@ -86,6 +88,7 @@ h2 {
     font-weight: bold;
     text-align: center;
 }
+
 .title {
     text-align: center;
     margin-bottom: 3rem;

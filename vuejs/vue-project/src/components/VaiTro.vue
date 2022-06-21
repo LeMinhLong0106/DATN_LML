@@ -97,7 +97,40 @@ export default {
         }
     },
     methods: {
+        newModal() {
+            this.editmode = false
+            this.form.reset();
+            $('#addModal').modal('show')
+            $('#modal_title').html('Thêm vai trò');
+        },
 
+        saveDM() {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.form.post(this.api, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            })
+                .then(res => {
+                    $('#addModal').modal('hide')
+                    this.$swal(
+                        'Thành công!',
+                        res.data.message,
+                        'success'
+                    )
+                    this.getVT();
+                })
+                .catch(() => {
+                    this.$swal(
+                        'Lỗi!',
+                        'Có lỗi xảy ra.',
+                        'error'
+                    )
+                })
+        },
         editModal(vaitro) {
             this.editmode = true
             $('#addModal').modal('show')
@@ -116,58 +149,23 @@ export default {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-            }, this.form).then(() => {
+            }, this.form).then(res => {
                 $('#addModal').modal('hide')
                 this.$swal(
                     'Thành công!',
-                    'Vai trò đã dược cập nhật.',
+                    res.data.message,
                     'success'
                 )
                 this.getVT()
-            }).catch(error => {
+            }).catch(() => {
                 this.$swal(
-                    'Error!',
-                    'Your file has been deleted.',
+                    'Lỗi!',
+                    'Có lỗi xảy ra.',
                     'error'
                 )
             })
         },
 
-        newModal() {
-            this.editmode = false
-            this.form.reset();
-            $('#addModal').modal('show')
-            $('#modal_title').html('Thêm vai trò');
-        },
-
-        saveDM() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.form.post(this.api, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            })
-                .then(() => {
-                    $('#addModal').modal('hide')
-                    this.$swal(
-                        'Thành công!',
-                        'Vai trò đã được thêm.',
-                        'success'
-                    )
-                    this.getVT();
-                })
-                .catch(error => {
-                    console.log(error);
-                    this.$swal(
-                        'Error!',
-                        'Your file has been deleted.',
-                        'error'
-                    )
-                })
-        },
 
         deleteDM(id) {
             let token = window.localStorage.getItem('token');
@@ -180,6 +178,7 @@ export default {
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
+                cancelButtonText: 'Hủy',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Xóa'
             }).then((result) => {
@@ -188,22 +187,19 @@ export default {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
-                    }).then(() => {
-                        // console.log(res);
+                    }).then(res => {
                         this.$swal(
                             'Đã xóa!',
-                            'Vai trò đã xóa.',
+                            res.data.message,
                             'success'
                         )
+                    }).catch(e => {
+                        this.$swal(
+                            'Lỗi!',
+                            e.response.data.error,
+                            'error'
+                        )
                     })
-                        .catch(error => {
-                            console.log(error.response.data);
-                            this.$swal(
-                                'Lỗi!',
-                                'Tồn tại nhân viên giữ vai trò này, không xóa được.',
-                                'error'
-                            )
-                        })
                     this.getVT();
                 }
 
@@ -243,13 +239,13 @@ export default {
                         }
                     );
                 })
-            }).catch(error => {
+            }).catch(() => {
                 this.$router.push('/');
             })
         },
     },
 
-    mounted() {
+    created() {
         this.getVT();
     },
 

@@ -97,7 +97,6 @@ class MonanController extends Controller
         $data->save();
 
         return response()->json([
-            'status' => 200,
             'message' => 'Thêm món ăn thành công',
         ]);
     }
@@ -167,7 +166,6 @@ class MonanController extends Controller
         $data->save();
 
         return response()->json([
-            'status' => 200,
             'message' => 'Cập nhật món ăn thành công',
         ]);
     }
@@ -206,7 +204,6 @@ class MonanController extends Controller
         $data->save();
 
         return response()->json([
-            'status' => 200,
             'message' => 'Cập nhật món ăn thành công',
         ]);
     }
@@ -221,6 +218,10 @@ class MonanController extends Controller
     {
         $data = Monan::find($monan);
         $data->delete();
-        return response()->json($data);
+        return response()->json(
+            [
+                'message' => 'Xóa món ăn thành công',
+            ]
+        );
     }
 }

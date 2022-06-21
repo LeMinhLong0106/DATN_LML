@@ -101,9 +101,6 @@ export default {
             }).then(res => {
                 // console.log(this.$route);
                 this.ds_q = res.data
-
-            }).catch(error => {
-                this.$router.push('/');
             })
         },
 
@@ -124,8 +121,6 @@ export default {
                     this.data.quyen = this.ds_vt[0].quyens.map(item => item.id)
                 }
 
-            }).catch(error => {
-                this.$router.push('/');
             })
         },
 

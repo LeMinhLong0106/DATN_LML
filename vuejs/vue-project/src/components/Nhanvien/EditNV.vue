@@ -1,5 +1,5 @@
 <template>
-    
+
     <div class="px-4 mt-4">
         <form @submit.prevent="updateMon" enctype="multipart/form-data">
             <div class="row">
@@ -11,11 +11,11 @@
                             <!-- Profile picture image-->
                             <img class="img-account-profile rounded-circle mb-2 w-100" :src="getIMG(ds_nv.hinhanh)">
                             <!-- Profile picture help block-->
-                            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                            <!-- <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div> -->
                             <!-- Profile picture upload button-->
                             <!-- <button class="btn btn-primary" type="button">Upload new image</button> -->
                             <input @change="updateImage" type="file" class="form-control" name="hinhanh">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -36,13 +36,24 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="small mb-1" for="hoten">Giới tính</label>
-                                    <br>
-                                    <input type="radio" value="1" checked v-model="ds_nv.gioitinh" />
-                                    Nam
-
-                                    <input type="radio" value="0" v-model="ds_nv.gioitinh" />
-                                    Nữ
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="hoten">Giới tính</label>
+                                            <br>
+                                            <input type="radio" value="1" checked v-model="ds_nv.gioitinh" />
+                                            Nam
+                                            <input type="radio" value="0" v-model="ds_nv.gioitinh" />
+                                            Nữ
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="hoten">Ngày sinh</label>
+                                            <input v-model="ds_nv.ngaysinh" type="date" class="form-control"
+                                                name="ngaysinh">
+                                            <div class="text-danger error-text " v-if="errors['ngaysinh']"
+                                                v-html="errors['ngaysinh']">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -103,7 +114,7 @@
                             </div>
                             <!-- Submit button-->
                             <button type="submit" class="btn btn-primary">Cập nhật</button>
-                            <router-link to="/nhanvien"  class="btn btn-primary float-right">Quay lại</router-link>
+                            <router-link to="/nhanvien" class="btn btn-primary float-right">Quay lại</router-link>
                         </div>
                     </div>
                 </div>
@@ -128,6 +139,10 @@ export default {
             return `http://localhost:8000/images/${hinhanh}`
         },
 
+        updateImage(e) {
+            this.hinhanh = e.target.files[0]
+        },
+
         updateMon() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
@@ -139,6 +154,7 @@ export default {
             formData.append('sdt', this.ds_nv.sdt);
             formData.append('email', this.ds_nv.email);
             formData.append('gioitinh', this.ds_nv.gioitinh);
+            formData.append('ngaysinh', this.ds_nv.ngaysinh);
             formData.append('password', this.ds_nv.password);
             formData.append('vaitro_id', this.ds_nv.vaitro_id);
             formData.append('hinhanh', this.hinhanh);
@@ -150,7 +166,7 @@ export default {
                 this.$router.push('/nhanvien');
                 this.$swal(
                     'Thành công!',
-                    'nhân viên đã được thêm.',
+                    res.data.message,
                     'success'
                 )
             }).catch(err => {
@@ -158,16 +174,11 @@ export default {
                 this.errors = err.response.data.errors;
                 // console.log(this.errors);
                 this.$swal(
-                    'Thất bại!',
-                    'nhân viên chưa được thêm.',
+                    'Lỗi!',
+                    'Có lỗi xảy ra.',
                     'error'
                 )
             })
-
-
-        },
-        updateImage(e) {
-            this.hinhanh = e.target.files[0]
         },
 
         getNV() {

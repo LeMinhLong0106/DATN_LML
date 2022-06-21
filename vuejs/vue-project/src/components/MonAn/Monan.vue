@@ -91,23 +91,24 @@ export default {
             this.$router.push('/login');
          }
          this.$swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Bạn chắc chứ?',
+            text: "Bạn muốn xóa món ăn này!",
             icon: 'warning',
             showCancelButton: true,
+            cancelButtonText: 'Hủy',
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Xóa'
          }).then((result) => {
             if (result.isConfirmed) {
                this.axios.delete(this.api + '/' + id, {
                   headers: {
                      Authorization: 'Bearer ' + token
                   }
-               }).then(() => {
+               }).then(res => {
                   this.$swal(
-                     'Deleted!',
-                     'Your file has been deleted.',
+                     'Đã xóa!',
+                     res.data.message,
                      'success'
                   )
                })

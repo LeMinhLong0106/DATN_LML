@@ -22,11 +22,13 @@ class BaoCaoController extends Controller
             ->take(8)
             ->get();
 
-        $tongtienhomnay = HoaDon::select('created_at', DB::raw('sum(tongtien) as total'))
-            ->groupBy('created_at')
-            ->where('created_at', '=', date('Y-m-d'))
-            ->where('loaihd_id', 0)->where('tinhtrang', 1)
-            ->first('total');
+
+
+        // $tongtienhomnay = HoaDon::select('created_at', DB::raw('sum(tongtien) as total'))
+        //     ->groupBy('created_at')
+        //     ->where('created_at', '=', date('Y-m-d'))
+        //     ->where('loaihd_id', 0)->where('tinhtrang', 1)
+        //     ->first('total');
 
         $tongtienhomqua = HoaDon::select('created_at', DB::raw('sum(tongtien) as total'))
             ->groupBy('created_at')
@@ -46,14 +48,21 @@ class BaoCaoController extends Controller
 
         $hdtq = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 1)->get();
         $tttq = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 1)->sum('tongtien');
+        $tongtien = HoaDon::where('tinhtrang', 1)->sum('tongtien');
 
         $songuoi = HoaDon::select(DB::raw('MONTH(created_at) as month'), DB::raw('sum(songuoi) as songuoi'))
             ->groupBy('month')
             ->where('tinhtrang', 1)
             ->get();
 
-        $date_from = date('d-m-Y', strtotime('-1 month'));
-        $date_to = date('d-m-Y');
+        $tongtienhomnay = HoaDon::select('created_at', DB::raw('sum(tongtien) as total'))
+            ->groupBy('created_at')
+            ->where('created_at', '=', date('Y-m-d'))
+            ->where('tinhtrang', 1)
+            ->first('total');
+
+        // $date_from = date('d-m-Y', strtotime('-1 month'));
+        // $date_to = date('d-m-Y');
 
         // if (request()->date_from && request()->date_to) {
         //     $date_from =  request()->date_from;
@@ -78,12 +87,13 @@ class BaoCaoController extends Controller
             'hdtqcxl' => $hdtqcxl,
             'hdoncxl' => $hdoncxl,
             'monanchuanau' => $monanchuanau,
-            'date_from' => $date_from,
-            'date_to' => $date_to,
+            // 'date_from' => $date_from,
+            // 'date_to' => $date_to,
             'soluongmon' => $soluongmon,
             'songuoi' => $songuoi,
             'tongtienhomnay' => $tongtienhomnay,
             'tongtienhomqua' => $tongtienhomqua,
+            'tongtien' => $tongtien,
         ]);
     }
 }

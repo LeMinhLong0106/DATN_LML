@@ -5,12 +5,12 @@
                 <div class="col-xl-4">
                     <!-- Profile picture card-->
                     <div class="card mb-4 mb-xl-0">
-                        <div class="card-header">Profile Picture</div>
+                        <div class="card-header">Ảnh nhân viên</div>
                         <div class="card-body text-center">
                             <!-- Profile picture image-->
                             <!-- <img class="img-account-profile rounded-circle mb-2" :src="getIMG()"> -->
                             <!-- Profile picture help block-->
-                            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                            <!-- <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div> -->
                             <!-- Profile picture upload button-->
                             <!-- <button class="btn btn-primary" type="button">Upload new image</button> -->
                             <input @change="saveImage" type="file" class="form-control" name="hinhanh">
@@ -22,7 +22,7 @@
                 <div class="col-xl-8">
                     <!-- Account details card-->
                     <div class="card mb-4">
-                        <div class="card-header">Account Details</div>
+                        <div class="card-header">Thông tin nhân viên</div>
                         <div class="card-body">
                             <!-- Form Row-->
                             <div class="row gx-3 mb-3">
@@ -35,13 +35,24 @@
                                         v-html="form.errors.get('hoten')"></div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="small mb-1" for="hoten">Giới tính</label>
-                                    <br>
-                                    <input type="radio" value="1" checked v-model="form.gioitinh" />
-                                    Nam
-
-                                    <input type="radio" value="0" v-model="form.gioitinh" />
-                                    Nữ
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="hoten">Giới tính</label>
+                                            <br>
+                                            <input type="radio" value="1" checked v-model="form.gioitinh" />
+                                            Nam
+                                            <input type="radio" value="0" v-model="form.gioitinh" />
+                                            Nữ
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="hoten">Ngày sinh</label>
+                                            <input v-model="form.ngaysinh" type="date" class="form-control"
+                                                name="ngaysinh" placeholder="Ngày sinh">
+                                            <div class="text-danger error-text " v-if="form.errors.has('ngaysinh')"
+                                                v-html="form.errors.get('ngaysinh')">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -125,6 +136,7 @@ export default {
                 hinhanh: '',
                 password: '',
                 gioitinh: '',
+                ngaysinh: '',
             }),
             ds_vt: {},
         }
@@ -147,23 +159,20 @@ export default {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
+            }).then(res => {
+                this.$swal(
+                    'Thành công!',
+                    res.data.message,
+                    'success'
+                )
+                this.$router.push('/nhanvien')
+            }).catch(() => {
+                this.$swal(
+                    'Lỗi!',
+                    'Có lỗi xảy ra.',
+                    'error'
+                )
             })
-                .then(() => {
-                    this.$swal(
-                        'Thành công!',
-                        'nhân viên đã được thêm.',
-                        'success'
-                    )
-                    this.$router.push('/nhanvien')
-
-                })
-                .catch(error => {
-                    this.$swal(
-                        'Error!',
-                        'Your file has been deleted.',
-                        'error'
-                    )
-                })
         },
 
         getVT() {

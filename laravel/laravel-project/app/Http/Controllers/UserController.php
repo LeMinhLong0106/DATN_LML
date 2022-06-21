@@ -74,7 +74,7 @@ class UserController extends Controller
     public function getUser(Request $request)
     {
         $user = User::with(['vaitross'])->find($request->user('api')->id);
-        $user -> userquyen = User::find($request->user('api')->id)->vaitross->quyens;
+        $user->userquyen = User::find($request->user('api')->id)->vaitross->quyens;
         // $user = DB::table('users')->find($request->user('api')->id);
         return response()->json($user, 200);
         // return response()->json($request->user('api'), 200);
@@ -100,6 +100,8 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'sdt' => 'required|min:10',
             'diachi' => 'required|string|max:255',
+            'ngaysinh' => 'required|date',
+            'hinhanh' => 'required',
         ], [
             'hoten.required' => 'Nhập họ tên',
             'email.required' => 'Nhập email',
@@ -107,6 +109,8 @@ class UserController extends Controller
             'sdt.required' => 'Nhập số điện thoại',
             'sdt.min' => 'Số điện thoại phải có ít nhất 10 số',
             'diachi.required' => 'Nhập địa chỉ',
+            'ngaysinh.required' => 'Nhập ngày sinh', 
+            'hinhanh.required' => 'Hình ảnh không được để trống',           
         ]);
 
         $data = new User;
@@ -116,6 +120,7 @@ class UserController extends Controller
         $data->password = Hash::make($request->password);
         $data->sdt = $request->sdt;
         $data->diachi = $request->diachi;
+        $data->ngaysinh = $request->ngaysinh;
         $data->vaitro_id = $request->vaitro_id;
 
         if ($request->hasFile('hinhanh')) {
@@ -127,7 +132,6 @@ class UserController extends Controller
         $data->save();
 
         return response()->json([
-            'status' => 200,
             'message' => 'Thêm nhân viên thành công',
         ]);
     }
@@ -140,6 +144,7 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'sdt' => 'required|min:10',
             'diachi' => 'required|string|max:255',
+            'ngaysinh' => 'required|date',
         ], [
             'hoten.required' => 'Nhập họ tên',
             'email.required' => 'Nhập email',
@@ -147,6 +152,7 @@ class UserController extends Controller
             'sdt.required' => 'Nhập số điện thoại',
             'sdt.min' => 'Số điện thoại phải có ít nhất 10 số',
             'diachi.required' => 'Nhập địa chỉ',
+            'ngaysinh.required' => 'Nhập ngày sinh',
         ]);
 
         $data = User::find($nhanvien);
@@ -155,6 +161,7 @@ class UserController extends Controller
         $data->email = $request->email;
         $data->password = Hash::make($request->password);
         $data->sdt = $request->sdt;
+        $data->ngaysinh = $request->ngaysinh;
         $data->diachi = $request->diachi;
         $data->vaitro_id = $request->vaitro_id;
 
@@ -167,8 +174,7 @@ class UserController extends Controller
         $data->save();
 
         return response()->json([
-            'status' => 200,
-            'message' => 'Cập nhật món ăn thành công',
+            'message' => 'Cập nhật nhân viên thành công',
         ]);
     }
 
@@ -208,7 +214,7 @@ class UserController extends Controller
 
         return response()->json([
             'status' => 200,
-            'message' => 'Cập nhật món ăn thành công',
+            'message' => 'Cập nhật nhân viên thành công',
         ]);
     }
 
@@ -216,6 +222,10 @@ class UserController extends Controller
     {
         $data = User::find($nhanvien);
         $data->delete();
-        return response()->json($data);
+        return response()->json(
+            [
+                'message' => 'Xóa nhân viên thành công',
+            ]
+        );
     }
 }

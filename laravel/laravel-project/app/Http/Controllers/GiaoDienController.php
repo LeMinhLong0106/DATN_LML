@@ -9,7 +9,6 @@ use App\Models\KhachHang;
 use App\Models\MonAn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 
 class GiaoDienController extends Controller
 {
@@ -17,11 +16,24 @@ class GiaoDienController extends Controller
     public function register(Request $request)
     {
         $data = $request->validate([
-            'tenkh' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:khachhang',
-            'sdt' => 'required|string|max:255',
-            'diachi' => 'required|string|max:255',
+            'tenkh' => 'required|string|max:40',
+            'email' => 'required|string|email|max:100|unique:khachhang',
+            'sdt' => 'required|numeric|digits_between:10,11',
+            'diachi' => 'required|string|max:100',
             'matkhau' => 'required|string|min:6',
+        ], [
+            'tenkh.required' => 'Nhập tên khách hàng',
+            'tenkh.max' => 'Tên khách hàng không được vượt quá 40 ký tự',
+            'email.required' => 'Nhập email',
+            'email.email' => 'Email không hợp lệ',
+            'email.max' => 'Email không được vượt quá 100 ký tự',
+            'email.unique' => 'Email đã tồn tại',
+            'sdt.required' => 'Nhập số điện thoại',
+            'sdt.digits_between' => 'Số điện thoại phải có từ 10 đến 11 số',
+            'diachi.required' => 'Nhập địa chỉ',
+            'diachi.max' => 'Địa chỉ không được vượt quá 100 ký tự',
+            'matkhau.required' => 'Nhập mật khẩu',
+            'matkhau.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
         ]);
         $user = KhachHang::create([
             'tenkh' => $data['tenkh'],
@@ -44,8 +56,14 @@ class GiaoDienController extends Controller
     public function login(Request $request)
     {
         $data = $request->validate([
-            'email' => 'required|string|email|max:255',
+            'email' => 'required|string|email|max:100',
             'matkhau' => 'required|string|min:6',
+        ],[
+            'email.required' => 'Nhập email',
+            'email.email' => 'Email không hợp lệ',
+            'email.max' => 'Email không được vượt quá 255 ký tự',
+            'matkhau.required' => 'Nhập mật khẩu',
+            'matkhau.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
         ]);
         // check email and matkhau
         $user = KhachHang::where('email', $data['email'])->first();
@@ -70,7 +88,6 @@ class GiaoDienController extends Controller
         $request->user()->tokens()->delete();
         return response()->json(['message' => 'Successfully logged out'], 200);
     }
-
 
     public function majestic()
     {
@@ -99,74 +116,6 @@ class GiaoDienController extends Controller
         $data = Monan::with(['danhmucmonss'])->find($id);
         return response()->json($data);
     }
-
-    // public function search(Request $request)
-    // {
-    //     $keyword = $request->timkiem;
-    //     $data = $keyword;
-    //     $monans = MonAn::where('tenmonan', 'like', '%' . $keyword . '%')->get();
-    //     return response()->json([
-    //         'data' => $data,
-    //         'monans' => $monans
-    //     ]);
-    // }
-
-    public function addToCart($id)
-    {
-        $monans = MonAn::find($id);
-        $cart = session()->get('cart');
-
-        if (isset($cart[$id])) {
-            // $cart[$id]['qty'] = $cart[$id]['qty'] + 1;
-            $cart[$id]['qty'] = $cart[$id]['qty'] + 1;
-        } else {
-            $cart[$id] = [
-                'tenmonan' => $monans->tenmonan,
-                'gia' => $monans->gia,
-                'qty' => 1,
-                'ghichu' => null,
-                'hinhanh' => $monans->hinhanh,
-            ];
-        }
-        session()->put('cart', $cart);
-        return response()->json([
-            'code' => 200,
-            'success' => 'Thêm thành công'
-        ], 200);
-        // dd(session()->get('cart'));
-    }
-
-    public function showCart()
-    {
-        $cart = session()->get('cart');
-        // dd($cart);
-        // return view('cart', compact('cart'));
-        return response()->json([
-            'cart' => $cart
-        ]);
-    }
-
-    // public function deleteCart($id)
-    // {
-    //     $cart = session()->get('cart');
-    //     unset($cart[$id]);
-    //     session()->put('cart', $cart);
-    //     return response()->json([
-    //         'code' => 200,
-    //         'success' => 'Xóa thành công'
-    //     ], 200);
-    // }
-
-    // public function updateCart(Request $request)
-    // {
-    //     $cart = session()->get('cart');
-    //     $cart[$request->id]['qty'] = $request->qty;
-    //     session()->put('cart', $cart);
-    //     return response()->json([
-    //         'code' => 200,
-    //         'success' => 'Cập nhật thành công'
-    //     ], 200);
-    // }
 
     public function checkout(Request $request)
     {

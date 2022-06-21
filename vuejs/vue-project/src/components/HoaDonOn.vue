@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <h1 class="h3 mb-4 text-gray-800 text-center">DANH SÁCH HÓA ĐƠN</h1>
+        <h1 class="h3 mb-4 text-gray-800 text-center">DANH SÁCH HÓA ĐƠN ONLINE</h1>
         <div class="card shadow mb-4">
             <div class="card-body">
                 <div class="table-responsive">
@@ -37,7 +37,7 @@
                                         </router-link>
                                     </div>
                                     <div v-else>
-                                        <button type="button" class="btn btn-danger btn-circle btn-sm mr-2" 
+                                        <button type="button" class="btn btn-danger btn-circle btn-sm mr-2"
                                             @click="deleteHD(item.id)"><i class="fas fa-times"></i></button>
                                         <router-link :to="{ name: 'hdonline.detail', params: { id: item.id } }">
                                             <button type="button" class="btn btn-warning btn-circle btn-sm">
@@ -83,31 +83,30 @@ export default {
                 this.$router.push('/login');
             }
             this.$swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Bạn chắc chứ?',
+                text: "Bạn muốn xóa hóa đơn này!",
                 icon: 'warning',
                 showCancelButton: true,
+                cancelButtonText: 'Hủy',
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.axios.delete(this.api + 'hdonline/deleteHDO/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
-                    }).then(() => {
+                    }).then(res => {
                         this.$swal(
-                            'Deleted!',
-                            'Your file has been deleted.',
+                            'Đã xóa!',
+                            res.data.message,
                             'success'
                         )
                     })
                     this.getHD()
                 }
             })
-
-
         },
 
         getHD() {
@@ -143,7 +142,7 @@ export default {
                         }
                     );
                 })
-            }).catch(error => {
+            }).catch(() => {
                 this.$router.push('/');
             })
         },
@@ -161,13 +160,13 @@ export default {
                 // console.log(res.data.cthd)
                 this.cthd = res.data.cthd
                 this.tong = res.data.tong
-            }).catch(error => {
+            }).catch(() => {
                 this.$router.push('/');
             })
         },
     },
 
-    mounted() {
+    created() {
         this.getHD();
     },
 

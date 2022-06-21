@@ -21,10 +21,6 @@ class KhachHangController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function getKH(Request $request)
-    // {
-    //     return response()->json($request->user('api'), 200);
-    // }
 
     public function index()
     {
