@@ -68,6 +68,14 @@ class OrderController extends Controller
 
     public function orderFood(Request $request)
     {
+        $this->validate($request, [
+            'product_name' => 'required',
+            'product_quantity' => 'required',
+        ], [
+            'product_name.required' => 'Nhập món ăn',
+            'product_quantity.required' => 'Nhập số lượng món',
+        ]);
+
         $id_mon = $request->product_name;
         $table_id = $request->table_id;
         $people_quantity = $request->people_quantity;
@@ -143,11 +151,16 @@ class OrderController extends Controller
         $hd->tongtien = $hd->tongtien - ($cthd->giaban * $cthd->soluong);
         $hd->save(); //luu hd
         $html =  $this->xyz($id_hd);
-        return  $html;
+        return $html;
+    }
+    
+    public function getHDKD()
+    {
+        $data = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 0)->whereNotNull('thoigianden')->get();
+        return response()->json($data, 200);
     }
 
-
-    public function updateSoluong(Request $request)
+    public function updateQuantity(Request $request)
     {
         // dd($request->all());
         $id_cthd = $request->id;

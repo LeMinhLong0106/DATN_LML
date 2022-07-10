@@ -8,11 +8,7 @@
                   <h6 class="m-0 font-weight-bold text-primary">Danh sách món ăn</h6>
                </div>
                <div class="col" align="right">
-                  <!-- <router-link :to="{ name: 'createMA' }">
-                     <button type="button" class="btn btn-success btn-circle btn-sm">
-                        <i class="fas fa-plus"></i></button>
-                  </router-link> -->
-                  <router-link to="/monan/create">
+                  <router-link to="/food/create">
                      <button type="button" class="btn btn-success btn-circle btn-sm">
                         <i class="fas fa-plus"></i></button>
                   </router-link>
@@ -74,9 +70,8 @@
 export default {
    data() {
       return {
-         api: 'http://localhost:8000/api/monan',
+         // api: 'http://localhost:8000/api/food',
          ds_mon: {},
-         ds_dm: {},
       }
    },
    methods: {
@@ -101,7 +96,7 @@ export default {
             confirmButtonText: 'Xóa'
          }).then((result) => {
             if (result.isConfirmed) {
-               this.axios.delete(this.api + '/' + id, {
+               this.axios.delete('food/' + id, {
                   headers: {
                      Authorization: 'Bearer ' + token
                   }
@@ -123,13 +118,13 @@ export default {
          if (token == null) {
             this.$router.push('/login');
          }
-         this.axios.get(this.api, {
+         this.axios.get('food', {
             headers: {
                Authorization: 'Bearer ' + token
             }
          }).then(res => {
-            console.log(res.data);
-            this.ds_mon = res.data.datamonan
+            // console.log(res.data);
+            this.ds_mon = res.data
             $('#dataTable').DataTable().destroy();
             this.$nextTick(() => {
                $('#dataTable').DataTable(
@@ -151,14 +146,14 @@ export default {
                   }
                );
             })
-         }).catch(error => {
+         }).catch(() => {
             this.$router.push('/');
          })
       },
 
    },
 
-   mounted() {
+   created() {
       this.getMon();
    },
 }      

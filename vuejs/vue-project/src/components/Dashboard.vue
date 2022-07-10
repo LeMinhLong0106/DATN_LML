@@ -41,7 +41,7 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Trong năm</div>
+                                    Trong tháng</div>
                                 <!-- <div class="h5 mb-0 font-weight-bold text-gray-800" v-for="i in homqua">
                                     {{ i.total.toLocaleString() }} VNĐ</div> -->
 
@@ -49,7 +49,7 @@
                                     Chưa có đơn
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800" v-else>
-                                    {{ tongtien.toLocaleString() }} VNĐ
+                                    {{ parseInt(tongtien).toLocaleString("de-DE") }} VNĐ
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{monanchuanau}}</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ monanchuanau }}</div>
                                     </div>
                                     <!-- <div class="col">
                                         <div class="progress progress-sm mr-2">
@@ -96,7 +96,8 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Xử lý hóa đơn</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">Quầy({{hdtqcxl}}) / online({{hdoncxl}})</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">Quầy({{ hdtqcxl }}) /
+                                    online({{ hdoncxl }})</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -110,7 +111,6 @@
 </template>
 
 <script>
-
 export default {
 
     data() {
@@ -130,7 +130,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/baocao', {
+            this.axios.get('report', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

@@ -13,10 +13,39 @@
 
 <script>
 export default {
-    computed: {
-        user() {
-            return this.$store.getters.user;
+    // computed: {
+    //     user() {
+    //         return this.$store.getters.user;
+    //     },
+    // },
+
+    data() {
+        return {
+            user: {},
+        }
+    },
+    methods: {
+        getCus() {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            else {
+                this.axios.get('http://localhost:8000/api/getCus/' + window.localStorage.getItem('idKH'), {
+                    headers: {
+                        Authorization: 'Bearer ' + token
+                    }
+                }).then(response => {
+                    this.user = response.data;
+                }).catch(() => {
+                    this.$router.push('/login');
+                })
+            }
         },
+    },
+
+    created() {
+        this.getCus();
     },
 }  
 </script>

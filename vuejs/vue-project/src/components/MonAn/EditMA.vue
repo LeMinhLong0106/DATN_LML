@@ -90,7 +90,7 @@
 
                             <!-- Submit button-->
                             <button type="submit" class="btn btn-primary">Cập nhật</button>
-                            <router-link to="/monan" class="btn btn-primary float-right">Quay lại</router-link>
+                            <router-link to="/food" class="btn btn-primary float-right">Quay lại</router-link>
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
 export default {
     data() {
         return {
-            api: 'http://localhost:8000/api/monan',
+            // api: 'http://localhost:8000/api/food',
             ds_ma: {},
             ds_dm: {},
             errors: {},
@@ -133,7 +133,7 @@ export default {
                 }
             }
             ).then(res => {
-                this.$router.push('/monan');
+                this.$router.push('/food');
                 this.$swal(
                     'Thành công!',
                     res.data.message,
@@ -147,8 +147,6 @@ export default {
                     'error'
                 )
             })
-
-
         },
         updateImage(e) {
             this.hinhanh = e.target.files[0]
@@ -161,17 +159,16 @@ export default {
             this.$router.push('/login');
         }
         const id = parseInt(this.$route.params.id);
-        // console.log('idd:' + id);
         if (!id) {
-            this.$router.push('/monan');
+            this.$router.push('/404');
         }
         const [monan, danhmuc] = await Promise.all([
-            this.axios.get(this.api + '/' + id, {
+            this.axios.get('food/' + id, {
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem('token')
                 }
             }),
-            this.axios.get('http://127.0.0.1:8000/api/danhmuc', {
+            this.axios.get('category', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -179,7 +176,7 @@ export default {
         ]);
         // console.log(monan.data.id);
         if (!monan.data.id) {//nếu không tồn tại id trong database
-            this.$router.push('/monan');
+            this.$router.push('/404');
         } else {
             this.ds_ma = monan.data;
             this.ds_dm = danhmuc.data;

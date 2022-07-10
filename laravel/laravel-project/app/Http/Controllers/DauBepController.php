@@ -13,7 +13,7 @@ class DauBepController extends Controller
         $this->middleware('auth:api');
         $this->middleware('checkQuyen');
     }
-    public function daubep()
+    public function listCook()
     {
         // $route = Route::currentRouteName();
         // $route = explode('.', $route);

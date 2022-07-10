@@ -44,7 +44,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/baocao', {
+            this.axios.get('http://localhost:8000/api/report', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

@@ -48,23 +48,20 @@
                                         <span style="color:#f2be00;">{{ danhmuc }}</span>
                                     </h4>
                                     <div class="dropdown-divider"></div>
-
                                     <h4 @click="reSet">Tất cả</h4>
-
                                     <h4 v-for="item in danhmucs" @click="sortI(item.tendm)">{{ item.tendm }}</h4>
-
                                 </div>
-
                             </div>
                         </div>
                     </div>
-                    <div class="row col-xl-9 col-lg-9 col-md-12 col-sm-12 col-xs-12 text-center">
-                        <div v-if="this.monans == 0" class="col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <h4 style="margin-left:9rem;margin-right:9rem">Xin lỗi, món ăn hiện
-                                chưa có, mong quý khách thông cảm!!!
+                    <div v-if="this.monans == 0" class="row col-xl-9 col-lg-9 col-md-12 col-sm-12 col-xs-12 text-center">
+                        <div class="col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h4 style="margin-left:7rem;margin-right:7rem;color: red;font-size: 2.5rem;">Xin lỗi, món
+                                ăn hiện chưa có, mong quý khách thông cảm!!!
                             </h4>
                         </div>
-
+                    </div>
+                    <div v-else class="row col-xl-9 col-lg-9 col-md-12 col-sm-12 col-xs-12 text-center">
                         <div v-for="item in slicedCards" class="col-6 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-4 pb-3"
                             :key="item.id">
                             <div class="card">
@@ -79,11 +76,10 @@
                                 </div>
                                 <div class="card-body">
                                     <h3 class="card-title">{{ item.tenmonan }}</h3>
-                                    <h4 class="card-text">${{ item.gia }}</h4>
+                                    <h4 class="card-text">{{ item.gia.toLocaleString("de-DE") }} đ</h4>
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 py-5">
                             <button type="button" @click="incCardNumber"
                                 class="btn btn-outline-secondary btn-lg btn-block">Xem thêm</button>
@@ -131,7 +127,7 @@ export default {
             return `http://localhost:8000/images/${hinhanh}`
         },
         getData() {
-            this.axios.get('http://127.0.0.1:8000/api/menu').then(res => {
+            this.axios.get('http://localhost:8000/api/menu').then(res => {
                 // console.log(res.data.danhmucs);
                 this.monans = res.data.monans;
                 this.monanss = res.data.monans;
@@ -180,7 +176,6 @@ export default {
 
     created() {
         this.getData();
-        // this.getDanhMuc()
     },
 
 }

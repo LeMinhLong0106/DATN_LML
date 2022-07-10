@@ -4,13 +4,14 @@ import {
 } from 'vue-router'
 
 import HomeView from '../views/HomeView.vue'
-import Ban from '../components/Ban.vue';
-import Dashboard from '../components/Dashboard.vue';
 import Login from '../views/Login.vue';
 import Registor from '../views/Registor.vue';
 import Forgot from '../views/Forgot.vue';
-import Reset from '../components/Reset.vue';
 import Admin from '../views/Admin.vue';
+
+import Ban from '../components/Ban.vue';
+import Dashboard from '../components/Dashboard.vue';
+import Reset from '../components/Reset.vue';
 import Danhmuc from '../components/Danhmuc.vue';
 import Monan from '../components/MonAn/Monan.vue';
 import CreateMA from '../components/MonAn/CreateMA.vue';
@@ -47,27 +48,27 @@ const router = createRouter({
           },
         },
         {
-          path: '/ban',
-          name: 'ban',
+          path: '/table',
+          name: 'table',
           component: Ban,
         },
         {
-          path: '/danhmuc',
-          name: 'danhmuc',
+          path: '/category',
+          name: 'category',
           component: Danhmuc,
         },
         {
-          path: '/monan',
-          name: 'monan',
+          path: '/food',
+          name: 'food',
           component: Monan,
         },
         {
-          path: '/monan/create',
+          path: '/food/create',
           name: 'createMA',
           component: CreateMA,
         },
         {
-          path: '/monan/edit/:id',
+          path: '/food/edit/:id',
           name: 'editMA',
           component: EditMA,
         },
@@ -76,39 +77,34 @@ const router = createRouter({
           name: 'order',
           component: Order,
         },
-        // {
-        //   path: '/daubep',
-        //   name: 'daubep',
-        //   component: GiaoDienDB,
-        // },
         {
-          path: '/khachhang',
-          name: 'khachhang',
+          path: '/customer',
+          name: 'customer',
           component: KhachHang,
         },
         {
-          path: '/nhanvien',
-          name: 'nhanvien',
+          path: '/user',
+          name: 'user',
           component: NhanVien,
         },
         {
-          path: '/nhanvien/create',
+          path: '/user/create',
           name: 'createNV',
           component: CreateNV,
         },
         {
-          path: '/nhanvien/edit/:id',
+          path: '/user/edit/:id',
           name: 'editNV',
           component: EditNV,
         },
         {
-          path: '/vaitro',
-          name: 'vaitro',
+          path: '/role',
+          name: 'role',
           component: VaiTro,
         },
         {
-          path: '/quyen',
-          name: 'quyen',
+          path: '/permission',
+          name: 'permission',
           component: Quyen,
         },
         {
@@ -137,8 +133,8 @@ const router = createRouter({
           component: DetailHDOn,
         },
         {
-          path: '/baocao',
-          name: 'baocao',
+          path: '/report',
+          name: 'report',
           component: BaoCao,
         },
         {
@@ -149,7 +145,14 @@ const router = createRouter({
       ]
     },
     {
-      path: "/:catchAll(.*)",
+      // path: "/:catchAll(.*)",
+      path: '/:pathMatch(.*)*',
+      name: "404",
+      component: HomeView,
+    },
+    {
+      path: '/404',
+      name: "404",
       component: HomeView,
     },
     {

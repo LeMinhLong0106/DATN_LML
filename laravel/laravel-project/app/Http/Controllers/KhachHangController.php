@@ -6,6 +6,7 @@ use App\Models\CTHD;
 use App\Models\HoaDon;
 use App\Models\KhachHang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KhachHangController extends Controller
 {
@@ -55,28 +56,36 @@ class KhachHangController extends Controller
      * @param  \App\Models\KhachHang  $khachHang
      * @return \Illuminate\Http\Response
      */
-    public function show($khachHang)
+    // public function show($khachHang)
+    // {
+    //     $data = KhachHang::find($khachHang);
+    //     return response()->json($data, 200);
+    // }
+
+    public function getCus($khachHang)
     {
         $data = KhachHang::find($khachHang);
         return response()->json($data, 200);
     }
 
-    public function getKH(Request $request)
+    // public function getCus(Request $request)
+    // {
+    //     $user = KhachHang::find($request->user('api')->id);
+    //     return response()->json($user, 200);
+    // }
+
+    public function getOrder($khachHang)
     {
-        // return $request->all();
-        $user = KhachHang::find($request->user('api')->id);
-        return response()->json($user, 200);
+        $data = HoaDon::with(['cthds', 'monanss'])->where('khachhang_id', $khachHang)->get();
+        return response()->json($data, 200);
     }
 
-    public function getOrder(Request $request)
-    {
-        $user = KhachHang::find($request->user('api')->id);
-        $order = HoaDon::with(['cthds','monanss'])->where('khachhang_id', $user->id)->get();
-        
-        return response()->json($order,
-            200
-        );
-    }
+    // public function getOrder(Request $request)
+    // {
+    //     $user = KhachHang::find($request->user('api')->id);
+    //     $order = HoaDon::with(['cthds', 'monanss'])->where('khachhang_id', $user->id)->get();
+    //     return response()->json($order);
+    // }
 
     /**
      * Show the form for editing the specified resource.

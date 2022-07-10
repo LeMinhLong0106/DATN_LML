@@ -12,12 +12,16 @@ class KhachHang extends Model
     use HasApiTokens, HasFactory;
     protected $table = 'khachhang';
     protected $fillable = [
-        'tenkh',    'email',    'sdt',    'diachi',    'matkhau',    'google_id',
+        'tenkh',
+        'email',
+        'sdt',
+        'diachi',
+        'matkhau',
+        'google_id',
     ];
 
     public function hoadonss()
     {
         return $this->hasMany(HoaDon::class, 'khachhang_id');
     }
-    
 }

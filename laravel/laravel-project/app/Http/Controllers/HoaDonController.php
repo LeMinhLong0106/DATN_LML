@@ -20,11 +20,15 @@ class HoaDonController extends Controller
 
     public function indexHDTQ()
     {
-        $data = HoaDon::where('loaihd_id', 0)->get();
-        // return view('admin.hdtaiquay.index', compact('data', 'cthd'));
-        return response()->json([
-            'data' => $data,
-        ]);
+        $hoadon = HoaDon::where('loaihd_id', 0)->get();
+        $ban = Ban::where('tinhtrang', 0)->get();
+        return response()->json(
+            [
+                'data' => $hoadon,
+                'ban' => $ban,
+            ],
+            200
+        );
     }
 
     public function showHDTQ($hDTaiQuay)
@@ -62,11 +66,6 @@ class HoaDonController extends Controller
         );
     }
 
-    public function getHDKD()
-    {
-        $data = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 0)->whereNotNull('thoigianden')->get();
-        return response()->json($data);
-    }
 
     public function khdattruoc(Request $request)
     {
@@ -102,7 +101,6 @@ class HoaDonController extends Controller
         return response()->json([
             'message' => 'Đặt bàn thành công',
             'hoadon' => $hoadon,
-
         ]);
     }
 

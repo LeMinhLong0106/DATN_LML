@@ -2,8 +2,15 @@
     <div class="login-form-container">
         <form @submit.prevent="loginsubmit()">
             <h3>Đăng nhập</h3>
-            <input type="email" v-model="user.email" placeholder="Nhập email" id="" class="box">
-            <input type="password" v-model="user.matkhau" placeholder="Nhập mật khẩu" id="" class="box">
+            <input type="email" v-model="user.email" placeholder="Nhập email" class="box">
+            <!-- <div v-if="errors.email"> -->
+            <span style="color: red;" v-if="errors['email']" v-html="errors['email']">
+            </span>
+            <!-- </div> -->
+            <input type="password" v-model="user.matkhau" placeholder="Nhập mật khẩu" class="box">
+            <span style="color: red;" v-if="errors['matkhau']" v-html="errors['matkhau']">
+            </span>
+
             <!-- <div class="remember">
                 <input type="checkbox" name="" id="remember-me">
                 <label for="remember-me">remember me</label>
@@ -12,7 +19,9 @@
             <button @click="loginGG()" class="btn btn-google btn-user btn-block">
                 <i class="fab fa-google fa-fw"></i> Đăng nhập với Google
             </button>
-            <p>Quên mật khẩu? <a href="#">nhấn zô</a></p>
+            <p>
+                <router-link to="/forgot">Quên mật khẩu?</router-link>
+            </p>
             <p>Bạn chưa có tài khoản?
                 <router-link to="/registor">tạo tài khoản</router-link>
             </p>
@@ -43,7 +52,7 @@ export default {
                 if (response.data.url) {
                     window.location.href = response.data.url;
                 }
-                this.$store.dispatch('user', response.data);//------------
+                this.$store.dispatch('user', response.data);//
                 // this.$router.push('/');//redirect to home page
             })
         },
@@ -59,27 +68,29 @@ export default {
                 this.$store.dispatch('user', response.data);
 
                 this.$router.push('/');//redirect to home page
+                // this.$router.back();//redirect to previous page
+
             }).catch(error => {
                 this.errors = error.response.data.errors;
             })
         },
-
-        // checkLogin() {
-        //     let token = window.localStorage.getItem('token');
-        //     if (token) {
-        //         this.$router.push('/');
-        //     }
-        // },
+        //kiểm tra đã đn chưa
+        checkLogin() {
+            let token = window.localStorage.getItem('token');
+            if (token) {
+                this.$router.push('/');
+            }
+        },
 
     },
-    // created() {
-    //     this.checkLogin();
-    // }
+    created() {
+        this.checkLogin();
+    }
 
 }
 </script>
 <style scoped>
-.btn-google{
+.btn-google {
     color: #fff;
     background-color: #ea4335;
     border-color: #fff;

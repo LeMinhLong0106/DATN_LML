@@ -1,6 +1,6 @@
 <template>
     <div class="px-4 mt-4">
-        <form @submit.prevent="saveMon" enctype="multipart/form-data">
+        <form @submit.prevent="saveUser" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-xl-4">
                     <!-- Profile picture card-->
@@ -110,7 +110,7 @@
                             </div>
                             <!-- Submit button-->
                             <button type="submit" class="btn btn-primary">Thêm</button>
-                            <router-link to="/nhanvien" class="btn btn-primary float-right">Quay lại</router-link>
+                            <router-link to="/user" class="btn btn-primary float-right">Quay lại</router-link>
                         </div>
                     </div>
                 </div>
@@ -125,7 +125,7 @@ import Form from 'vform'
 export default {
     data() {
         return {
-            api: 'http://localhost:8000/api/nhanvien',
+            // api: 'http://localhost:8000/api/user',
             form: new Form({
                 id: '',
                 hoten: '',
@@ -150,12 +150,12 @@ export default {
             this.form.hinhanh = e.target.files[0]
         },
 
-        saveMon() {
+        saveUser() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.form.post(this.api, {
+            this.form.post('user', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -165,7 +165,7 @@ export default {
                     res.data.message,
                     'success'
                 )
-                this.$router.push('/nhanvien')
+                this.$router.push('/user')
             }).catch(() => {
                 this.$swal(
                     'Lỗi!',
@@ -180,7 +180,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/vaitro', {
+            this.axios.get('role', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

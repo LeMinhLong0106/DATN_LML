@@ -41,7 +41,7 @@
                                 <td>
                                     <button class="btn btn-primary btn-circle btn-sm mr-2" @click="editModal(todo)"><i
                                             class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-circle btn-sm" @click="deleteDM(todo.id)"><i
+                                    <button class="btn btn-danger btn-circle btn-sm" @click="deleteBan(todo.id)"><i
                                             class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
@@ -55,7 +55,7 @@
         <div class="modal fade" id="addModal">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form @submit.prevent="editmode ? updateDM() : saveDM()">
+                    <form @submit.prevent="editmode ? updateBan() : saveDM()">
                         <!-- Modal Header -->
                         <div class="modal-header">
                             <h4 class="modal-title" id="modal_title"></h4>
@@ -92,7 +92,7 @@ export default {
     data() {
         return {
             editmode: true,
-            api: 'http://localhost:8000/api/ban',
+            // api: 'http://localhost:8000/api/table',
             form: new Form({
                 id: '',
                 ghe: '',
@@ -114,7 +114,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.form.post(this.api, {
+            this.form.post('table', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -144,12 +144,12 @@ export default {
             $('#modal_title').html('Sửa bàn');
         },
 
-        updateDM() {
+        updateBan() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.form.put(this.api + '/' + this.form.id, {
+            this.form.put('table/' + this.form.id, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -186,7 +186,7 @@ export default {
                 confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.form.delete(this.api + '/' + id, {
+                    this.form.delete('table/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
@@ -208,13 +208,12 @@ export default {
 
             })
         },
-
         getBan() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api, {
+            this.axios.get('table', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -247,6 +246,44 @@ export default {
                 this.$router.push('/');
             })
         },
+        // getBan() {
+        //     let token = window.localStorage.getItem('token');
+        //     if (token == null) {
+        //         this.$router.push('/login');
+        //     }
+        //     this.axios.get('table', {
+        //         headers: {
+        //             Authorization: 'Bearer ' + token
+        //         }
+        //     }).then(response => {
+        //         console.log(response.data);
+        //         this.ds_ban = response.data
+        //         $('#dataTable').DataTable().destroy();
+        //         this.$nextTick(() => {
+        //             $('#dataTable').DataTable(
+        //                 {
+        //                     "language": {
+        //                         "lengthMenu": "Hiển thị _MENU_ bàn",
+        //                         "zeroRecords": "Không có bàn cần tìm",
+        //                         "info": "Hiển thị _PAGE_ trong _PAGES_",
+        //                         "infoEmpty": "Không có bàn cần tìm",
+        //                         "infoFiltered": "(Lọc từ _MAX_ bàn)",
+        //                         "search": "Tìm kiếm:",
+        //                         "paginate": {
+        //                             "first": "Đầu",
+        //                             "last": "Cuối",
+        //                             "next": "Sau",
+        //                             "previous": "Trước"
+        //                         }
+        //                     }
+        //                 }
+
+        //             );
+        //         })
+        //     }).catch(() => {
+        //         this.$router.push('/');
+        //     })
+        // },
     },
     created() {
         this.getBan();

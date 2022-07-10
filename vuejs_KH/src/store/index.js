@@ -11,7 +11,6 @@ const store = createStore({
         cart: cart ? JSON.parse(cart) : [],
         cartCount: cartCount ? parseInt(cartCount) : 0,
         user: null,
-        order: null,
     },
 
     getters: {
@@ -19,14 +18,9 @@ const store = createStore({
             return state.user;
         },
 
-        order(state) {
-            return state.order;
-        },
-
         itemsNumber(state) { // Cart Component
             return state.cartCount
         },
-        // user: state => state.user,
     },
 
     actions: {
@@ -46,12 +40,10 @@ const store = createStore({
 
     mutations: {
         order(state, order) {
-            // console.log(order);
             state.order = order;
         },
 
         user(state, user) {
-            // console.log(user);
             state.user = user;
         },
 

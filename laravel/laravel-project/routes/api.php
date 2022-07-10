@@ -11,7 +11,7 @@ Route::get('/menu', 'GiaoDienController@menu')->name('menu');
 Route::get('/detail/{id}', 'GiaoDienController@detail')->name('detail');
 
 // nhân viên
-Route::get('/user', 'UserController@getUser');
+Route::get('/getuser', 'UserController@getUser');
 Route::post('/register', 'UserController@register');
 Route::post('/login', 'UserController@login');
 // Route::post('/logout', 'UserController@logout');
@@ -26,22 +26,29 @@ Route::get('login/google/callback', 'SocialController@handleProviderCallback');
 Route::post('/customer/register', 'GiaoDienController@register')->name('customer.register');
 Route::post('/customer/login', 'GiaoDienController@login')->name('customer.login');
 Route::post('checkout', 'GiaoDienController@checkout')->name('checkout');
-Route::get('/getCus', 'KhachHangController@getKH');
-Route::get('/getOrder', 'KhachHangController@getOrder');
+
+Route::get('/getCus/{id}', 'KhachHangController@getCus');
+// Route::get('/getCus', 'KhachHangController@getCus');
+
+Route::get('/getOrder/{id}', 'KhachHangController@getOrder');
+// Route::get('/getOrder', 'KhachHangController@getOrder');
+
 // Route::post('/customer/logout', 'KhachHangController@logout')->name('customer.logout');
+Route::post('/forgotKH', 'VaiTroQuyenController@forgotKH');
+Route::post('/resetKH', 'VaiTroQuyenController@resetKH');
 
 // danh sách
 Route::get('/indexBan', 'VaiTroQuyenController@indexBan')->name('indexBan');
 Route::get('/indexMonan', 'VaiTroQuyenController@indexMonan')->name('indexMonan');
 
 // quản trị viên
-Route::resource('/ban', 'BanController');
-Route::resource('/danhmuc', 'DanhMucController');
-Route::resource('/monan', 'MonanController');
+Route::resource('/table', 'BanController');
+Route::resource('/category', 'DanhMucController');
+Route::resource('/food', 'MonanController');
 Route::resource('/customer', 'KhachHangController');
-Route::resource('/vaitro', 'VaiTroController');
-Route::resource('/quyen', 'QuyenController');
-Route::resource('/nhanvien', 'UserController');
+Route::resource('/role', 'VaiTroController');
+Route::resource('/permission', 'QuyenController');
+Route::resource('/user', 'UserController');
 Route::post('/update_nv/{id}', 'UserController@update_nv');
 Route::post('/update_ma/{id}', 'MonanController@update_ma');
 
@@ -50,7 +57,7 @@ Route::group(['prefix' => 'hdtaiquay'], function () {
     Route::get('/', 'HoaDonController@indexHDTQ')->name('hdtaiquay.indexHDTQ');
     Route::get('/{id}', 'HoaDonController@showHDTQ')->name('hdtaiquay.showHDTQ');
     Route::delete('/deleteHD/{id}', 'HoaDonController@deleteHD')->name('hdtaiquay.deleteHD');
-    Route::put('/{id}/thanhtoan', 'HoaDonController@thanhtoanhdtq');
+    Route::put('/{id}/thanhtoan', 'HoaDonController@thanhtoanhdtq')->name('hdtaiquay.thanhtoanhdtq');
     Route::post('/khdattruoc', 'HoaDonController@khdattruoc')->name('hdtaiquay.khdattruoc');
     Route::post('/updateSoluong', 'HoaDonController@updateSoluong')->name('hdtaiquay.updateSoluong');
 });
@@ -62,22 +69,20 @@ Route::group(['prefix' => 'hdonline'], function () {
     Route::get('/{id}/thanhtoanon', 'HoaDonController@thanhtoanon');
 });
 
-Route::get('/getEmptyTable', 'BanController@getBanTrong')->name('getEmptyTable');
-Route::get('/getHDKD', 'HoaDonController@getHDKD')->name('getHDKD');
+// Route::get('/getEmptyTable', 'BanController@getBanTrong')->name('getEmptyTable');
 
 // thực đơn
 Route::group(['prefix' => 'order'], function () {
     Route::get('/', 'OrderController@order')->name('order');
-    // Route::get('table_status', 'OrderController@table_status')->name('order.table_status');
+    Route::get('getHDKD', 'OrderController@getHDKD')->name('order.getHDKD');
     Route::get('getSaleDetails/{id}', 'OrderController@getSaleDetails')->name('order.getSaleDetails');
     Route::post('orderFood', 'OrderController@orderFood')->name('order.orderFood');
     Route::post('deleteOrder', 'OrderController@deleteOrder')->name('order.deleteOrder');
-    Route::post('updateSoluong', 'OrderController@updateSoluong')->name('order.updateSoluong');
+    Route::post('updateQuantity', 'OrderController@updateQuantity')->name('order.updateQuantity');
     Route::post('confirmOrder', 'OrderController@confirmOrder')->name('order.confirmOrder');
 });
-
-Route::get('daubep', 'DauBepController@daubep')->name('daubep');
-
+// đầu bếp
+Route::get('listCook', 'DauBepController@listCook')->name('listCook');
 
 // báo cáo
-Route::get('baocao', 'BaoCaoController@index')->name('baocao.index');
+Route::get('report', 'BaoCaoController@index')->name('report.index');

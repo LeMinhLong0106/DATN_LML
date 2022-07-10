@@ -73,7 +73,7 @@ export default {
             cthd: {},
             tong: '',
             user: {},
-            api: 'http://127.0.0.1:8000/api/hdonline/',
+            // api: 'http://localhost:8000/api/hdonline/',
         }
     },
     methods: {
@@ -91,7 +91,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api + id, {
+            this.axios.get('hdonline/' + id, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

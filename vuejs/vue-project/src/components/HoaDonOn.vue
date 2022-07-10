@@ -66,7 +66,7 @@ export default {
             tong: '',
             product_quantity: '',
 
-            api: 'http://localhost:8000/api/',
+            // api: 'http://localhost:8000/api/',
         }
     },
 
@@ -93,7 +93,7 @@ export default {
                 confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete(this.api + 'hdonline/deleteHDO/' + id, {
+                    this.axios.delete('hdonline/deleteHDO/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
@@ -114,7 +114,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api + 'hdonline', {
+            this.axios.get('hdonline', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -152,7 +152,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api + 'hdonline/' + id, {
+            this.axios.get('hdonline/' + id, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

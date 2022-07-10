@@ -46,7 +46,7 @@ class UserController extends Controller
             'password.required' => 'Nhập mật khẩu',
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
         ]);
-
+        
         // check email and password
         $user = User::where('email', $data['email'])->first();
         if ($user) {
@@ -54,10 +54,10 @@ class UserController extends Controller
                 $user->token = $user->createToken('authToken')->accessToken;
                 return response()->json($user, 200);
             } else {
-                return response()->json(['errors' => 'Mật khẩu không đúng'], 401);
+                return response()->json(['errPassword' => 'Mật khẩu không đúng'], 401);
             }
         } else {
-            return response()->json(['errors' => 'Email không tồn tại'], 404);
+            return response()->json(['errEmail' => 'Email không tồn tại'], 404);
         }
 
         $user->token = $user->createToken('authToken')->accessToken;
@@ -109,8 +109,8 @@ class UserController extends Controller
             'sdt.required' => 'Nhập số điện thoại',
             'sdt.min' => 'Số điện thoại phải có ít nhất 10 số',
             'diachi.required' => 'Nhập địa chỉ',
-            'ngaysinh.required' => 'Nhập ngày sinh', 
-            'hinhanh.required' => 'Hình ảnh không được để trống',           
+            'ngaysinh.required' => 'Nhập ngày sinh',
+            'hinhanh.required' => 'Hình ảnh không được để trống',
         ]);
 
         $data = new User;
@@ -133,6 +133,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'Thêm nhân viên thành công',
+            'data' => $data
         ]);
     }
 
@@ -141,14 +142,14 @@ class UserController extends Controller
         $this->validate($request, [
             'hoten' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:6',
+            // 'password' => 'required|string|min:6',
             'sdt' => 'required|min:10',
             'diachi' => 'required|string|max:255',
             'ngaysinh' => 'required|date',
         ], [
             'hoten.required' => 'Nhập họ tên',
             'email.required' => 'Nhập email',
-            'password.required' => 'Nhập mật khẩu',
+            // 'password.required' => 'Nhập mật khẩu',
             'sdt.required' => 'Nhập số điện thoại',
             'sdt.min' => 'Số điện thoại phải có ít nhất 10 số',
             'diachi.required' => 'Nhập địa chỉ',
@@ -159,7 +160,7 @@ class UserController extends Controller
         $data->hoten = $request->hoten;
         $data->gioitinh = $request->gioitinh;
         $data->email = $request->email;
-        $data->password = Hash::make($request->password);
+        // $data->password = Hash::make($request->password);
         $data->sdt = $request->sdt;
         $data->ngaysinh = $request->ngaysinh;
         $data->diachi = $request->diachi;
@@ -175,6 +176,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'Cập nhật nhân viên thành công',
+            'data' => $data
         ]);
     }
 
@@ -183,14 +185,14 @@ class UserController extends Controller
         $this->validate($request, [
             'hoten' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:6',
+            // 'password' => 'required|string|min:6',
             'sdt' => 'required|numeric',
             'diachi' => 'required|string|max:255',
             'vaitro_id' => 'required',
         ], [
             'hoten.required' => 'Nhập họ tên',
             'email.required' => 'Nhập email',
-            'password.required' => 'Nhập mật khẩu',
+            // 'password.required' => 'Nhập mật khẩu',
             'sdt.required' => 'Nhập số điện thoại',
             'diachi.required' => 'Nhập địa chỉ',
             'vaitro_id.required' => 'Nhập vai trò',
@@ -199,7 +201,7 @@ class UserController extends Controller
         $data = User::find($nhanvien);
         $data->hoten = $request->hoten;
         $data->email = $request->email;
-        $data->password = Hash::make($request->password);
+        // $data->password = Hash::make($request->password);
         $data->sdt = $request->sdt;
         $data->diachi = $request->diachi;
         $data->vaitro_id = $request->vaitro_id;
@@ -213,8 +215,8 @@ class UserController extends Controller
         $data->save();
 
         return response()->json([
-            'status' => 200,
             'message' => 'Cập nhật nhân viên thành công',
+            'data' => $data
         ]);
     }
 

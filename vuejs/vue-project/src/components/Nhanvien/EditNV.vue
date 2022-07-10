@@ -6,7 +6,7 @@
                 <div class="col-xl-4">
                     <!-- Profile picture card-->
                     <div class="card mb-4 mb-xl-0">
-                        <div class="card-header">Profile Picture</div>
+                        <div class="card-header">Hình ảnh nhân viên</div>
                         <div class="card-body text-center">
                             <!-- Profile picture image-->
                             <img class="img-account-profile rounded-circle mb-2 w-100" :src="getIMG(ds_nv.hinhanh)">
@@ -22,7 +22,7 @@
                 <div class="col-xl-8">
                     <!-- Account details card-->
                     <div class="card mb-4">
-                        <div class="card-header">Account Details</div>
+                        <div class="card-header">Thông tin nhân viên</div>
                         <div class="card-body">
                             <!-- Form Row-->
                             <div class="row gx-3 mb-3">
@@ -89,18 +89,30 @@
                                     </div>
                                 </div>
                                 <!-- Form Group (last name)-->
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <label class="small mb-1" for="password">Mật khẩu</label>
                                     <input v-model="ds_nv.password" type="password" class="form-control" name="password"
                                         placeholder="Mật khẩu">
                                     <div class="text-danger error-text " v-if="errors['password']"
                                         v-html="errors['password']">
                                     </div>
+                                </div> -->
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="vaitro_id">Vai trò</label>
+                                    <select class="form-control" name="vaitro_id" v-model="ds_nv.vaitro_id">
+                                        <option value="" class="form-control">Vai trò</option>
+                                        <option v-for="item in ds_vt" v-bind:value="item.id">
+                                            {{ item.tenvaitro }}
+                                        </option>
+                                    </select>
+                                    <div class="text-danger error-text " v-if="errors['vaitro_id']"
+                                        v-html="errors['vaitro_id']">
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Form Group (Roles)-->
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label class="small mb-1" for="vaitro_id">Vai trò</label>
                                 <select class="form-control" name="vaitro_id" v-model="ds_nv.vaitro_id">
                                     <option value="" class="form-control">Vai trò</option>
@@ -111,10 +123,10 @@
                                 <div class="text-danger error-text " v-if="errors['vaitro_id']"
                                     v-html="errors['vaitro_id']">
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- Submit button-->
                             <button type="submit" class="btn btn-primary">Cập nhật</button>
-                            <router-link to="/nhanvien" class="btn btn-primary float-right">Quay lại</router-link>
+                            <router-link to="/user" class="btn btn-primary float-right">Quay lại</router-link>
                         </div>
                     </div>
                 </div>
@@ -128,7 +140,7 @@
 export default {
     data() {
         return {
-            api: 'http://localhost:8000/api/nhanvien',
+            // api: 'http://localhost:8000/api/user',
             ds_nv: {},
             ds_vt: {},
             errors: {},
@@ -155,15 +167,15 @@ export default {
             formData.append('email', this.ds_nv.email);
             formData.append('gioitinh', this.ds_nv.gioitinh);
             formData.append('ngaysinh', this.ds_nv.ngaysinh);
-            formData.append('password', this.ds_nv.password);
+            // formData.append('password', this.ds_nv.password);
             formData.append('vaitro_id', this.ds_nv.vaitro_id);
             formData.append('hinhanh', this.hinhanh);
-            this.axios.post('http://localhost:8000/api/update_nv' + '/' + this.$route.params.id, formData, {
+            this.axios.post('http://localhost:8000/api/update_nv/' + this.$route.params.id, formData, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                this.$router.push('/nhanvien');
+                this.$router.push('/user');
                 this.$swal(
                     'Thành công!',
                     res.data.message,
@@ -181,39 +193,52 @@ export default {
             })
         },
 
-        getNV() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get(this.api + '/' + this.$route.params.id, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
-                // console.log(response.data)
-                this.ds_nv = response.data;
-            })
-        },
+        // getNV() {
+        //     this.axios.get('user/' + this.$route.params.id).then(response => {
+        //         this.ds_nv = response.data;
+        //     })
+        // },
 
-        getVT() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('http://127.0.0.1:8000/api/vaitro', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
-                this.ds_vt = res.data
-            })
-        },
+        // getVT() {
+        //     this.axios.get('role').then(res => {
+        //         this.ds_vt = res.data
+        //     })
+        // },
     },
 
-    created() {
-        this.getNV();
-        this.getVT();
+    // created() {
+    //     this.getNV();
+    //     this.getVT();
+    // },
+
+    async created() {
+        let token = window.localStorage.getItem('token');
+        if (token == null) {
+            this.$router.push('/login');
+        }
+        const id = parseInt(this.$route.params.id);
+        if (!id) {
+            this.$router.push('/404');
+        }
+        const [user, role] = await Promise.all([
+            this.axios.get('user/' + id, {
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem('token')
+                }
+            }),
+            this.axios.get('role', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }),
+        ]);
+        // console.log(user.data.id);
+        if (!user.data.id) {//nếu không tồn tại id trong database
+            this.$router.push('/404');
+        } else {
+            this.ds_nv = user.data;
+            this.ds_vt = role.data;
+        }
     },
 
 }      

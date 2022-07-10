@@ -11,6 +11,8 @@ import Registor from '../views/Registor.vue'
 import Detail from '../views/Detail.vue'
 import Profile from '../views/Profile.vue'
 import Order from '../views/Order.vue'
+import Forgot from '../views/Forgot.vue'
+import Reset from '../components/Reset.vue';
 
 const router = createRouter({
   history: createWebHistory(
@@ -67,6 +69,20 @@ const router = createRouter({
       path: '/order',
       name: 'order',
       component: Order
+    },
+    {
+      path: '/forgot',
+      name: 'forgot',
+      component: Forgot
+    },
+    {
+      path: '/reset/:token',
+      name: 'reset',
+      component: Reset
+    },
+    {
+      path: "/:catchAll(.*)",
+      component: HomeView,
     },
   ]
 })

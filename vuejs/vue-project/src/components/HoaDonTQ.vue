@@ -205,12 +205,12 @@ export default {
             tong: '',
             product_quantity: '',
 
-            api: 'http://localhost:8000/api/hdtaiquay',
+            // api: 'http://localhost:8000/api/hdtaiquay',
         }
     },
 
     methods: {
-        
+
         format_date(value) {
             if (value) {
                 return moment(String(value)).format('DD-MM-YYYY')
@@ -241,33 +241,17 @@ export default {
                 }
             }).then(() => {
                 this.getHD();
-                this.getBan();
                 $('#editHD').modal('hide');
+                this.$swal(
+                    'Thành công!',
+                    'Hóa đơn đã được xử lý',
+                    'success'
+                )
             }).catch(error => {
                 console.log(error);
             });
 
         },
-
-        // deleteMon(id) {
-        //     let data = {
-        //         id: id,
-        //     }
-        //     let token = window.localStorage.getItem('token');
-        //     if (token == null) {
-        //         this.$router.push('/login');
-        //     }
-        //     this.axios.post('http://127.0.0.1:8000/api/hdtaiquay/deleteOrder', data, {
-        //         headers: {
-        //             Authorization: 'Bearer ' + token
-        //         }
-        //     }).then(response => {
-        //         this.cthd = response.data.saleDetails;
-        //         this.tong = response.data.tong;
-
-        //         this.getBan();
-        //     });
-        // },
 
         updateSoluong(id, soluong) {
             let data = {
@@ -278,7 +262,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.post('http://127.0.0.1:8000/api/hdtaiquay/updateSoluong', data, {
+            this.axios.post('hdtaiquay/updateSoluong', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -287,13 +271,10 @@ export default {
                 this.cthd = response.data.saleDetails;
                 this.tong = response.data.tong;
 
-                this.getBan();
-            }).catch(error => {
-                // this.showMessage('Sửa thất bại');
+            }).catch((error) => {
+                console.log(error);
             });
         },
-
-
 
         deleteHD(id) {
             let token = window.localStorage.getItem('token');
@@ -311,7 +292,7 @@ export default {
                 confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete(this.api + '/deleteHD/' + id, {
+                    this.axios.delete('hdtaiquay/deleteHD/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
@@ -324,7 +305,9 @@ export default {
                     })
                     this.getHD()
                 }
-            })
+            }).catch(error => {
+                console.log(error);
+            });
         },
 
         showmodal(id) {
@@ -333,7 +316,6 @@ export default {
             let dsb = this.ds_ban.find(a => a.id == id);
             this.table_ghe = dsb.ghe;
             $('#songuoi').attr('max', this.table_ghe);
-
             this.table_id = id;
             this.hoten = '';
             this.sdt = '';
@@ -355,7 +337,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.post(this.api + '/khdattruoc', data, {
+            this.axios.post('hdtaiquay/khdattruoc', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -367,10 +349,8 @@ export default {
                 )
                 $('#orderModal').modal('hide')
                 this.getHD();
-                this.getBan();
             }).catch(error => {
                 this.errors = error.response.data.errors;
-                // this.showMessage('Sửa thất bại');
                 this.$swal(
                     'Thất bại!',
                     'Kiểm tra lại thông tin!',
@@ -379,31 +359,32 @@ export default {
             });
         },
 
-        getBan() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('http://127.0.0.1:8000/api/getEmptyTable', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
-                this.ds_ban = res.data
-            })
-        },
+        // getBan() {
+        //     let token = window.localStorage.getItem('token');
+        //     if (token == null) {
+        //         this.$router.push('/login');
+        //     }
+        //     this.axios.get('http://localhost:8000/api/hdtaiquay/getEmptyTable', {
+        //         headers: {
+        //             Authorization: 'Bearer ' + token
+        //         }
+        //     }).then(res => {
+        //         this.ds_ban = res.data
+        //     })
+        // },
 
         getHD() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api, {
+            this.axios.get('hdtaiquay', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
                 this.ds_hd = res.data.data
+                this.ds_ban = res.data.ban;
                 $('#dataTable').DataTable().destroy();
                 this.$nextTick(() => {
                     $('#dataTable').DataTable(
@@ -425,6 +406,8 @@ export default {
                         }
                     );
                 })
+            }).catch(() => {
+                this.$router.push('/');
             })
         },
 
@@ -433,12 +416,11 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api + '/' + id, {
+            this.axios.get('hdtaiquay/' + id, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                // console.log(res.data.cthd)
                 this.cthd = res.data.cthd
                 this.tong = res.data.tong
             })
@@ -447,7 +429,6 @@ export default {
 
     created() {
         this.getHD();
-        this.getBan();
     },
 
 }    

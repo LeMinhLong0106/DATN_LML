@@ -49,12 +49,12 @@ export default {
         }
     },
     methods: {
-        getCTHD() {
+        getCook() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/daubep', {
+            this.axios.get('listCook', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -68,9 +68,9 @@ export default {
     },
 
     created() {
-        // this.getCTHD();
+        // this.getCook();
         setInterval(() => {
-            this.getCTHD();
+            this.getCook();
         }, 3000);
     },
 

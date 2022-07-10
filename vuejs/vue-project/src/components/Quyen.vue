@@ -42,7 +42,7 @@
 export default {
     data() {
         return {
-            api: 'http://localhost:8000/api/quyen',
+            // api: 'http://localhost:8000/api/permission',
             data: {
                 quyen: [],
                 vaitro_id: null,
@@ -71,7 +71,7 @@ export default {
                 quyen: this.data.quyen
                 // resources: this.resources
             }
-            this.axios.post(this.api, data, {
+            this.axios.post('permission', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -85,7 +85,6 @@ export default {
                     'Cập nhật phân quyền.',
                     'success'
                 )
-                // console.log(res.data)
             })
         },
 
@@ -94,7 +93,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api, {
+            this.axios.get('permission', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -109,7 +108,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/vaitro', {
+            this.axios.get('role', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -120,7 +119,6 @@ export default {
                 if (this.ds_vt[0].quyens != null) {
                     this.data.quyen = this.ds_vt[0].quyens.map(item => item.id)
                 }
-
             })
         },
 

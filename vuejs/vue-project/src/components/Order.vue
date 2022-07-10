@@ -8,7 +8,7 @@
                     <div class="card-header py-3">Tình trạng bàn</div>
                     <div class="card-body">
                         <span v-for="todo in ds_ban">
-                            <button v-if="todo.tinhtrang == 0" class="mb-2 mr-2 btn btn-secondary"
+                            <button v-if="todo.tinhtrang == 0" class="mb-2 mr-2 btn btn-success"
                                 @click="showmodal(todo.id)">Bàn {{ todo.id }}
                                 <br> {{
                                         todo.ghe
@@ -55,8 +55,8 @@
                                             <div v-else>{{ todo.soluong }}</div>
                                         </td>
                                         <td>{{ todo.ghichu }}</td>
-                                        <td>{{ todo.giaban.toLocaleString() }}đ</td>
-                                        <td>{{ (todo.soluong * todo.giaban).toLocaleString() }}đ</td>
+                                        <td>{{ todo.giaban }}</td>
+                                        <td>{{ (todo.soluong * todo.giaban) }}</td>
                                         <td>
                                             <span v-if="todo.tinhtrang == 0">Đang chờ</span>
                                             <span v-else>Đã nấu</span>
@@ -75,7 +75,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div>Tổng: {{ $data.tong.toLocaleString() }}đ</div>
+                            <div>Tổng: {{ $data.tong }}</div>
                         </div>
                         <div v-else>
                             <div class="alert alert-danger">
@@ -99,17 +99,23 @@
                             <div class="form-group">
                                 <label>Món ăn</label>
                                 <select name="product_name" id="product_name" class="form-control"
-                                    v-model="product_name" required>
+                                    v-model="product_name">
                                     <option value="">Chọn món ăn</option>
                                     <option v-for="item in ds_monan" v-bind:value="item.id">
                                         {{ item.tenmonan }}
                                     </option>
                                 </select>
+                                <div class="text-danger error-text " v-if="errors['product_name']"
+                                    v-html="errors['product_name']">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Số lượng</label>
                                 <input type="number" name="product_quantity" id="product_quantity" class="form-control"
                                     min="1" v-model="product_quantity">
+                                <div class="text-danger error-text " v-if="errors['product_quantity']"
+                                    v-html="errors['product_quantity']">
+                                </div>
                             </div>
                             <div class="form-group" id="form_people">
                                 <label>Số lượng người</label>
@@ -124,11 +130,9 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="hidden" name="hidden_table_id" id="hidden_table_id" />
-                            <input type="hidden" name="hidden_table_ghe" id="hidden_table_ghe" />
-                            <input type="hidden" name="hidden_table_status" id="hidden_table_status" />
-                            <input type="hidden" name="action" id="action" value="Add" />
-                            <input type="submit" name="submit" id="submit_button" class="btn btn-success" value="Add" />
+                            <input type="hidden" name="action" id="action" value="Thêm" />
+                            <input type="submit" name="submit" id="submit_button" class="btn btn-success"
+                                value="Thêm" />
                         </div>
                     </div>
                 </form>
@@ -176,37 +180,18 @@ export default {
             ds_hdkd: {},
             tong: '',
 
-            api: 'http://localhost:8000/api/',
+            // api: 'http://localhost:8000/api/',
+
+            errors: {},
         }
     },
 
     methods: {
-        getCTHD() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('http://127.0.0.1:8000/api/order', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
-                console.log(res.data);
-            }).catch(() => {
-                this.$router.push('/');
-            })
-        },
-
         showmodal(id) {
             let dsb = this.ds_ban.find(a => a.id == id);
             this.table_id = id;
             this.table_ghe = dsb.ghe;
             this.table_status = dsb.tinhtrang;
-            // let data = {
-            //     id: id,
-            //     ghe: this.table_ghe,
-            //     tinhtrang: this.table_status
-            // }
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
@@ -228,7 +213,7 @@ export default {
                 this.product_note = '',
                 this.people_quantity = '',
 
-                this.axios.get('http://127.0.0.1:8000/api/order/getSaleDetails/' + this.table_id, {
+                this.axios.get('order/getSaleDetails/' + this.table_id, {
                     headers: {
                         Authorization: 'Bearer ' + token
                     }
@@ -255,7 +240,7 @@ export default {
                 this.$router.push('/login');
             }
 
-            this.axios.post(this.api + 'order/orderFood', data, {
+            this.axios.post('order/orderFood', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -264,6 +249,9 @@ export default {
                 this.tong = response.data.tong;
                 $('#orderModal').modal('hide')
                 this.getBan();
+            }).catch(err => {
+                // console(err);
+                this.errors = err.response.data.errors;
             })
         },
 
@@ -276,7 +264,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.post(this.api + 'order/confirmOrder', data, {
+            this.axios.post('order/confirmOrder', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -299,7 +287,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.post(this.api + 'order/deleteOrder', data, {
+            this.axios.post('order/deleteOrder', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -321,7 +309,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.post(this.api+ 'order/updateSoluong', data, {
+            this.axios.post('order/updateQuantity', data, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -339,7 +327,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api + 'indexBan', {
+            this.axios.get('indexBan', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -353,7 +341,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api + 'indexMonan', {
+            this.axios.get('indexMonan', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -367,7 +355,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api + 'getHDKD', {
+            this.axios.get('order/getHDKD', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -384,7 +372,6 @@ export default {
         this.getBan();
         this.getMonAn();
         this.getHDKD();
-        this.getCTHD()
     },
 
 }    

@@ -8,6 +8,7 @@ use App\Models\HoaDon;
 use App\Models\KhachHang;
 use App\Models\MonAn;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class GiaoDienController extends Controller
@@ -46,10 +47,9 @@ class GiaoDienController extends Controller
 
         return response()->json(
             [
-                'message' => 'User created successfully',
-                'user' => $user,
+                'message' => 'Đăng ký thành công',
+                'customer' => $user,
             ],
-            201
         );
     }
 
@@ -58,10 +58,10 @@ class GiaoDienController extends Controller
         $data = $request->validate([
             'email' => 'required|string|email|max:100',
             'matkhau' => 'required|string|min:6',
-        ],[
+        ], [
             'email.required' => 'Nhập email',
             'email.email' => 'Email không hợp lệ',
-            'email.max' => 'Email không được vượt quá 255 ký tự',
+            'email.max' => 'Email không được vượt quá 100 ký tự',
             'matkhau.required' => 'Nhập mật khẩu',
             'matkhau.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
         ]);
@@ -92,9 +92,9 @@ class GiaoDienController extends Controller
     public function majestic()
     {
         // món chính mới nhất
-        $monan_moi = MonAn::where('danhmuc', '=', 1)->orderBy('created_at', 'desc')->take(8)->get();
-        // món đặc biệt
-        $monan_db = MonAn::with(['danhmucmonss'])->where('danhmuc', '=', 4)->get();
+        $monan_moi = MonAn::where('danhmuc', '=', 1)->where('tinhtrang', '=', 1)->orderBy('created_at', 'desc')->take(8)->get();
+        // món đặc sản
+        $monan_db = MonAn::with(['danhmucmonss'])->where('danhmuc', '=', 4)->where('tinhtrang', '=', 1)->get();
         return response()->json([
             'monan_db' => $monan_db,
             'monan_moi' => $monan_moi
@@ -103,7 +103,7 @@ class GiaoDienController extends Controller
 
     public function menu()
     {
-        $danhmucs = DanhMuc::with(['monan'])->get();
+        $danhmucs = DanhMuc::get();
         $monans = MonAn::where('tinhtrang', '=', 1)->with(['danhmucmonss'])->get();
         return response()->json([
             'danhmucs' => $danhmucs,

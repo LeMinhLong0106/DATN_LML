@@ -56,12 +56,6 @@ export default {
     },
 
     methods: {
-        // async forgotPass() {
-        //     const res = await this.axios.post('http://127.0.0.1:8000/api/forgot', {
-        //         email: this.email
-        //     })
-        //     console.log(res)
-        // }
         forgotPass() {
             this.axios.post('http://localhost:8000/api/forgot', {
                 email: this.email,
@@ -73,7 +67,5 @@ export default {
             });
         }
     },
-
-
 }
 </script>

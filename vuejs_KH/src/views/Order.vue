@@ -4,6 +4,7 @@
         <br>
         <!-- oorder {{ order }} -->
         <h1 class="title">Đơn hàng</h1>
+        <!-- <div class="box-container" v-if="orders.length !== null"> -->
         <div class="box-container" v-if="orders.length > 0">
             <div class="box" v-for="item in orders">
                 <p> Ngày đặt: <span>{{ format_date(item.created_at) }}</span> </p>
@@ -11,6 +12,7 @@
                 <p> Số điện thoại: <span>{{ item.sdt }}</span> </p>
                 <p> Địa chỉ: <span>{{ item.diachi }}</span> </p>
                 <p> Món ăn: <span v-for="i in item.monanss" class="text-lowercase">{{ i.tenmonan }}, </span> </p>
+                <!-- <p> so luong: <span v-for="i in item.cthds" class="text-lowercase">{{ i.soluong }}, </span> </p> -->
                 <!-- <p> your orders : <span>pizza 01 (1) - main dish 02 (3) -</span> </p> -->
                 <p> Tổng tiền: <span>{{ item.tongtien }}</span> </p>
                 <p> Tình trạng đơn:
@@ -34,18 +36,10 @@ import moment from 'moment'
 export default {
     data() {
         return {
-            orders: null,
+            orders: {},
             monan: [],
         }
     },
-    // computed: {
-    //     user() {
-    //         return this.$store.getters.user;
-    //     },
-    //     order() {
-    //         return this.$store.getters.order;
-    //     },
-    // },
     methods: {
         format_date(value) {
             if (value) {
@@ -53,23 +47,41 @@ export default {
             }
         },
 
+        // getOrder() {
+        //     let token = window.localStorage.getItem('token');
+        //     if (token == null) {
+        //         this.$router.push('/login');
+        //     }
+        //     else {
+        //         this.axios.get('http://localhost:8000/api/getOrder', {
+        //             headers: {
+        //                 Authorization: 'Bearer ' + token
+        //             }
+        //         }).then(response => {
+        //             console.log(response.data);
+        //             // console.log(response.data['0'].monanss['0'].tenmonan);
+        //             this.orders = response.data;
+        //         }).catch(() => {
+        //             // console.log(error);
+        //             this.$router.push('/login');
+        //         })
+        //     }
+        // },
+
         getOrder() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
             }
             else {
-                this.axios.get('http://localhost:8000/api/getOrder', {
+                this.axios.get('http://localhost:8000/api/getOrder/' + window.localStorage.getItem('idKH'), {
                     headers: {
                         Authorization: 'Bearer ' + token
                     }
                 }).then(response => {
-                    console.log(response.data);
-                    // console.log(response.data['0'].monanss['0'].tenmonan);
+                    // console.log(response.data);
                     this.orders = response.data;
-                    // this.monan = response.data.monans;
                 }).catch(() => {
-                    // console.log(error.message);
                     this.$router.push('/login');
                 })
             }

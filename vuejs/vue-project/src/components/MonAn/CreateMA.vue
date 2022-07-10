@@ -83,7 +83,7 @@
 
                             <!-- Submit button-->
                             <button type="submit" class="btn btn-primary">Thêm</button>
-                            <router-link to="/monan" class="btn btn-primary float-right">Quay lại</router-link>
+                            <router-link to="/food" class="btn btn-primary float-right">Quay lại</router-link>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@ import Form from 'vform'
 export default {
     data() {
         return {
-            api: 'http://localhost:8000/api/monan',
+            // api: 'http://localhost:8000/api/food',
             form: new Form({
                 id: '',
                 tenmonan: '',
@@ -113,10 +113,6 @@ export default {
         }
     },
     methods: {
-        // getIMG(hinhanh) {
-        //     return `http://localhost:8000/images/${hinhanh}`
-        // },
-
         saveImage(e) {
             this.form.hinhanh = e.target.files[0]
         },
@@ -126,7 +122,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.form.post(this.api, {
+            this.form.post('food', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -147,13 +143,12 @@ export default {
                     )
                 })
         },
-
         getDM() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://127.0.0.1:8000/api/danhmuc', {
+            this.axios.get('category', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -162,7 +157,6 @@ export default {
                 this.ds_dm = res.data
             })
         },
-
     },
 
     created() {

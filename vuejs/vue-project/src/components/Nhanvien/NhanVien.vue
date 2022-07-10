@@ -65,9 +65,8 @@
 export default {
     data() {
         return {
-            api: 'http://localhost:8000/api/nhanvien',
+            // api: 'http://localhost:8000/api/user',
             ds_nv: {},
-            ds_vt: {},
         }
     },
     methods: {
@@ -87,7 +86,7 @@ export default {
                 confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete(this.api + '/' + id, {
+                    this.axios.delete('user/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
@@ -100,7 +99,6 @@ export default {
                     })
                     this.getNV();
                 }
-
             })
         },
 
@@ -113,7 +111,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api, {
+            this.axios.get('user', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -145,24 +143,10 @@ export default {
             })
         },
 
-        getVT() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('http://127.0.0.1:8000/api/vaitro', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
-                this.ds_vt = res.data
-            })
-        },
     },
 
     created() {
         this.getNV();
-        this.getVT();
     },
 
 }      

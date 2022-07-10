@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     registorsubmit() {
-      this.axios.post('http://127.0.0.1:8000/api/register', this.user)
+      this.axios.post('http://localhost:8000/api/register', this.user)
         .then(response => {
           this.$router.push('/login')
         })

@@ -18,7 +18,6 @@
       <ul class="navbar-item d-flex align-items-end list-unstyled">
         <!-- Nav Item - User Information -->
         <li v-if="user" class="nav-item">
-
           <a class="nav-link" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
             <h5>Chào, {{ user.tenkh }}</h5>
@@ -97,27 +96,29 @@ export default {
 
       this.$router.push('/login');
     },
+
+    // async getCus() {
+    //   const res = await this.axios.get('getCus/' + window.localStorage.getItem('idKH'))
+    //   this.$store.dispatch('user', res.data)
+    // },
   },
+  
+  // created() {
+  //   this.getCus()
+  // },
+
+  // mounted() {
+  //   this.getCus()
+  // },
 
   async created() {
-    const res = await this.axios.get('getCus')
-    console.log(res.data)
-    this.$store.dispatch('user', res.data)
-    // this.$store.dispatch('order', res.data.order)
-    this.removeNav()
-    // this.user = res.data
-    // console.log(res.data)
+    if (window.localStorage.getItem('token')) {
+      const res = await this.axios.get('getCus/' + window.localStorage.getItem('idKH'))
+      this.$store.dispatch('user', res.data)
+    }
+    // this.removeNav()
   }
 
-  // created() {
-  //     let token = window.localStorage.getItem('token');
-  //     if (token == null) {
-  //         this.checklog = false;
-  //     }
-  //     else {
-  //         this.checklog = true;
-  //     }
-  // }
 }  
 </script>
 

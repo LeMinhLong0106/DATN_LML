@@ -19,12 +19,12 @@
                                 <input type="text" v-model="item.note">
                                 <br>
                                 <span> Giá: </span>
-                                <span class="price"> {{ item.gia }} </span>
-                                <!-- <span class="price"> {{ item.gia.toLocaleString() }} </span> -->
+                                <!-- <span class="price"> {{ item.gia }} </span> -->
+                                <span class="price"> {{ item.gia.toLocaleString("de-DE") }} VNĐ </span>
                                 <br>
                                 <span> Tổng: </span>
-                                <span class="price"> {{ item.totalPrice }} </span>
-                                <!-- <span class="price"> {{ item.totalPrice.toLocaleString() }} </span> -->
+                                <!-- <span class="price"> {{ item.totalPrice }} </span> -->
+                                <span class="price"> {{ item.totalPrice.toLocaleString("de-DE") }} VNĐ </span>
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                 <div class="cart-total">
                     <h3 class="title"> Hóa đơn </h3>
                     <div class="box">
-                        <h3 class="total"> Thành tiền : <span>{{ totalPrice }} VNĐ</span> </h3>
+                        <h3 class="total"> Thành tiền : <span>{{ totalPrice.toLocaleString("de-DE") }} VNĐ</span> </h3>
                         <div class="order" id="order">
                             <form @submit.prevent="thanhtoan()">
                                 <div class="flex">
@@ -74,7 +74,10 @@
         <div v-else>
             <section class="shopping-cart-container">
                 <div class="products-container">
-                    <h3 class="title">Không có sản phẩm nào trong giỏ hàng</h3>
+                    <h3 class="title-none">Không có sản phẩm nào trong giỏ hàng</h3>
+                </div>
+                <div class="text-center">
+                    <router-link to="/menu"> <button class="btn">Quay lại Menu</button></router-link>
                 </div>
             </section>
         </div>
@@ -154,11 +157,8 @@ export default {
                 }).catch(error => {
                     this.errors = error.response.data.errors;
                 })
-
             }
-
         },
-
     },
     created() {
         this.tongtien = this.totalPrice;
@@ -195,6 +195,13 @@ export default {
     padding: 1rem;
     color: #130f40;
     border-bottom: 0.1rem solid rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.shopping-cart-container .title-none {
+    font-size: 2.5rem;
+    padding: 1rem;
+    color: #130f40;
     text-align: center;
 }
 

@@ -12,24 +12,38 @@
                                 <div class="col-lg-6">
                                     <div class="p-5">
                                         <div class="text-center">
-                                            <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                            <h1 class="h4 text-gray-900 mb-4">Chào mừng bạn trở lại!</h1>
                                         </div>
                                         <form @submit.prevent="loginsubmit()">
                                             <div class="form-group">
                                                 <input v-model="user.email" type="email"
                                                     class="form-control form-control-user"
-                                                    :class="{ 'is-invalid': errors.email }"
-                                                    placeholder="Email Address...">
+                                                    :class="{ 'is-invalid': errors.email }" placeholder="Nhập email...">
                                                 <div v-if="errors.email" class="invalid-feedback">
                                                     <strong>{{ errors.email[0] }}</strong>
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <input type="hidden" class="form-control"
+                                                    :class="{ 'is-invalid': errEmail }">
+                                                <div v-if="errEmail" class="invalid-feedback">
+                                                    <strong>{{ errEmail }}</strong>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <input v-model="user.password" type="password"
                                                     class="form-control form-control-user"
-                                                    :class="{ 'is-invalid': errors.password }" placeholder="Password">
+                                                    :class="{ 'is-invalid': errors.password }"
+                                                    placeholder="Nhập mật khẩu...">
                                                 <div v-if="errors.password" class="invalid-feedback">
                                                     <strong>{{ errors.password[0] }}</strong>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" class="form-control"
+                                                    :class="{ 'is-invalid': errPassword }">
+                                                <div v-if="errPassword" class="invalid-feedback">
+                                                    <strong>{{ errPassword }}</strong>
                                                 </div>
                                             </div>
                                             <!-- <div class="form-group">
@@ -41,25 +55,17 @@
                                                 </div>
                                             </div> -->
                                             <button type="submit" class="btn btn-primary btn-user btn-block">
-                                                Login
+                                                Đăng nhập
                                             </button>
                                             <hr>
-
-                                            <!-- <button type="submit" class="btn btn-facebook btn-user btn-block">
-                                                <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                            </button> -->
                                         </form>
-                                        <!-- <button @click="loginGG()" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </button> -->
-                                        <!-- <button @click.prevent="authProvider('google')">Sign up with Google</button> -->
                                         <div class="text-center">
-                                            <router-link class="small" to="/forgot">Forgot Password?</router-link>
+                                            <router-link class="small" to="/forgot">Quên mật khẩu?</router-link>
                                         </div>
-                                        <div class="text-center">
+                                        <!-- <div class="text-center">
                                             <router-link to="/registor" class="small" href="register.html">Create an
                                                 Account!</router-link>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -80,18 +86,31 @@ export default {
                 password: ''
             },
             errors: {},
+            errPassword: '',
+            errEmail: ''
         }
     },
 
     methods: {
 
         loginsubmit() {
-            this.axios.post('http://127.0.0.1:8000/api/login', this.user).then(response => {
+            this.axios.post('http://localhost:8000/api/login', this.user).then(response => {
                 window.localStorage.setItem('token', response.data.token);//store token in local storage
                 this.$router.push('/');//redirect to home page
             }).catch(error => {
-                // console.log(error.response.status);
-                this.errors = error.response.data.errors;
+                if (error.response.status == 401) {
+                    this.errPassword = error.response.data.errPassword;
+                    this.errors = '';
+                    this.errEmail = '';
+                } else if (error.response.status == 404) {
+                    this.errEmail = error.response.data.errEmail;
+                    this.errors = '';
+                    this.errPassword = '';
+                } else {
+                    this.errors = error.response.data.errors;
+                    this.errPassword = '';
+                    this.errEmail = '';
+                }
             })
         },
         checkLogin() {
@@ -101,7 +120,7 @@ export default {
             }
         },
     },
-    mounted() {
+    created() {
         this.checkLogin();
     }
 

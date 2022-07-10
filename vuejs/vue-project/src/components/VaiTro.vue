@@ -87,7 +87,7 @@ export default {
     data() {
         return {
             editmode: true,
-            api: 'http://localhost:8000/api/vaitro',
+            // api: 'http://localhost:8000/api/role',
             form: new Form({
                 id: '',
                 tenvaitro: '',
@@ -109,7 +109,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.form.post(this.api, {
+            this.form.post('role', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -145,7 +145,7 @@ export default {
                 this.$router.push('/login');
             }
             // console.log('update');
-            this.form.put(this.api + '/' + this.form.id, {
+            this.form.put('role/' + this.form.id, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -183,7 +183,7 @@ export default {
                 confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.form.delete(this.api + '/' + id, {
+                    this.form.delete('role/' + id, {
                         headers: {
                             Authorization: 'Bearer ' + token
                         }
@@ -211,7 +211,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get(this.api, {
+            this.axios.get('role', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -248,8 +248,5 @@ export default {
     created() {
         this.getVT();
     },
-
-
-
 }      
 </script>

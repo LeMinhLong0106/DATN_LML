@@ -33,13 +33,8 @@ class MonanController extends Controller
     {
         // $monans = Monan::with(['danhmucmonss'])->paginate(10);
         // return response()->json($monans, 200);
-
         $data = Monan::with(['danhmucmonss'])->get();
-        $monan = Monan::with(['danhmucmonss'])->where('tinhtrang', 1)->get();
-        return response()->json([
-            'datamonan' => $data,
-            'monan' => $monan
-        ], 200);
+        return response()->json($data, 200);
         
     }
 
@@ -98,6 +93,7 @@ class MonanController extends Controller
 
         return response()->json([
             'message' => 'Thêm món ăn thành công',
+            'data' => $data
         ]);
     }
 
@@ -205,6 +201,7 @@ class MonanController extends Controller
 
         return response()->json([
             'message' => 'Cập nhật món ăn thành công',
+            'data' => $data
         ]);
     }
 

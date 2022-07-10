@@ -34,11 +34,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 </template>
 <script>
@@ -53,7 +50,7 @@ export default {
 
     methods: {
         async resetPass() {
-            const res = await this.axios.post('http://localhost:8000/api/reset', {
+            const res = await this.axios.post('reset', {
                 password: this.password,
                 password_confirmation: this.password_confirmation,
                 token: this.$route.params.token,

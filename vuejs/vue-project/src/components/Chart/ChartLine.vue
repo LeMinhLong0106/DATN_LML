@@ -21,7 +21,7 @@ export default {
 
     try {
       let token = window.localStorage.getItem('token');
-      const response = await this.axios.get('http://127.0.0.1:8000/api/baocao', {
+      const response = await this.axios.get('http://localhost:8000/api/report', {
         headers: {
           Authorization: 'Bearer ' + token
         }
