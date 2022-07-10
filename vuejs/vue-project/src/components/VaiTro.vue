@@ -55,15 +55,20 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="tenvaitro">Tên vai trò</label>
-                                <input v-model="form.tenvaitro" type="text" class="form-control" name="tenvaitro">
-                                <div class="text-danger error-text " v-if="form.errors.has('tenvaitro')"
-                                    v-html="form.errors.get('tenvaitro')"></div>
+                                <input v-model="tenvaitro" type="text" class="form-control"
+                                    :class="{ 'is-invalid': errors.tenvaitro }" name="tenvaitro">
+                                <div v-if="errors.tenvaitro" class="invalid-feedback">
+                                    <strong>{{ errors.tenvaitro[0] }}</strong>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="mota">Mô tả</label>
-                                <input v-model="form.mota" type="text" class="form-control" name="mota">
-                                <div class="text-danger error-text " v-if="form.errors.has('mota')"
-                                    v-html="form.errors.get('mota')"></div>
+                                <input v-model="mota" type="text" class="form-control"
+                                    :class="{ 'is-invalid': errors.mota }" name="mota">
+                                <div v-if="errors.mota" class="invalid-feedback">
+                                    <strong>{{ errors.mota[0] }}</strong>
+                                </div>
+
                             </div>
                         </div>
 
@@ -81,39 +86,31 @@
 </template>
 
 <script>
-import Form from 'vform'
-
+import BaseRequest from '../core/BaseRequest'
 export default {
     data() {
         return {
             editmode: true,
             // api: 'http://localhost:8000/api/role',
-            form: new Form({
-                id: '',
-                tenvaitro: '',
-                mota: '',
-            }),
+            id: '',
+            tenvaitro: '',
+            mota: '',
             ds_vt: {},
+            errors: {},
         }
     },
     methods: {
         newModal() {
             this.editmode = false
-            this.form.reset();
+            this.id = ''
+            this.tenvaitro = ''
+            this.mota = ''
             $('#addModal').modal('show')
             $('#modal_title').html('Thêm vai trò');
         },
 
         saveDM() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.form.post('role', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            })
+            BaseRequest.post('role')
                 .then(res => {
                     $('#addModal').modal('hide')
                     this.$swal(
@@ -122,10 +119,10 @@ export default {
                         'success'
                     )
                     this.getVT();
-                })
-                .catch(() => {
+                }).catch(err => {
+                    this.errors = err.response.data.errors
                     this.$swal(
-                        'Lỗi!',
+                        'Thất bại!',
                         'Có lỗi xảy ra.',
                         'error'
                     )
@@ -133,23 +130,20 @@ export default {
         },
         editModal(vaitro) {
             this.editmode = true
+            this.id = vaitro.id
+            this.tenvaitro = vaitro.tenvaitro
+            this.mota = vaitro.mota
             $('#addModal').modal('show')
-            this.form.fill(vaitro);//gán giá trị vào form
-            // console.log(this.form)
             $('#modal_title').html('Sửa vai trò');
         },
 
         updateDM() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
+            let data = {
+                id: this.id,
+                tenvaitro: this.tenvaitro,
+                mota: this.mota
             }
-            // console.log('update');
-            this.form.put('role/' + this.form.id, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }, this.form).then(res => {
+            BaseRequest.put('role/' + this.id, data).then(res => {
                 $('#addModal').modal('hide')
                 this.$swal(
                     'Thành công!',
@@ -157,7 +151,8 @@ export default {
                     'success'
                 )
                 this.getVT()
-            }).catch(() => {
+            }).catch(err => {
+                this.errors = err.response.data.errors
                 this.$swal(
                     'Lỗi!',
                     'Có lỗi xảy ra.',
@@ -168,10 +163,6 @@ export default {
 
 
         deleteDM(id) {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
             this.$swal({
                 title: 'Bạn chắc chứ?',
                 text: "Bạn muốn xóa vai trò này!",
@@ -183,11 +174,7 @@ export default {
                 confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.form.delete('role/' + id, {
-                        headers: {
-                            Authorization: 'Bearer ' + token
-                        }
-                    }).then(res => {
+                    BaseRequest.delete('role/' + id).then(res => {
                         this.$swal(
                             'Đã xóa!',
                             res.data.message,
@@ -207,15 +194,7 @@ export default {
         },
 
         getVT() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('role', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('role').then(res => {
                 // console.log(res.data);
                 this.ds_vt = res.data
                 $('#dataTable').DataTable().destroy();

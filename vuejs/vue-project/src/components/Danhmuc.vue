@@ -125,6 +125,11 @@ export default {
             }).catch(err => {
                 // console.log(err.response.data.errors)
                 this.errors = err.response.data.errors
+                this.$swal(
+                    'Lỗi!',
+                    'Có lỗi xảy ra.',
+                    'error'
+                )
             })
         },
 
@@ -138,20 +143,12 @@ export default {
         },
 
         updateDM() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
             let data = {
                 id: this.id,
                 tendm: this.tendm,
                 uutien: this.uutien,
             }
-            this.axios.put('category/' + this.id, data, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.put('category/' + this.id, data).then(res => {
                 $('#addModal').modal('hide')
                 this.$swal(
                     'Thành công!',
@@ -159,7 +156,8 @@ export default {
                     'success'
                 )
                 this.getDM();
-            }).catch(() => {
+            }).catch(err => {
+                this.errors = err.response.data.errors
                 this.$swal(
                     'Lỗi!',
                     'Có lỗi xảy ra.',
@@ -184,11 +182,7 @@ export default {
                 confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete('category/' + id, {
-                        headers: {
-                            Authorization: 'Bearer ' + token
-                        }
-                    }).then(res => {
+                    BaseRequest.delete('category/' + id).then(res => {
                         this.$swal(
                             'Đã xóa!',
                             res.data.message,
@@ -208,15 +202,7 @@ export default {
         },
 
         getDM() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('category', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('category').then(res => {
                 this.ds_dm = res.data
                 $('#dataTable').DataTable().destroy();
                 this.$nextTick(() => {

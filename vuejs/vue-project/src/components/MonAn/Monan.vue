@@ -38,7 +38,7 @@
 
                         <td class="text-center"><img :src="getIMG(todo.hinhanh)" style="width: 5rem; " /></td>
                         <td>{{ todo.tenmonan }}</td>
-                        <td>{{ todo.gia.toLocaleString() }}đ</td>
+                        <td>{{ todo.gia.toLocaleString("de-DE") }}</td>
                         <td v-if="todo.tinhtrang == 0">
                            <span class="badge badge-danger">Hết</span>
                         </td>
@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import BaseRequest from '../../core/BaseRequest'
 export default {
    data() {
       return {
@@ -81,10 +82,6 @@ export default {
       },
 
       deleteMon(id) {
-         let token = window.localStorage.getItem('token');
-         if (token == null) {
-            this.$router.push('/login');
-         }
          this.$swal({
             title: 'Bạn chắc chứ?',
             text: "Bạn muốn xóa món ăn này!",
@@ -96,11 +93,7 @@ export default {
             confirmButtonText: 'Xóa'
          }).then((result) => {
             if (result.isConfirmed) {
-               this.axios.delete('food/' + id, {
-                  headers: {
-                     Authorization: 'Bearer ' + token
-                  }
-               }).then(res => {
+               BaseRequest.delete('food/' + id).then(res => {
                   this.$swal(
                      'Đã xóa!',
                      res.data.message,
@@ -109,20 +102,11 @@ export default {
                })
                this.getMon();
             }
-
          })
       },
 
       getMon() {
-         let token = window.localStorage.getItem('token');
-         if (token == null) {
-            this.$router.push('/login');
-         }
-         this.axios.get('food', {
-            headers: {
-               Authorization: 'Bearer ' + token
-            }
-         }).then(res => {
+         BaseRequest.get('food').then(res => {
             // console.log(res.data);
             this.ds_mon = res.data
             $('#dataTable').DataTable().destroy();

@@ -37,12 +37,12 @@
                                         <td> {{ ++index }} </td>
                                         <td>{{ item.monanss.tenmonan }}</td>
                                         <td>{{ item.soluong }}</td>
-                                        <td>{{ item.giaban }} </td>
-                                        <td>{{ item.giaban * item.soluong }} </td>
+                                        <td>{{ parseInt(item.giaban).toLocaleString("de-DE") }} </td>
+                                        <td>{{ (item.giaban * item.soluong).toLocaleString("de-DE") }} </td>
                                     </tr>
                                     <tr>
                                         <td colspan="3" class="text-right"><b>Tổng:</b></td>
-                                        <td colspan="2">{{ tong.toLocaleString() }} </td>
+                                        <td colspan="2">{{ tong.toLocaleString("de-DE") }} </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -62,7 +62,7 @@
 
 <script>
 import moment from 'moment'
-
+import BaseRequest from '../core/BaseRequest'
 export default {
     data() {
         return {
@@ -82,15 +82,8 @@ export default {
         },
 
         getCTHD(id) {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('hdtaiquay/' + id, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            
+            BaseRequest.get('hdtaiquay/' + id).then(res => {
                 // console.log(res.data.cthd)
                 this.hd = res.data.data;
                 this.cthd = res.data.cthd

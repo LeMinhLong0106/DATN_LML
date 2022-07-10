@@ -65,9 +65,11 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="ghe">Số ghế</label>
-                                <input v-model="form.ghe" type="number" class="form-control" name="ghe">
-                                <div class="text-danger error-text " v-if="form.errors.has('ghe')"
-                                    v-html="form.errors.get('ghe')"></div>
+                                <input v-model="form.ghe" type="number" class="form-control"
+                                    :class="{ 'is-invalid': form.errors.has('ghe') }" name="ghe">
+                                <div v-if="form.errors.has('ghe')" class="invalid-feedback">
+                                    <strong>{{ form.errors.get('ghe') }}</strong>
+                                </div>
                             </div>
                         </div>
 
@@ -87,6 +89,7 @@
 </template>
 
 <script>
+import BaseRequest from '../core/BaseRequest'
 import Form from 'vform'
 export default {
     data() {
@@ -99,6 +102,7 @@ export default {
                 tinhtrang: 0,
             }),
             ds_ban: {},
+            errors: {},
         }
     },
     methods: {
@@ -127,8 +131,7 @@ export default {
                         'success'
                     )
                     this.getBan();
-                })
-                .catch(() => {
+                }).catch(() => {
                     this.$swal(
                         'Lỗi!',
                         'Có lỗi xảy ra.',
@@ -209,15 +212,11 @@ export default {
             })
         },
         getBan() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('table', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
+            // let token = window.localStorage.getItem('token');
+            // if (token == null) {
+            //     this.$router.push('/login');
+            // }
+            BaseRequest.get('table').then(response => {
                 console.log(response.data);
                 this.ds_ban = response.data
                 $('#dataTable').DataTable().destroy();

@@ -41,7 +41,7 @@
 </template>
 
 <script>
-
+import BaseRequest from '../core/BaseRequest';
 export default {
     data() {
         return {
@@ -50,17 +50,9 @@ export default {
     },
     methods: {
         getCook() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('listCook', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('listCook').then(res => {
                 this.ds_cthd = res.data.cthd
-            }).catch(error => {
+            }).catch(() => {
                 this.$router.push('/');
             })
         },

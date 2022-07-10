@@ -41,8 +41,8 @@
                                     <td>{{ item.monanss.tenmonan }}</td>
                                     <td>{{ item.soluong }}</td>
                                     <td>{{ item.ghichu }}</td>
-                                    <td>{{ item.giaban }} </td>
-                                    <td>{{ item.soluong * item.giaban }} </td>
+                                    <td>{{ parseInt(item.giaban).toLocaleString("de-DE") }} </td>
+                                    <td>{{ (item.soluong * item.giaban).toLocaleString("de-DE") }} </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -65,7 +65,7 @@
 
 <script>
 import moment from 'moment'
-
+import BaseRequest from '../core/BaseRequest'
 export default {
     data() {
         return {
@@ -87,15 +87,7 @@ export default {
             }
         },
         getCTHD(id) {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('hdonline/' + id, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('hdonline/' + id).then(res => {
                 // console.log(res.data.cthd)
                 this.hd = res.data.data;
                 this.cthd = res.data.cthd
@@ -103,15 +95,7 @@ export default {
             })
         },
         thanhtoan() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('hdonline/' + this.hd.id + '/thanhtoanon', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(() => {
+            BaseRequest.get('hdonline/' + this.hd.id + '/thanhtoanon').then(() => {
                 this.$swal(
                     'Thành công!',
                     'Hóa đơn đã được xử lý',

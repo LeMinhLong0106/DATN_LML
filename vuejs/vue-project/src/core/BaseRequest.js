@@ -15,6 +15,7 @@ export default {
             headers: this.getHeader()
         });
     },
+
     post(url, data) {
         return axios.post(apiUrl + url, data, {
             headers: this.getHeader()
@@ -23,6 +24,12 @@ export default {
     
     put(url, data) {
         return axios.put(apiUrl + url, data, {
+            headers: this.getHeader()
+        });
+    },
+
+    delete(url) {
+        return axios.delete(apiUrl + url, {
             headers: this.getHeader()
         });
     },

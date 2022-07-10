@@ -23,7 +23,7 @@
                                 <td>{{ item.hoten }}</td>
                                 <td>{{ item.sdt }}</td>
                                 <td>{{ item.diachi }}</td>
-                                <td>{{ item.tongtien.toLocaleString() }} đ</td>
+                                <td>{{ item.tongtien.toLocaleString("de-DE") }}</td>
                                 <td>{{ format_date(item.created_at) }}</td>
                                 <td>
                                     <span v-if="item.tinhtrang == 0" class="badge badge-danger">Chưa xử lý</span>
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import BaseRequest from '../core/BaseRequest'
 import moment from 'moment'
 export default {
 
@@ -78,10 +79,6 @@ export default {
         },
 
         deleteHD(id) {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
             this.$swal({
                 title: 'Bạn chắc chứ?',
                 text: "Bạn muốn xóa hóa đơn này!",
@@ -93,11 +90,7 @@ export default {
                 confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete('hdonline/deleteHDO/' + id, {
-                        headers: {
-                            Authorization: 'Bearer ' + token
-                        }
-                    }).then(res => {
+                    BaseRequest.delete('hdonline/deleteHDO/' + id).then(res => {
                         this.$swal(
                             'Đã xóa!',
                             res.data.message,
@@ -114,11 +107,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('hdonline', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('hdonline').then(res => {
                 // console.log(res.data.data)
                 this.ds_hd = res.data.data
                 $('#dataTable').DataTable().destroy();
@@ -148,15 +137,7 @@ export default {
         },
 
         getCTHD(id) {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('hdonline/' + id, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('hdonline/' + id).then(res => {
                 // console.log(res.data.cthd)
                 this.cthd = res.data.cthd
                 this.tong = res.data.tong

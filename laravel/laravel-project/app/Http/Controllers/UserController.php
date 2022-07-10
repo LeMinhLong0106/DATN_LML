@@ -102,6 +102,7 @@ class UserController extends Controller
             'diachi' => 'required|string|max:255',
             'ngaysinh' => 'required|date',
             'hinhanh' => 'required',
+            'vaitro_id' => 'required'
         ], [
             'hoten.required' => 'Nhập họ tên',
             'email.required' => 'Nhập email',
@@ -111,6 +112,7 @@ class UserController extends Controller
             'diachi.required' => 'Nhập địa chỉ',
             'ngaysinh.required' => 'Nhập ngày sinh',
             'hinhanh.required' => 'Hình ảnh không được để trống',
+            'vaitro_id.required' => 'Nhập vai trò'
         ]);
 
         $data = new User;
@@ -146,6 +148,7 @@ class UserController extends Controller
             'sdt' => 'required|min:10',
             'diachi' => 'required|string|max:255',
             'ngaysinh' => 'required|date',
+            'vaitro_id' => 'required'
         ], [
             'hoten.required' => 'Nhập họ tên',
             'email.required' => 'Nhập email',
@@ -154,6 +157,7 @@ class UserController extends Controller
             'sdt.min' => 'Số điện thoại phải có ít nhất 10 số',
             'diachi.required' => 'Nhập địa chỉ',
             'ngaysinh.required' => 'Nhập ngày sinh',
+            'vaitro_id.required' => 'Nhập vai trò'
         ]);
 
         $data = User::find($nhanvien);

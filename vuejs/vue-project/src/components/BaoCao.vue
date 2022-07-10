@@ -44,7 +44,7 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('http://localhost:8000/api/report', {
+            this.axios.get('report', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -52,15 +52,12 @@ export default {
                 console.log(res.data)
                 this.ds_dm = res.data.hd
             }).catch(() => {
-                // this.$router.push('/');
+                this.$router.push('/login');
             })
         },
         filterDate() {
             // console.log(response)
             const test = this.ds_dm.filter(item =>
-                // {
-                //     return moment(item.created_at).isBetween(this.start, this.end)
-                // }
                 item.created_at >= this.start && item.created_at <= this.end
             )
             const myLine = new Chart(document.getElementById('myLine'), {
@@ -91,7 +88,6 @@ export default {
             });
             myLine,
             myLines
-            // this.data = this.data.filter(item => item.date >= this.start && item.date <= this.end)
         },
         reset() {
             this.start = ''

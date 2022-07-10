@@ -25,23 +25,23 @@
                                 <td>{{ format_date(item.created_at) }}</td>
                                 <td>{{ item.nhanvien_id }}</td>
                                 <td>{{ item.nhanvien_tn }}</td>
-                                <td>{{ item.tongtien.toLocaleString() }} đ</td>
+                                <td>{{ item.tongtien.toLocaleString("de-DE") }} </td>
                                 <td>
                                     <span v-if="item.tinhtrang == 0" class="badge badge-danger">Chưa xử lý</span>
                                     <span v-else class="badge badge-success">Đã xử lý</span>
                                 </td>
                                 <td>
                                     <div v-if="item.tinhtrang == 0">
-                                        <button type="button" class="btn btn-primary btn-circle btn-sm"
+                                        <button type="button" class="btn btn-primary btn-circle btn-sm mr-2"
                                             @click="editHD(item)">
                                             <i class="fas fa-edit"></i></button>
-                                        <!-- <button type="button" class="btn btn-danger btn-circle btn-sm" @click="deleteHD(item.id)">
-                                <i class="fas fa-times"></i></button> -->
+
+                                        <button type="button" class="btn btn-danger btn-circle btn-sm"
+                                            @click="deleteHD(item.id)"><i class="fas fa-times"></i></button>
                                     </div>
                                     <div v-else>
                                         <button type="button" class="btn btn-danger btn-circle btn-sm mr-2"
                                             @click="deleteHD(item.id)"><i class="fas fa-times"></i></button>
-
                                         <router-link :to="{ name: 'hdtaiquay.detail', params: { id: item.id } }">
                                             <button type="button" class="btn btn-warning btn-circle btn-sm">
                                                 <i class="fas fa-eye"></i></button>
@@ -104,7 +104,7 @@
                                             @change="updateSoluong(item.id, item.soluong)" class="form-control" min="1"
                                             style="width: 70px;">
                                     </td>
-                                    <td>{{ item.tongtien.toLocaleString() }}</td>
+                                    <td>{{ item.tongtien.toLocaleString("de-DE") }}</td>
                                     <!-- <td>
                                         <div v-if="item.tinhtrang == 0">
                                             <button class="btn btn-danger btn-circle btn-sm mr-2"
@@ -128,7 +128,7 @@
                 </div>
             </div>
         </div>
-
+        <!-- model đặt bàn trước -->
         <div id="orderModal" class="modal fade">
             <div class="modal-dialog">
                 <form @submit.prevent="saveDSmon">
@@ -186,6 +186,7 @@
 
 <script>
 import moment from 'moment'
+import BaseRequest from '../core/BaseRequest'
 export default {
 
     data() {
@@ -228,17 +229,10 @@ export default {
         thanhToan() {
             var id = this.id;
             var tong = this.tong;
-            var url = 'http://localhost:8000/api/hdtaiquay/' + id + '/thanhtoan';
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.put(url, {
+            // var url = 'http://localhost:8000/api/hdtaiquay/' + id + '/thanhtoan';
+
+            BaseRequest.put('hdtaiquay/' + id + '/thanhtoan', {
                 tong: tong
-            }, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
             }).then(() => {
                 this.getHD();
                 $('#editHD').modal('hide');
@@ -253,34 +247,41 @@ export default {
 
         },
 
+        // deleteMon(id) {
+        //     let data = {
+        //         id: id,
+        //     }
+        //     let token = window.localStorage.getItem('token');
+        //     if (token == null) {
+        //         this.$router.push('/login');
+        //     }
+        //     this.axios.post('http://127.0.0.1:8000/api/hdtaiquay/deleteOrder', data, {
+        //         headers: {
+        //             Authorization: 'Bearer ' + token
+        //         }
+        //     }).then(response => {
+        //         this.cthd = response.data.saleDetails;
+        //         this.tong = response.data.tong;
+
+        //         this.getBan();
+        //     });
+        // },
+
         updateSoluong(id, soluong) {
             let data = {
                 id: id,
                 soluong: soluong,
             }
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.post('hdtaiquay/updateSoluong', data, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
+            BaseRequest.post('hdtaiquay/updateSoluong', data).then(response => {
                 this.product_quantity = data.soluong;
                 this.cthd = response.data.saleDetails;
                 this.tong = response.data.tong;
-
             }).catch((error) => {
                 console.log(error);
             });
         },
 
         deleteHD(id) {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
             this.$swal({
                 title: 'Bạn chắc chứ?',
                 text: "Bạn muốn xóa hóa đơn này!",
@@ -292,11 +293,7 @@ export default {
                 confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete('hdtaiquay/deleteHD/' + id, {
-                        headers: {
-                            Authorization: 'Bearer ' + token
-                        }
-                    }).then(res => {
+                    BaseRequest.delete('hdtaiquay/deleteHD/' + id).then(res => {
                         this.$swal(
                             'Đã xóa!',
                             res.data.message,
@@ -333,15 +330,8 @@ export default {
                 ghichu: this.ghichu,
                 thoigianden: this.thoigianden,
             }
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.post('hdtaiquay/khdattruoc', data, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
+            
+            BaseRequest.post('hdtaiquay/khdattruoc', data).then(response => {
                 this.$swal(
                     'Thành công!',
                     response.data.message,
@@ -374,15 +364,7 @@ export default {
         // },
 
         getHD() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('hdtaiquay', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('hdtaiquay').then(res => {
                 this.ds_hd = res.data.data
                 this.ds_ban = res.data.ban;
                 $('#dataTable').DataTable().destroy();
@@ -412,15 +394,7 @@ export default {
         },
 
         getCTHD(id) {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('hdtaiquay/' + id, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('hdtaiquay/' + id).then(res => {
                 this.cthd = res.data.cthd
                 this.tong = res.data.tong
             })

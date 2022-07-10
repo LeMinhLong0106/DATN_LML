@@ -137,6 +137,11 @@ class HoaDonController extends Controller
     public function deleteHD($hDTaiQuay)
     {
         $data = HoaDon::find($hDTaiQuay);
+        
+        $ban = Ban::find($data->ban_id);
+        $ban->tinhtrang = 0;
+        $ban->save();
+        
         $data->delete();
         return response()->json([
             'message' => 'Xóa thành công'

@@ -41,14 +41,14 @@
                                     <td>{{ item.monanss.tenmonan }}</td>
                                     <td>{{ item.soluong }}</td>
                                     <td>{{ item.ghichu }}</td>
-                                    <td>{{ item.giaban }} </td>
-                                    <td>{{ item.soluong * item.giaban }} </td>
+                                    <td>{{ parseInt(item.giaban).toLocaleString("de-DE") }} </td>
+                                    <td>{{ (item.soluong * item.giaban).toLocaleString("de-DE") }} </td>
                                 </tr>
                             </tbody>
                         </table>
                         <hr />
                         <div style="text-align:right;">
-                            <h4>Tổng tiền: {{ hd.tongtien }}</h4>
+                            <h4>Tổng tiền: {{ hd.tongtien.toLocaleString("de-DE") }}</h4>
                         </div>
 
                         <div style="text-align:center;">
@@ -65,7 +65,7 @@
 
 <script>
 import moment from 'moment'
-
+import BaseRequest from '../core/BaseRequest'
 export default {
     data() {
         return {
@@ -87,15 +87,7 @@ export default {
             }
         },
         getCTHD(id) {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('hdonline/' + id, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('hdonline/' + id).then(res => {
                 // console.log(res.data.cthd)
                 this.hd = res.data.data;
                 this.cthd = res.data.cthd

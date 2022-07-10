@@ -7,21 +7,21 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">Tình trạng bàn</div>
                     <div class="card-body">
-                        <span v-for="todo in ds_ban">
-                            <button v-if="todo.tinhtrang == 0" class="mb-2 mr-2 btn btn-success"
-                                @click="showmodal(todo.id)">Bàn {{ todo.id }}
+                        <span v-for="item in ds_ban">
+                            <button v-if="item.tinhtrang == 0" class="mb-2 mr-2 btn btn-success"
+                                @click="showmodal(item.id)">Bàn {{ item.id }}
                                 <br> {{
-                                        todo.ghe
+                                        item.ghe
                                 }} ghế</button>
-                            <button v-else-if="todo.tinhtrang == 1" class="mb-2 mr-2 btn btn-warning"
-                                @click="showmodal(todo.id)">Bàn {{ todo.id }}
+                            <button v-else-if="item.tinhtrang == 1" class="mb-2 mr-2 btn btn-warning"
+                                @click="showmodal(item.id)">Bàn {{ item.id }}
                                 <br> {{
-                                        todo.ghe
+                                        item.ghe
                                 }} ghế</button>
-                            <button v-else-if="todo.tinhtrang == 2" class="mb-2 mr-2 btn btn-danger"
-                                @click="showmodal(todo.id)">Bàn {{ todo.id }}
+                            <button v-else-if="item.tinhtrang == 2" class="mb-2 mr-2 btn btn-danger"
+                                @click="showmodal(item.id)">Bàn {{ item.id }}
                                 <br> {{
-                                        todo.ghe
+                                        item.ghe
                                 }} ghế</button>
                         </span>
                     </div>
@@ -46,27 +46,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(todo, index) in ds_mon" :key="index">
-                                        <td>{{ todo.monanss.tenmonan }}</td>
+                                    <tr v-for="(item, index) in ds_mon" :key="index">
+                                        <td>{{ item.monanss.tenmonan }}</td>
                                         <td>
-                                            <input v-model="todo.soluong" v-if="todo.tinhtrang == 0" type="number"
-                                                @change="updateSoluong(todo.id, todo.soluong)" class="form-control"
+                                            <input v-model="item.soluong" v-if="item.tinhtrang == 0" type="number"
+                                                @change="updateSoluong(item.id, item.soluong)" class="form-control"
                                                 min="1" style="width: 100px;">
-                                            <div v-else>{{ todo.soluong }}</div>
+                                            <div v-else>{{ item.soluong }}</div>
                                         </td>
-                                        <td>{{ todo.ghichu }}</td>
-                                        <td>{{ todo.giaban }}</td>
-                                        <td>{{ (todo.soluong * todo.giaban) }}</td>
+                                        <td>{{ item.ghichu }}</td>
+                                        <td>{{ parseInt(item.giaban).toLocaleString("de-DE") }}</td>
+                                        <td>{{ (item.soluong * item.giaban).toLocaleString("de-DE") }}</td>
                                         <td>
-                                            <span v-if="todo.tinhtrang == 0">Đang chờ</span>
-                                            <span v-else>Đã nấu</span>
+                                            <span v-if="item.tinhtrang == 0" class="badge badge-danger">Đang chờ</span>
+                                            <span v-else class="badge badge-success">Đã nấu</span>
                                         </td>
                                         <td>
-                                            <div v-if="todo.tinhtrang == 0">
+                                            <div v-if="item.tinhtrang == 0">
                                                 <button class="btn btn-danger btn-circle btn-sm mr-2"
-                                                    @click="deleteMon(todo.id)"><i class="fas fa-trash"></i></button>
+                                                    @click="deleteMon(item.id)"><i class="fas fa-trash"></i></button>
                                                 <button class='btn btn-primary btn-circle btn-sm'
-                                                    @click="confirmOrder(todo.id)"><i class='fa fa-check'></i></button>
+                                                    @click="confirmOrder(item.id)"><i class='fa fa-check'></i></button>
                                             </div>
                                             <div v-else>
                                                 <i class='fa fa-check'></i>
@@ -75,7 +75,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div>Tổng: {{ $data.tong }}</div>
+                            <div>Tổng: {{ $data.tong.toLocaleString("de-DE") }}</div>
                         </div>
                         <div v-else>
                             <div class="alert alert-danger">
@@ -161,7 +161,7 @@
 </template>
 
 <script>
-
+import BaseRequest from '../core/BaseRequest';
 export default {
     data() {
         return {
@@ -192,10 +192,6 @@ export default {
             this.table_id = id;
             this.table_ghe = dsb.ghe;
             this.table_status = dsb.tinhtrang;
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
             $('#orderModal').modal('show')
             $('#modal_title').text('Thêm món cho bàn:' + id)
             $('#people_quantity').attr('max', this.table_ghe); // gán giá trị cho input hidden
@@ -213,11 +209,7 @@ export default {
                 this.product_note = '',
                 this.people_quantity = '',
 
-                this.axios.get('order/getSaleDetails/' + this.table_id, {
-                    headers: {
-                        Authorization: 'Bearer ' + token
-                    }
-                }).then(response => {
+                BaseRequest.get('order/getSaleDetails/' + this.table_id).then(response => {
                     console.log(response.data);
                     this.ds_mon = response.data.saleDetails;
                     this.tong = response.data.tong;
@@ -235,16 +227,7 @@ export default {
                 product_note: this.product_note,
                 people_quantity: this.people_quantity
             }
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-
-            this.axios.post('order/orderFood', data, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
+            BaseRequest.post('order/orderFood', data).then(response => {
                 this.ds_mon = response.data.saleDetails;
                 this.tong = response.data.tong;
                 $('#orderModal').modal('hide')
@@ -260,15 +243,7 @@ export default {
             let data = {
                 id: id,
             }
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.post('order/confirmOrder', data, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
+            BaseRequest.post('order/confirmOrder', data).then(response => {
                 this.ds_mon = response.data.saleDetails;
                 this.tong = response.data.tong;
                 $('#orderModal').modal('hide')
@@ -283,15 +258,7 @@ export default {
             let data = {
                 id: id,
             }
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.post('order/deleteOrder', data, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
+            BaseRequest.post('order/deleteOrder', data).then(response => {
                 // console.log(response);
                 this.ds_mon = response.data.saleDetails;
                 this.tong = response.data.tong;
@@ -305,15 +272,7 @@ export default {
                 id: id,
                 soluong: soluong,
             }
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.post('order/updateQuantity', data, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
+            BaseRequest.post('order/updateQuantity', data).then(response => {
                 this.product_quantity = data.soluong;
                 this.ds_mon = response.data.saleDetails;
                 this.tong = response.data.tong;
@@ -327,39 +286,19 @@ export default {
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('indexBan', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('indexBan').then(res => {
                 this.ds_ban = res.data
             })
         },
 
         getMonAn() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('indexMonan', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('indexMonan').then(res => {
                 this.ds_monan = res.data
             })
         },
 
         getHDKD() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('order/getHDKD', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('order/getHDKD').then(res => {
                 // console.log(res.data);
                 this.ds_hdkd = res.data
             })

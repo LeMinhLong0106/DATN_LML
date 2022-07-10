@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import BaseRequest from '../core/BaseRequest';
 export default {
     data() {
         return {
@@ -62,20 +63,12 @@ export default {
             }
         },
         phanQuyen() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
             let data = {
                 vaitro_id: this.data.vaitro_id,
                 quyen: this.data.quyen
                 // resources: this.resources
             }
-            this.axios.post('permission', data, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(response => {
+            BaseRequest.post('permission', data).then(response => {
                 // console.log(response.data['tenvaitro']);
                 if (response.data['tenvaitro'] == 'admin') {
                     this.$store.dispatch('quyen', response.data['quyens']);
@@ -89,30 +82,14 @@ export default {
         },
 
         getQuyen() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('permission', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('permission').then(res => {
                 // console.log(this.$route);
                 this.ds_q = res.data
             })
         },
 
         getVT() {
-            let token = window.localStorage.getItem('token');
-            if (token == null) {
-                this.$router.push('/login');
-            }
-            this.axios.get('role', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
+            BaseRequest.get('role').then(res => {
                 // console.log(res.data);
                 this.ds_vt = res.data
                 this.data.vaitro_id = this.ds_vt[0].id
