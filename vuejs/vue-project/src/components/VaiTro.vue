@@ -55,20 +55,15 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="tenvaitro">Tên vai trò</label>
-                                <input v-model="tenvaitro" type="text" class="form-control"
-                                    :class="{ 'is-invalid': errors.tenvaitro }" name="tenvaitro">
-                                <div v-if="errors.tenvaitro" class="invalid-feedback">
-                                    <strong>{{ errors.tenvaitro[0] }}</strong>
-                                </div>
+                                <input v-model="form.tenvaitro" type="text" class="form-control" name="tenvaitro">
+                                <div class="text-danger error-text " v-if="form.errors.has('tenvaitro')"
+                                    v-html="form.errors.get('tenvaitro')"></div>
                             </div>
                             <div class="form-group">
                                 <label for="mota">Mô tả</label>
-                                <input v-model="mota" type="text" class="form-control"
-                                    :class="{ 'is-invalid': errors.mota }" name="mota">
-                                <div v-if="errors.mota" class="invalid-feedback">
-                                    <strong>{{ errors.mota[0] }}</strong>
-                                </div>
-
+                                <input v-model="form.mota" type="text" class="form-control" name="mota">
+                                <div class="text-danger error-text " v-if="form.errors.has('mota')"
+                                    v-html="form.errors.get('mota')"></div>
                             </div>
                         </div>
 
@@ -86,31 +81,38 @@
 </template>
 
 <script>
-import BaseRequest from '../core/BaseRequest'
+import Form from 'vform'
+
 export default {
     data() {
         return {
             editmode: true,
-            // api: 'http://localhost:8000/api/role',
-            id: '',
-            tenvaitro: '',
-            mota: '',
+            form: new Form({
+                id: '',
+                tenvaitro: '',
+                mota: '',
+            }),
             ds_vt: {},
-            errors: {},
         }
     },
     methods: {
         newModal() {
             this.editmode = false
-            this.id = ''
-            this.tenvaitro = ''
-            this.mota = ''
+            this.form.reset();
             $('#addModal').modal('show')
             $('#modal_title').html('Thêm vai trò');
         },
 
         saveDM() {
-            BaseRequest.post('role')
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.form.post('role', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            })
                 .then(res => {
                     $('#addModal').modal('hide')
                     this.$swal(
@@ -119,10 +121,10 @@ export default {
                         'success'
                     )
                     this.getVT();
-                }).catch(err => {
-                    this.errors = err.response.data.errors
+                })
+                .catch(() => {
                     this.$swal(
-                        'Thất bại!',
+                        'Lỗi!',
                         'Có lỗi xảy ra.',
                         'error'
                     )
@@ -130,20 +132,23 @@ export default {
         },
         editModal(vaitro) {
             this.editmode = true
-            this.id = vaitro.id
-            this.tenvaitro = vaitro.tenvaitro
-            this.mota = vaitro.mota
             $('#addModal').modal('show')
+            this.form.fill(vaitro);//gán giá trị vào form
+            // console.log(this.form)
             $('#modal_title').html('Sửa vai trò');
         },
 
         updateDM() {
-            let data = {
-                id: this.id,
-                tenvaitro: this.tenvaitro,
-                mota: this.mota
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
             }
-            BaseRequest.put('role/' + this.id, data).then(res => {
+            // console.log('update');
+            this.form.put('role/' + this.form.id, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }, this.form).then(res => {
                 $('#addModal').modal('hide')
                 this.$swal(
                     'Thành công!',
@@ -151,8 +156,7 @@ export default {
                     'success'
                 )
                 this.getVT()
-            }).catch(err => {
-                this.errors = err.response.data.errors
+            }).catch(() => {
                 this.$swal(
                     'Lỗi!',
                     'Có lỗi xảy ra.',
@@ -163,6 +167,10 @@ export default {
 
 
         deleteDM(id) {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
             this.$swal({
                 title: 'Bạn chắc chứ?',
                 text: "Bạn muốn xóa vai trò này!",
@@ -174,7 +182,11 @@ export default {
                 confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    BaseRequest.delete('role/' + id).then(res => {
+                    this.form.delete('role/' + id, {
+                        headers: {
+                            Authorization: 'Bearer ' + token
+                        }
+                    }).then(res => {
                         this.$swal(
                             'Đã xóa!',
                             res.data.message,
@@ -194,7 +206,15 @@ export default {
         },
 
         getVT() {
-            BaseRequest.get('role').then(res => {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.axios.get('role', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then(res => {
                 // console.log(res.data);
                 this.ds_vt = res.data
                 $('#dataTable').DataTable().destroy();

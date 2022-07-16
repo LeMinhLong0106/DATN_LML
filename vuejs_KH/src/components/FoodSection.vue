@@ -12,7 +12,7 @@
                     </div>
                     <div class="food-content">
                         <h3 class="mt-2">{{ todo.tenmonan }}</h3>
-                        <div class="price">{{ todo.gia.toLocaleString("de-DE") }}/{{ todo.donvitinh }}</div>
+                        <div class="price">{{ todo.gia.toLocaleString("de-DE") }}đ</div>
                         <div v-if="todo.tinhtrang == 1" class="btn" @click="addToCart(todo)">Thêm vào giỏ</div>
                         <div v-else class="btn">Món ăn hết</div>
                     </div>

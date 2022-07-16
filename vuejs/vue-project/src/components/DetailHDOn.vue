@@ -1,5 +1,5 @@
 <template>
-    <div class="row container d-flex justify-content-center">
+    <div class="row container d-flex justify-content-center mx-auto">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
@@ -41,14 +41,14 @@
                                     <td>{{ item.monanss.tenmonan }}</td>
                                     <td>{{ item.soluong }}</td>
                                     <td>{{ item.ghichu }}</td>
-                                    <td>{{ parseInt(item.giaban).toLocaleString("de-DE") }} </td>
-                                    <td>{{ (item.soluong * item.giaban).toLocaleString("de-DE") }} </td>
+                                    <td>{{ parseInt(item.giaban).toLocaleString("de-DE") }}đ </td>
+                                    <td>{{ (item.soluong * item.giaban).toLocaleString("de-DE") }}đ </td>
                                 </tr>
                             </tbody>
                         </table>
                         <hr />
                         <div style="text-align:right;">
-                            <h4>Tổng tiền: {{ hd.tongtien.toLocaleString("de-DE") }}</h4>
+                            <h4>Tổng tiền: {{ hd.tongtien.toLocaleString("de-DE") }}đ</h4>
                         </div>
 
                         <div style="text-align:center;">

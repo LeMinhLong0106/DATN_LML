@@ -24,7 +24,7 @@
                         <i class="fas fa-star-half-alt"></i>
                         <span> (50) </span>
                     </div> -->
-                    <div class="price">{{ todo.gia.toLocaleString("de-DE") }}/{{ todo.donvitinh }}</div>
+                    <div class="price">{{ todo.gia.toLocaleString("de-DE") }}đ</div>
                     <div v-if="todo.tinhtrang == 1" class="btn" @click="addToCart(todo)">Thêm vào giỏ</div>
                     <div v-else class="btn">Món ăn hết</div>
                 </div>

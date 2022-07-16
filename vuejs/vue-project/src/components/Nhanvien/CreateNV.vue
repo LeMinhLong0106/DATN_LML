@@ -148,7 +148,7 @@ export default {
                 vaitro_id: '',
                 hinhanh: '',
                 password: '',
-                gioitinh: '',
+                gioitinh: 1,
                 ngaysinh: '',
             }),
             ds_vt: {},

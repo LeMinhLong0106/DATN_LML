@@ -59,10 +59,10 @@ class GiaoDienController extends Controller
             'email' => 'required|string|email|max:100',
             'matkhau' => 'required|string|min:6',
         ], [
-            'email.required' => 'Nhập email',
+            'email.required' => 'Bạn chưa nhập email',
             'email.email' => 'Email không hợp lệ',
             'email.max' => 'Email không được vượt quá 100 ký tự',
-            'matkhau.required' => 'Nhập mật khẩu',
+            'matkhau.required' => 'Bạn chưa nhập mật khẩu',
             'matkhau.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
         ]);
         // check email and matkhau
@@ -72,10 +72,10 @@ class GiaoDienController extends Controller
                 $user->token = $user->createToken('authToken')->accessToken;
                 return response()->json($user, 200);
             } else {
-                return response()->json(['error' => 'Password is incorrect'], 401);
+                return response()->json(['errPassword' => 'Mật khẩu không đúng'], 401);
             }
         } else {
-            return response()->json(['error' => 'User is not found'], 404);
+            return response()->json(['errEmail' => 'Email không tồn tại'], 404);
         }
 
         $user->token = $user->createToken('authToken')->accessToken;

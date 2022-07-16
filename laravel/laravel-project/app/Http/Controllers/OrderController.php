@@ -182,6 +182,18 @@ class OrderController extends Controller
         return  $html;
     }
 
+    public function updateNote(Request $request)
+    {
+        $id_cthd = $request->id;
+        $cthd = CTHD::find($id_cthd);
+        $cthd->ghichu = $request->ghichu;
+        $cthd->save();
+        $id_hd = $cthd->hoadon_id;
+        $html =  $this->xyz($id_hd);
+        return  $html;
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *

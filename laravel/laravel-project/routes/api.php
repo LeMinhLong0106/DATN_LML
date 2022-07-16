@@ -37,6 +37,11 @@ Route::get('/getOrder/{id}', 'KhachHangController@getOrder');
 Route::post('/forgotKH', 'VaiTroQuyenController@forgotKH');
 Route::post('/resetKH', 'VaiTroQuyenController@resetKH');
 
+// reset pass with mail
+Route::post('/sendToken', 'VaiTroQuyenController@sendToken');
+Route::post('/validateToken', 'VaiTroQuyenController@validateToken');
+Route::post('/resetPass', 'VaiTroQuyenController@resetPass');
+
 // danh sách
 Route::get('/indexBan', 'VaiTroQuyenController@indexBan')->name('indexBan');
 Route::get('/indexMonan', 'VaiTroQuyenController@indexMonan')->name('indexMonan');
@@ -79,6 +84,7 @@ Route::group(['prefix' => 'order'], function () {
     Route::post('orderFood', 'OrderController@orderFood')->name('order.orderFood');
     Route::post('deleteOrder', 'OrderController@deleteOrder')->name('order.deleteOrder');
     Route::post('updateQuantity', 'OrderController@updateQuantity')->name('order.updateQuantity');
+    Route::post('updateNote', 'OrderController@updateNote')->name('order.updateNote');
     Route::post('confirmOrder', 'OrderController@confirmOrder')->name('order.confirmOrder');
 });
 // đầu bếp
@@ -86,3 +92,4 @@ Route::get('listCook', 'DauBepController@listCook')->name('listCook');
 
 // báo cáo
 Route::get('report', 'BaoCaoController@index')->name('report.index');
+Route::post('baocao', 'BaoCaoController@baocao')->name('report.baocao');

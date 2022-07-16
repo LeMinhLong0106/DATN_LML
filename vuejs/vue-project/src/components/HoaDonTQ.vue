@@ -21,7 +21,6 @@
                             <tr v-for="item in ds_hd">
                                 <td>{{ item.id }}</td>
                                 <td>{{ item.ban_id }}</td>
-                                <!-- <td>{{ item.created_at }}</td> -->
                                 <td>{{ format_date(item.created_at) }}</td>
                                 <td>{{ item.nhanvien_id }}</td>
                                 <td>{{ item.nhanvien_tn }}</td>
@@ -62,9 +61,9 @@
         <!-- Danh sách bàn  -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">Tình trạng bàn</div>
-            <div class="card-body" v-if="ds_ban.length > 0">
+            <div class="card-body card-table" v-if="ds_ban.length > 0">
                 <span v-for="todo in ds_ban">
-                    <button v-if="todo.tinhtrang == 0" class="mb-2 mr-2 btn btn-secondary"
+                    <button v-if="todo.tinhtrang == 0" class="mb-2 mr-2 btn btn-secondary "
                         @click="showmodal(todo.id)">Bàn {{ todo.id }}
                         <br> {{
                                 todo.ghe
@@ -79,7 +78,7 @@
 
         <!-- Modal thanh toán -->
         <div class="modal fade" id="editHD">
-            <div class="modal-dialog" style="max-width: 700px;">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editHDLabel"></h5>
@@ -93,6 +92,7 @@
                                 <tr>
                                     <th>Tên món ăn</th>
                                     <th>Số lượng</th>
+                                    <th>Đơn giá</th>
                                     <th>Tổng tiền</th>
                                 </tr>
                             </thead>
@@ -104,6 +104,7 @@
                                             @change="updateSoluong(item.id, item.soluong)" class="form-control" min="1"
                                             style="width: 70px;">
                                     </td>
+                                    <td>{{ parseInt(item.giaban).toLocaleString("de-DE") }}</td>
                                     <td>{{ item.tongtien.toLocaleString("de-DE") }}</td>
                                     <!-- <td>
                                         <div v-if="item.tinhtrang == 0">
@@ -236,16 +237,20 @@ export default {
             }).then(() => {
                 this.getHD();
                 $('#editHD').modal('hide');
-                this.$swal(
-                    'Thành công!',
-                    'Hóa đơn đã được xử lý',
-                    'success'
-                )
+                // this.$swal(
+                //     'Thành công!',
+                //     'Hóa đơn đã được xử lý',
+                //     'success'
+                // )
+                this.$router.push('/hdtaiquay/detail/' + id);
+
             }).catch(error => {
                 console.log(error);
             });
 
         },
+
+
 
         // deleteMon(id) {
         //     let data = {
@@ -330,7 +335,7 @@ export default {
                 ghichu: this.ghichu,
                 thoigianden: this.thoigianden,
             }
-            
+
             BaseRequest.post('hdtaiquay/khdattruoc', data).then(response => {
                 this.$swal(
                     'Thành công!',
@@ -407,3 +412,12 @@ export default {
 
 }    
 </script>
+<style scoped>
+@media (max-width:1024px) {
+    .card-table {
+        text-align: center;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+    }
+}
+</style>

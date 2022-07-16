@@ -2,15 +2,30 @@
     <div class="login-form-container">
         <form @submit.prevent="loginsubmit()">
             <h3>Đăng nhập</h3>
-            <input type="email" v-model="user.email" placeholder="Nhập email" class="box">
-            <!-- <div v-if="errors.email"> -->
-            <span style="color: red;" v-if="errors['email']" v-html="errors['email']">
-            </span>
-            <!-- </div> -->
-            <input type="password" v-model="user.matkhau" placeholder="Nhập mật khẩu" class="box">
-            <span style="color: red;" v-if="errors['matkhau']" v-html="errors['matkhau']">
-            </span>
-
+            <div>
+                <input v-model="user.email" type="email" class="box" placeholder="Nhập email...">
+                <div v-if="errors.email">
+                    <strong>{{ errors.email[0] }}</strong>
+                </div>
+            </div>
+            <div>
+                <input type="hidden" class="form-control" :class="{ 'is-invalid': errEmail }">
+                <div v-if="errEmail" class="invalid-feedback">
+                    <strong>{{ errEmail }}</strong>
+                </div>
+            </div>
+            <div>
+                <input v-model="user.matkhau" type="password" class=" box" placeholder="Nhập mật khẩu...">
+                <div v-if="errors.matkhau">
+                    <strong>{{ errors.matkhau[0] }}</strong>
+                </div>
+            </div>
+            <div>
+                <input type="hidden" class="form-control" :class="{ 'is-invalid': errPassword }">
+                <div v-if="errPassword" class="invalid-feedback">
+                    <strong>{{ errPassword }}</strong>
+                </div>
+            </div>
             <!-- <div class="remember">
                 <input type="checkbox" name="" id="remember-me">
                 <label for="remember-me">remember me</label>
@@ -41,7 +56,9 @@ export default {
                 email: '',
                 password: ''
             },
-            errors: {}
+            errors: {},
+            errPassword: '',
+            errEmail: ''
         }
     },
 
@@ -71,7 +88,19 @@ export default {
                 // this.$router.back();//redirect to previous page
 
             }).catch(error => {
-                this.errors = error.response.data.errors;
+                if (error.response.status == 401) {
+                    this.errPassword = error.response.data.errPassword;
+                    this.errors = '';
+                    this.errEmail = '';
+                } else if (error.response.status == 404) {
+                    this.errEmail = error.response.data.errEmail;
+                    this.errors = '';
+                    this.errPassword = '';
+                } else {
+                    this.errors = error.response.data.errors;
+                    this.errPassword = '';
+                    this.errEmail = '';
+                }
             })
         },
         //kiểm tra đã đn chưa
@@ -94,5 +123,10 @@ export default {
     color: #fff;
     background-color: #ea4335;
     border-color: #fff;
+}
+
+strong {
+    color: red;
+    font-size: 1.2rem;
 }
 </style>

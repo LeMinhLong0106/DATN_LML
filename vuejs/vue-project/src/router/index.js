@@ -8,6 +8,7 @@ import Login from '../views/Login.vue';
 import Registor from '../views/Registor.vue';
 import Forgot from '../views/Forgot.vue';
 import Admin from '../views/Admin.vue';
+import ResetPassword from '../views/ResetPassword.vue';
 
 import Ban from '../components/Ban.vue';
 import Dashboard from '../components/Dashboard.vue';
@@ -147,7 +148,7 @@ const router = createRouter({
     {
       // path: "/:catchAll(.*)",
       path: '/:pathMatch(.*)*',
-      name: "404",
+      name: "home",
       component: HomeView,
     },
     {
@@ -174,6 +175,11 @@ const router = createRouter({
       path: '/reset/:token',
       name: 'reset',
       component: Reset
+    },
+    {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: ResetPassword
     },
     {
       path: '/auth/:provider/callback',

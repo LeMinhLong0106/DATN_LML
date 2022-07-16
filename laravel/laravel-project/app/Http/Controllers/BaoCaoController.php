@@ -22,8 +22,6 @@ class BaoCaoController extends Controller
             ->take(8)
             ->get();
 
-
-
         // $tongtienhomnay = HoaDon::select('created_at', DB::raw('sum(tongtien) as total'))
         //     ->groupBy('created_at')
         //     ->where('created_at', '=', date('Y-m-d'))
@@ -61,25 +59,6 @@ class BaoCaoController extends Controller
             ->where('tinhtrang', 1)
             ->first('total');
 
-        // $date_from = date('d-m-Y', strtotime('-1 month'));
-        // $date_to = date('d-m-Y');
-
-        // if (request()->date_from && request()->date_to) {
-        //     $date_from =  request()->date_from;
-        //     $date_to = request()->date_to;
-        //     $hdtq = HoaDon::where('loaihd_id', 0)->where('tinhtrang', 1)->whereBetween('created_at', [$date_from, $date_to])->get();
-        //     $tttq = HoaDon::whereBetween('created_at', [$date_from, $date_to])->sum('tongtien');
-
-        //     $soluongmon = CTHD::select(['monan_id', 'created_at'], DB::raw('sum(soluong) as total'))
-        //         ->whereBetween('created_at', [$date_from, $date_to])
-        //         ->groupBy('monan_id')
-        //         ->orderBy('total', 'desc')
-        //         ->get();
-        //     // $soluongmon = CTHD::whereBetween('created_at', [$date_from, $date_to])->get();
-        //     $songuoi = HoaDon::whereBetween('created_at', [$date_from, $date_to])->where('loaihd_id', 0)->sum('songuoi');
-        // }
-
-
         return response()->json([
             'hd' => $hd,
             'hdtq' => $hdtq,
@@ -87,12 +66,41 @@ class BaoCaoController extends Controller
             'hdtqcxl' => $hdtqcxl,
             'hdoncxl' => $hdoncxl,
             'monanchuanau' => $monanchuanau,
-            // 'date_from' => $date_from,
-            // 'date_to' => $date_to,
+            // 'start' => $start,
+            // 'end' => $end,
             'soluongmon' => $soluongmon,
             'songuoi' => $songuoi,
             'tongtienhomnay' => $tongtienhomnay,
             'tongtienhomqua' => $tongtienhomqua,
+            'tongtien' => $tongtien,
+        ]);
+    }
+
+    public function baocao(Request $request)
+    {
+        $start = $request->start;
+        $end = $request->end;
+
+        $hd = HoaDon::select('created_at', DB::raw('sum(tongtien) as total'))
+            ->groupBy('created_at')
+            ->where('tinhtrang', 1)
+            ->get();
+
+        $soluongmon = CTHD::with(['monanss'])->select('monan_id', DB::raw('sum(soluong) as total'))
+            ->where('tinhtrang', 1)
+            ->groupBy('monan_id')
+            ->whereBetween('created_at', [$start, $end])
+            ->orderBy('total', 'desc')
+            ->take(8)
+            ->get();
+
+        $songuoi = HoaDon::whereBetween('created_at', [$start, $end])->where('loaihd_id', 0)->sum('songuoi');
+
+        $tongtien = HoaDon::whereBetween('created_at', [$start, $end])->where('tinhtrang', 1)->sum('tongtien');
+        return response()->json([
+            'hd' => $hd,
+            'soluongmon' => $soluongmon,
+            'songuoi' => $songuoi,
             'tongtien' => $tongtien,
         ]);
     }

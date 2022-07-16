@@ -23,7 +23,7 @@
                                 <td>{{ item.hoten }}</td>
                                 <td>{{ item.sdt }}</td>
                                 <td>{{ item.diachi }}</td>
-                                <td>{{ item.tongtien.toLocaleString("de-DE") }}</td>
+                                <td>{{ item.tongtien.toLocaleString("de-DE") }}đ</td>
                                 <td>{{ format_date(item.created_at) }}</td>
                                 <td>
                                     <span v-if="item.tinhtrang == 0" class="badge badge-danger">Chưa xử lý</span>

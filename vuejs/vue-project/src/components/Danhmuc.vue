@@ -57,19 +57,15 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="tendm">Tên danh mục</label>
-                                <input v-model="tendm" type="text" class="form-control"
-                                    :class="{ 'is-invalid': errors.tendm }" name="tendm">
-                                <div v-if="errors.tendm" class="invalid-feedback">
-                                    <strong>{{ errors.tendm[0] }}</strong>
-                                </div>
+                                <input v-model="form.tendm" type="text" class="form-control" name="tendm">
+                                <div class="text-danger error-text " v-if="form.errors.has('tendm')"
+                                    v-html="form.errors.get('tendm')"></div>
                             </div>
                             <div class="form-group">
                                 <label for="uutien">Độ ưu tiên</label>
-                                <input v-model="uutien" type="number" class="form-control"
-                                    :class="{ 'is-invalid': errors.uutien }" name="uutien">
-                                <div v-if="errors.uutien" class="invalid-feedback">
-                                    <strong>{{ errors.uutien[0] }}</strong>
-                                </div>
+                                <input v-model="form.uutien" type="number" class="form-control" name="uutien">
+                                <div class="text-danger error-text " v-if="form.errors.has('uutien')"
+                                    v-html="form.errors.get('uutien')"></div>
                             </div>
                         </div>
 
@@ -83,87 +79,95 @@
                 </div>
             </div>
         </div>
+
     </div>
+
 </template>
 
 <script>
-import BaseRequest from '../core/BaseRequest'
+import Form from 'vform'
+
 export default {
     data() {
         return {
             editmode: true,
-            // api: 'http://localhost:8000/api/category',
-            id: '',
-            tendm: '',
-            uutien: '',
+            form: new Form({
+                id: '',
+                tendm: '',
+                uutien: '',
+            }),
             ds_dm: {},
-            errors: {},
         }
     },
     methods: {
         newModal() {
             this.editmode = false
-            this.tendm = ''
-            this.uutien = ''
+            this.form.reset();
             $('#addModal').modal('show')
             $('#modal_title').html('Thêm danh mục');
         },
 
         saveDM() {
-            let data = {
-                tendm: this.tendm,
-                uutien: this.uutien,
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
             }
-            BaseRequest.post('category', data).then(res => {
-                $('#addModal').modal('hide')
-                this.$swal(
-                    'Thành công!',
-                    res.data.message,
-                    'success'
-                )
-                this.getDM();
-            }).catch(err => {
-                // console.log(err.response.data.errors)
-                this.errors = err.response.data.errors
-                this.$swal(
-                    'Lỗi!',
-                    'Có lỗi xảy ra.',
-                    'error'
-                )
+            this.form.post('category', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             })
+                .then(res => {
+                    $('#addModal').modal('hide')
+                    this.$swal(
+                        'Thành công!',
+                        res.data.message,
+                        'success'
+                    )
+                    this.getDM();
+                })
+                .catch(() => {
+                    this.$swal(
+                        'Lỗi!',
+                        'Có lỗi xảy ra.',
+                        'error'
+                    )
+                })
         },
-
+        
         editModal(danhmuc) {
             this.editmode = true
-            this.id = danhmuc.id
-            this.tendm = danhmuc.tendm
-            this.uutien = danhmuc.uutien
             $('#addModal').modal('show')
+            this.form.fill(danhmuc);//gán giá trị
             $('#modal_title').html('Sửa danh mục');
         },
 
         updateDM() {
-            let data = {
-                id: this.id,
-                tendm: this.tendm,
-                uutien: this.uutien,
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
             }
-            BaseRequest.put('category/' + this.id, data).then(res => {
-                $('#addModal').modal('hide')
-                this.$swal(
-                    'Thành công!',
-                    res.data.message,
-                    'success'
-                )
-                this.getDM();
-            }).catch(err => {
-                this.errors = err.response.data.errors
-                this.$swal(
-                    'Lỗi!',
-                    'Có lỗi xảy ra.',
-                    'error'
-                )
+            // console.log('update');
+            this.form.put('category/' + this.form.id, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             })
+                .then(res => {
+                    $('#addModal').modal('hide')
+                    this.$swal(
+                        'Thành công!',
+                        res.data.message,
+                        'success'
+                    )
+                    this.getDM();
+                }).catch(() => {
+                    this.$swal(
+                        'Lỗi!',
+                        'Có lỗi xảy ra.',
+                        'error'
+                    )
+                })
         },
 
         deleteDM(id) {
@@ -182,7 +186,11 @@ export default {
                 confirmButtonText: 'Xóa'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    BaseRequest.delete('category/' + id).then(res => {
+                    this.form.delete( 'category/' + id, {
+                        headers: {
+                            Authorization: 'Bearer ' + token
+                        }
+                    }).then(res => {
                         this.$swal(
                             'Đã xóa!',
                             res.data.message,
@@ -202,7 +210,15 @@ export default {
         },
 
         getDM() {
-            BaseRequest.get('category').then(res => {
+            let token = window.localStorage.getItem('token');
+            if (token == null) {
+                this.$router.push('/login');
+            }
+            this.axios.get('category', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then(res => {
                 this.ds_dm = res.data
                 $('#dataTable').DataTable().destroy();
                 this.$nextTick(() => {

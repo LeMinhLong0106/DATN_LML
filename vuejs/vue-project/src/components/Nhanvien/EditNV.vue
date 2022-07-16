@@ -97,33 +97,40 @@
                                         v-html="errors['password']">
                                     </div>
                                 </div> -->
+
+                                <!-- <div class="col-md-6" v-if="ds_nv.vaitro_id == 1">
+                                    <label for="vaitro_id">Vai trò</label>
+                                    <p>{{ ds_nv.vaitross.mota }}</p>
+                                </div>
+
+                                <div class="col-md-6" v-else>
+                                    <label class="small mb-1" for="vaitro_id">Vai trò</label>
+                                    <select class="form-control" name="vaitro_id" v-model="ds_nv.vaitro_id">
+                                        <option value="" class="form-control">Vai trò</option>
+                                        <option v-for="item in ds_vt" v-bind:value="item.id">
+                                            {{ item.mota }}
+                                        </option>
+                                    </select>
+                                    <div class="text-danger error-text " v-if="errors['vaitro_id']"
+                                        v-html="errors['vaitro_id']">
+                                    </div>
+                                </div> -->
+
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="vaitro_id">Vai trò</label>
                                     <select class="form-control" name="vaitro_id" v-model="ds_nv.vaitro_id">
                                         <option value="" class="form-control">Vai trò</option>
                                         <option v-for="item in ds_vt" v-bind:value="item.id">
-                                            {{ item.tenvaitro }}
+                                            {{ item.mota }}
                                         </option>
                                     </select>
                                     <div class="text-danger error-text " v-if="errors['vaitro_id']"
                                         v-html="errors['vaitro_id']">
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Form Group (Roles)-->
-                            <!-- <div class="mb-3">
-                                <label class="small mb-1" for="vaitro_id">Vai trò</label>
-                                <select class="form-control" name="vaitro_id" v-model="ds_nv.vaitro_id">
-                                    <option value="" class="form-control">Vai trò</option>
-                                    <option v-for="item in ds_vt" v-bind:value="item.id">
-                                        {{ item.tenvaitro }}
-                                    </option>
-                                </select>
-                                <div class="text-danger error-text " v-if="errors['vaitro_id']"
-                                    v-html="errors['vaitro_id']">
-                                </div>
-                            </div> -->
+
+                            </div>
                             <!-- Submit button-->
                             <button type="submit" class="btn btn-primary">Cập nhật</button>
                             <router-link to="/user" class="btn btn-primary float-right">Quay lại</router-link>
@@ -140,10 +147,10 @@
 export default {
     data() {
         return {
-            // api: 'http://localhost:8000/api/user',
             ds_nv: {},
             ds_vt: {},
             errors: {},
+            vaitro: {},
         }
     },
     methods: {
@@ -192,23 +199,10 @@ export default {
                 )
             })
         },
-
-        // getNV() {
-        //     this.axios.get('user/' + this.$route.params.id).then(response => {
-        //         this.ds_nv = response.data;
-        //     })
-        // },
-
-        // getVT() {
-        //     this.axios.get('role').then(res => {
-        //         this.ds_vt = res.data
-        //     })
-        // },
     },
 
     // created() {
-    //     this.getNV();
-    //     this.getVT();
+    //     this.getUser();
     // },
 
     async created() {
@@ -220,13 +214,18 @@ export default {
         if (!id) {
             this.$router.push('/404');
         }
-        const [user, role] = await Promise.all([
+        const [user, role, detail] = await Promise.all([
             this.axios.get('user/' + id, {
                 headers: {
-                    Authorization: 'Bearer ' + window.localStorage.getItem('token')
+                    Authorization: 'Bearer ' + token
                 }
             }),
             this.axios.get('role', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }),
+            this.axios.get('getuser', {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -237,7 +236,10 @@ export default {
             this.$router.push('/404');
         } else {
             this.ds_nv = user.data;
+            // console.log(this.ds_nv);
             this.ds_vt = role.data;
+            this.vaitro = detail.data;
+            // console.log(this.vaitro);
         }
     },
 

@@ -60,7 +60,8 @@
                                             <hr>
                                         </form>
                                         <div class="text-center">
-                                            <router-link class="small" to="/forgot">Quên mật khẩu?</router-link>
+                                            <!-- <router-link class="small" to="/forgot">Quên mật khẩu?</router-link> -->
+                                            <router-link class="small" to="/reset-password">Quên mật khẩu?</router-link>
                                         </div>
                                         <!-- <div class="text-center">
                                             <router-link to="/registor" class="small" href="register.html">Create an

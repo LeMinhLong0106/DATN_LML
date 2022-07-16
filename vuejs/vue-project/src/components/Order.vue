@@ -3,22 +3,22 @@
         <h1 class="h3 mb-4 text-gray-800">Danh sách đặt món</h1>
         <div class="row">
             <!-- danh sách bàn -->
-            <div class="col col-sm-4">
+            <div class="col-lg-4">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">Tình trạng bàn</div>
-                    <div class="card-body">
+                    <div class="card-body card-table">
                         <span v-for="item in ds_ban">
-                            <button v-if="item.tinhtrang == 0" class="mb-2 mr-2 btn btn-success"
+                            <button v-if="item.tinhtrang == 0" class="mb-2 btn btn-success"
                                 @click="showmodal(item.id)">Bàn {{ item.id }}
                                 <br> {{
                                         item.ghe
                                 }} ghế</button>
-                            <button v-else-if="item.tinhtrang == 1" class="mb-2 mr-2 btn btn-warning"
+                            <button v-else-if="item.tinhtrang == 1" class="mb-2 btn btn-warning"
                                 @click="showmodal(item.id)">Bàn {{ item.id }}
                                 <br> {{
                                         item.ghe
                                 }} ghế</button>
-                            <button v-else-if="item.tinhtrang == 2" class="mb-2 mr-2 btn btn-danger"
+                            <button v-else-if="item.tinhtrang == 2" class="mb-2 btn btn-danger"
                                 @click="showmodal(item.id)">Bàn {{ item.id }}
                                 <br> {{
                                         item.ghe
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <!-- danh sách món ăn cho bàn -->
-            <div class="col col-sm-8">
+            <div class="col-lg-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3" id="showSelectedTable"></div>
                     <div class="card-body">
@@ -54,9 +54,15 @@
                                                 min="1" style="width: 100px;">
                                             <div v-else>{{ item.soluong }}</div>
                                         </td>
-                                        <td>{{ item.ghichu }}</td>
-                                        <td>{{ parseInt(item.giaban).toLocaleString("de-DE") }}</td>
-                                        <td>{{ (item.soluong * item.giaban).toLocaleString("de-DE") }}</td>
+                                        <!-- <td>{{ item.ghichu }}</td> -->
+                                        <td>
+                                            <input v-model="item.ghichu" v-if="item.tinhtrang == 0"
+                                                @change="updateNote(item.id, item.ghichu)" type="text"
+                                                class="form-control" style="width: 100px;">
+                                            <div v-else>{{ item.ghichu }}</div>
+                                        </td>
+                                        <td>{{ parseInt(item.giaban).toLocaleString("de-DE") }}đ</td>
+                                        <td>{{ (item.soluong * item.giaban).toLocaleString("de-DE") }}đ</td>
                                         <td>
                                             <span v-if="item.tinhtrang == 0" class="badge badge-danger">Đang chờ</span>
                                             <span v-else class="badge badge-success">Đã nấu</span>
@@ -75,7 +81,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div>Tổng: {{ $data.tong.toLocaleString("de-DE") }}</div>
+                            <div>Tổng: {{ $data.tong.toLocaleString("de-DE") }}đ</div>
                         </div>
                         <div v-else>
                             <div class="alert alert-danger">
@@ -139,7 +145,7 @@
             </div>
         </div>
         <!-- danh sách đặt bàn -->
-        <div>
+        <div v-if="ds_hdkd.length > 0">
             <h1 class="h3 mb-4 text-gray-800">Danh sách bàn đặt trước</h1>
             <div class="row">
                 <div class="col-sm-3 mb-2" v-for="hd in ds_hdkd">
@@ -150,12 +156,11 @@
                             <p class="card-text">Số điện thoại: {{ hd.sdt }}</p>
                             <p class="card-text">Thời gian đến: {{ hd.thoigianden }}</p>
                             <p class="card-text">Số người: {{ hd.songuoi }}</p>
-                            <p class="card-text">Ghi chú:{{ hd.ghichu }}</p>
+                            <p class="card-text">Ghi chú: {{ hd.ghichu }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -267,6 +272,17 @@ export default {
             })
         },
 
+        updateNote(id, ghichu) {
+            let data = {
+                id: id,
+                ghichu: ghichu,
+            }
+            BaseRequest.post('order/updateNote', data).then(response => {
+                this.ds_mon = response.data.saleDetails;
+                this.getBan();
+            })
+        },
+
         updateSoluong(id, soluong) {
             let data = {
                 id: id,
@@ -288,12 +304,16 @@ export default {
             }
             BaseRequest.get('indexBan').then(res => {
                 this.ds_ban = res.data
+            }).catch(err => {
+                this.$router.push('/');
             })
         },
 
         getMonAn() {
             BaseRequest.get('indexMonan').then(res => {
                 this.ds_monan = res.data
+            }).catch(err => {
+                this.$router.push('/');
             })
         },
 
@@ -301,6 +321,8 @@ export default {
             BaseRequest.get('order/getHDKD').then(res => {
                 // console.log(res.data);
                 this.ds_hdkd = res.data
+            }).catch(err => {
+                this.$router.push('/');
             })
         },
 
@@ -315,3 +337,13 @@ export default {
 
 }    
 </script>
+<style scoped>
+.card-table {
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+    /* gap: 2rem; */
+}
+
+
+</style>

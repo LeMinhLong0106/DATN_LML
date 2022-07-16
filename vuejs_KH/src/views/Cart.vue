@@ -20,11 +20,11 @@
                                 <br>
                                 <span> Giá: </span>
                                 <!-- <span class="price"> {{ item.gia }} </span> -->
-                                <span class="price"> {{ item.gia.toLocaleString("de-DE") }} VNĐ </span>
+                                <span class="price"> {{ item.gia.toLocaleString("de-DE") }}đ </span>
                                 <br>
                                 <span> Tổng: </span>
                                 <!-- <span class="price"> {{ item.totalPrice }} </span> -->
-                                <span class="price"> {{ item.totalPrice.toLocaleString("de-DE") }} VNĐ </span>
+                                <span class="price"> {{ item.totalPrice.toLocaleString("de-DE") }}đ </span>
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                 <div class="cart-total">
                     <h3 class="title"> Hóa đơn </h3>
                     <div class="box">
-                        <h3 class="total"> Thành tiền : <span>{{ totalPrice.toLocaleString("de-DE") }} VNĐ</span> </h3>
+                        <h3 class="total"> Thành tiền : <span>{{ totalPrice.toLocaleString("de-DE") }}đ</span> </h3>
                         <div class="order" id="order">
                             <form @submit.prevent="thanhtoan()">
                                 <div class="flex">

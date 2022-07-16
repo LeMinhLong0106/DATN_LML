@@ -31,6 +31,7 @@ export default {
                     code: this.$route.query.code
                 }
             }).then(response => {
+                console.log(response.data);
                 window.localStorage.setItem('token', response.data.access_token);//store token in local storage
                 window.localStorage.setItem('idKH', response.data.user['id']);
 

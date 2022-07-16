@@ -12,6 +12,7 @@ use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\ResetPasswordMailable;
 use Illuminate\Support\Str;
 
 class VaiTroQuyenController extends Controller
@@ -145,6 +146,78 @@ class VaiTroQuyenController extends Controller
         $user->save();
 
         return response()->json(['message' => 'Đổi mật khẩu thành công'], 200);
+    }
+
+    public function sendToken(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required',
+        ], [
+            'email.required' => 'Nhập email',
+        ]);
+
+        $email = $request->input('email');
+        if (User::where('email', $email)->doesntExist()) {
+            return response()->json(['error' => 'Email không tồn tại'], 404);
+        }
+
+        $token = Str::random(10);
+        Mail::to($email)->send(new ResetPasswordMailable($token));
+
+        try {
+            DB::table('password_resets')->insert([
+                'email' => $email,
+                'token' => $token,
+            ]);
+
+            $data = [
+                'email' => $email,
+                'token' => $token,
+            ];
+
+            return response()->json($data, 200);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        }
+    }
+
+    public function validateToken(Request $request){
+        $this->validate($request, [
+            'token' => 'required',
+        ], [
+            'token.required' => 'Nhập token',
+        ]);
+        $token = $request->input('token');
+        $passwordResets = DB::table('password_resets')->where('token', $token)->first();
+        if (!$passwordResets) {
+            return response()->json(['error' => 'Token không tồn tại'], 404);
+        }
+        return response()->json(['message' => 'Token hợp lệ'], 200);
+    }
+
+    public function resetPass(Request $request){
+        // $this->validate($request, [
+        //     'token' => 'required',
+        //     'password' => 'required',
+        //     'password_confirmation' => 'required|same:password',
+        // ], [
+        //     'token.required' => 'Nhập token',
+        //     'password.required' => 'Nhập mật khẩu',
+        //     'password_confirmation.required' => 'Nhập lại mật khẩu',
+        //     'password_confirmation.same' => 'Mật khẩu không trùng khớp',
+        // ]);
+        $token = $request->input('token');
+        if (!$passwordResets = DB::table('password_resets')->where('token', $token)->first()) {
+            return response()->json(['error' => 'Token không tồn tại'], 404);
+        }
+        $email = $passwordResets->email;
+        if (!$user = User::where('email', $email)->first()) {
+            return response()->json(['error' => 'Email không tồn tại'], 404);
+        }
+        $user->password = Hash::make($request->input('password'));
+        $user->save();
+        return response()->json(['message' => 'Đổi mật khẩu thành công'], 200);
+    
     }
 
     public function index()

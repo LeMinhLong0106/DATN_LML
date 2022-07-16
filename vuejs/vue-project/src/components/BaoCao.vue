@@ -1,24 +1,31 @@
 <template>
     <div class="container-fluid">
         <h2 class="h3 mb-4 text-gray-800 text-center">Thống kê doanh thu</h2>
-        <div class="input-group mb-3" style="width: 60%;">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Bắt đầu</span>
-            </div>
-            <input type="date" class="form-control" v-model="start">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Kết thúc</span>
-            </div>
-            <input type="date" class="form-control" v-model="end">
-            <div class="input-group-append">
-                <button @click="filterDate()" class="btn btn-primary" type="button">Thống kê</button>
-                <!-- <button @click="reset()" class="btn btn-danger" type="button">Cancel</button> -->
-            </div>
+        <table class="mx-auto">
+            <tr>
+                <td><b>Ngày bắt đầu: </b></td>
+                <td><input type="date" class="form-control" v-model="start"></td>
+            </tr>
+            <tr>
+                <td><b>Ngày kết thúc: </b></td>
+                <td><input type="date" class="form-control" v-model="end"></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center">
+                    <button @click="filterDate()" class="btn btn-primary" type="button">Thống kê</button>
+                    <!-- <button @click="reset()" class="btn btn-danger" type="button">Làm mới</button> -->
+                </td>
+            </tr>
+        </table>
+        <!-- <p>Số lượng khách: {{ songuoi }}</p> -->
+        <div >
+            <h4 v-if="tong !== 0" class="text-center">Tổng danh thu từ {{format_date(start)}} đến {{format_date(end)}}: {{ parseInt(tong).toLocaleString("de-DE") }}đ</h4>
+            <canvas id="myLine"></canvas>
+            <h4 v-if="tong !== 0" class="text-center">Số lượng món ăn
+                <!-- <i v-for="item in soluongmon">{{ item.monanss.tenmonan }} ({{ item.total }}), </i> -->
+            </h4>
+            <canvas id="myPie"></canvas>
         </div>
-
-
-        <canvas id="myLine"></canvas>
-        <!-- <canvas id="myLines"></canvas> -->
     </div>
 </template>
 
@@ -30,76 +37,92 @@ export default {
         return {
             start: '',
             end: '',
-            ds_dm: {}
+            tong: 0,
+            songuoi: 0,
+            ds_dm: {},
+            soluongmon: {}
         }
     },
+
     methods: {
         format_date(value) {
             if (value) {
                 return moment(String(value)).format('DD-MM-YYYY')
             }
         },
-        getDM() {
+        async filterDate() {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');
             }
-            this.axios.get('report', {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            }).then(res => {
-                console.log(res.data)
-                this.ds_dm = res.data.hd
-            }).catch(() => {
-                this.$router.push('/login');
+            let res = await this.axios.post('baocao', {
+                start: this.start,
+                end: this.end,
             })
+            this.ds_dm = res.data.hd
+            this.tong = res.data.tongtien
+            this.songuoi = res.data.songuoi
+            this.soluongmon = res.data.soluongmon
+            this.drawChart()
+
         },
-        filterDate() {
-            // console.log(response)
-            const test = this.ds_dm.filter(item =>
+
+        drawChart() {
+            const doanhthu = this.ds_dm.filter(item =>
                 item.created_at >= this.start && item.created_at <= this.end
             )
             const myLine = new Chart(document.getElementById('myLine'), {
                 type: 'line',
                 data: {
-                    labels: test.map(item => this.format_date(item.created_at)),
+                    labels: doanhthu.map(item => this.format_date(item.created_at)),
                     datasets: [{
                         label: 'Doanh thu',
-                        data: test.map(item => item.total),
+                        data: doanhthu.map(item => item.total),
                         fill: false,
                         borderColor: 'rgb(75, 192, 192)',
                         tension: 0.1
                     }]
                 },
             });
-            const myLines = new Chart(document.getElementById('myLines'), {
-                type: 'line',
+
+            const myPie = new Chart(document.getElementById('myPie'), {
+                type: 'pie',
                 data: {
-                    labels: test.map(item => this.format_date(item.created_at)),
+                    labels: this.soluongmon.map(item => item.monanss.tenmonan),
                     datasets: [{
-                        label: 'Doanh thu 1',
-                        data: test.map(item => item.total),
-                        fill: false,
-                        borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1
-                    }]
+                        label: 'Số lượng bàn',
+                        data: this.soluongmon.map(item => item.total),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                        ],
+                    },],
                 },
             });
             myLine,
-            myLines
+                myPie
         },
         reset() {
             this.start = ''
             this.end = ''
-            this.filterDate()
+            this.tong = 0
+            this.songuoi = 0
+            this.soluongmon = {}
+            // this.drawChart()
+
+            // this.$router.push('/report');
         }
     },
-    created() {
-        this.getDM()
-    }
-
-
+    // created() {
+    //     this.getDM()
+    // }
 
 }
 </script>

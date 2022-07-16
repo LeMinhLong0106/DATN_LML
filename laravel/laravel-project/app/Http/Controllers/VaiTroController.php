@@ -119,7 +119,7 @@ class VaiTroController extends Controller
     {
         $a = VaiTro::with(['users'])->find($vaiTro);
         if (count($a->users) > 0) {
-            return response()->json(['error' => 'Không thể xóa vai trò này'], 500);
+            return response()->json(['error' => 'Tồn tại nhân viên trong vai trò'], 500);
         } else {
             $data = VaiTro::find($vaiTro);
             $data->delete();

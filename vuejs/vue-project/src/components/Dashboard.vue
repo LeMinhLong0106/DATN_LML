@@ -23,7 +23,7 @@
                                     Chưa có đơn
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800" v-else>
-                                    {{ homnay.total }} VNĐ
+                                    {{ parseInt(homnay.total).toLocaleString('de-DE') }}đ
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -49,7 +49,7 @@
                                     Chưa có đơn
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800" v-else>
-                                    {{ parseInt(tongtien).toLocaleString("de-DE") }} VNĐ
+                                    {{ parseInt(tongtien).toLocaleString("de-DE") }}đ
                                 </div>
                             </div>
                             <div class="col-auto">
