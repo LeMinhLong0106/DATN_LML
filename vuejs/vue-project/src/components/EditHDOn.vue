@@ -73,7 +73,7 @@ export default {
             cthd: {},
             tong: '',
             user: {},
-            api: 'http://localhost:8000/api/hdonline/',
+            // api: 'http://localhost:8000/api/hdonline/',
         }
     },
     methods: {
@@ -88,7 +88,7 @@ export default {
         },
         getCTHD(id) {
             BaseRequest.get('hdonline/' + id).then(res => {
-                // console.log(res.data.cthd)
+                console.log(res.data)
                 this.hd = res.data.data;
                 this.cthd = res.data.cthd
                 this.tong = res.data.tong

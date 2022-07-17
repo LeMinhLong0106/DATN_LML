@@ -12,8 +12,8 @@ class KhachHangController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
-        $this->middleware('checkQuyen');
+        // $this->middleware('auth:api');
+        // $this->middleware('checkQuyen');
     }
 
     /**
@@ -68,24 +68,11 @@ class KhachHangController extends Controller
         return response()->json($data, 200);
     }
 
-    // public function getCus(Request $request)
-    // {
-    //     $user = KhachHang::find($request->user('api')->id);
-    //     return response()->json($user, 200);
-    // }
-
     public function getOrder($khachHang)
     {
-        $data = HoaDon::with(['cthds', 'monanss'])->where('khachhang_id', $khachHang)->get();
+        $data = HoaDon::with(['cthds','monanss'])->where('khachhang_id', $khachHang)->get();
         return response()->json($data, 200);
     }
-
-    // public function getOrder(Request $request)
-    // {
-    //     $user = KhachHang::find($request->user('api')->id);
-    //     $order = HoaDon::with(['cthds', 'monanss'])->where('khachhang_id', $user->id)->get();
-    //     return response()->json($order);
-    // }
 
     /**
      * Show the form for editing the specified resource.

@@ -49,6 +49,11 @@ const router = createRouter({
           },
         },
         {
+          path: '/listCook',
+          name: 'listCook',
+          component: GiaoDienDB,
+        },
+        {
           path: '/table',
           name: 'table',
           component: Ban,

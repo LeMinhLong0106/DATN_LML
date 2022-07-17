@@ -26,14 +26,9 @@ Route::get('login/google/callback', 'SocialController@handleProviderCallback');
 Route::post('/customer/register', 'GiaoDienController@register')->name('customer.register');
 Route::post('/customer/login', 'GiaoDienController@login')->name('customer.login');
 Route::post('checkout', 'GiaoDienController@checkout')->name('checkout');
-
 Route::get('/getCus/{id}', 'KhachHangController@getCus');
-// Route::get('/getCus', 'KhachHangController@getCus');
-
 Route::get('/getOrder/{id}', 'KhachHangController@getOrder');
-// Route::get('/getOrder', 'KhachHangController@getOrder');
 
-// Route::post('/customer/logout', 'KhachHangController@logout')->name('customer.logout');
 Route::post('/forgotKH', 'VaiTroQuyenController@forgotKH');
 Route::post('/resetKH', 'VaiTroQuyenController@resetKH');
 

@@ -173,7 +173,7 @@ export default {
             })
         },
 
-        deleteDM(id) {
+        deleteBan(id) {
             let token = window.localStorage.getItem('token');
             if (token == null) {
                 this.$router.push('/login');

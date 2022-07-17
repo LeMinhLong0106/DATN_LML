@@ -106,7 +106,7 @@ export default {
                 total += item.totalPrice;
             }
 
-            return total;
+            return this.tongtien = total;
         },
 
         getKH() {

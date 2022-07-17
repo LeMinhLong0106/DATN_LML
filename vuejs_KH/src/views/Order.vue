@@ -11,12 +11,18 @@
                 <p> Tên người nhận: <span>{{ item.hoten }}</span> </p>
                 <p> Số điện thoại: <span>{{ item.sdt }}</span> </p>
                 <p> Địa chỉ: <span>{{ item.diachi }}</span> </p>
-                <p> Món ăn: <span v-for="i in item.monanss" class="text-lowercase">{{ i.tenmonan }}, </span> </p>
-                <!-- <p> so luong: <span v-for="i in item.cthds" class="text-lowercase">{{ i.soluong }}, </span> </p> -->
+                <p> Món ăn:
+                    <span v-for="monan in item.monanss" class="text-lowercase">
+                        <span v-for="soluong in item.cthds" class="text-lowercase">
+                            <span v-if="soluong.monan_id == monan.id">{{ monan.tenmonan }}({{ soluong.soluong }}), </span>
+                        </span>
+                    </span>
+                </p>
+                <!-- <p> Món ăn: <span v-for="i in cthd" class="text-lowercase">{{ i.monanss.tenmonan }} ({{i.soluong}}), </span> </p> -->
                 <!-- <p> your orders : <span>pizza 01 (1) - main dish 02 (3) -</span> </p> -->
                 <p> Tổng tiền: <span>{{ item.tongtien }}</span> </p>
                 <p> Tình trạng đơn:
-                    <span class="text-success" v-if="item.tinhtrang == 1"> đã giao</span>
+                    <span class="text-success" v-if="item.tinhtrang == 1"> đã xử lý</span>
                     <span class="text-danger " v-else>đang chờ xử lý</span>
                 </p>
             </div>

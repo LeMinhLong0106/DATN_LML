@@ -64,10 +64,7 @@ export default {
             ds_hd: {},
             cthd: {},
             id: '',
-            tong: '',
-            product_quantity: '',
-
-            // api: 'http://localhost:8000/api/',
+            tong: 0,
         }
     },
 

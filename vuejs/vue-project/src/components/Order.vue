@@ -148,7 +148,7 @@
         <div v-if="ds_hdkd.length > 0">
             <h1 class="h3 mb-4 text-gray-800">Danh sách bàn đặt trước</h1>
             <div class="row">
-                <div class="col-sm-3 mb-2" v-for="hd in ds_hdkd">
+                <div class="col-xl-3 col-md-6 mb-2" v-for="hd in ds_hdkd">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Bàn: {{ hd.ban_id }}</h5>

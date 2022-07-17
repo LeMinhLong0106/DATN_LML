@@ -31,7 +31,7 @@ export default {
                 this.$router.push('/login');
             }
             else {
-                this.axios.get('http://localhost:8000/api/getCus/' + window.localStorage.getItem('idKH'), {
+                this.axios.get('getCus/' + window.localStorage.getItem('idKH'), {
                     headers: {
                         Authorization: 'Bearer ' + token
                     }

@@ -110,7 +110,7 @@ class OrderController extends Controller
         $saleDetail->ghichu = $request->product_note;
         $saleDetail->save();
         // tổng tiền trong hóa đơn
-        $sale->tongtien = $sale->tongtien + $saleDetail->tongtien; //
+        $sale->tongtien = $sale->tongtien + $saleDetail->tongtien; 
         $sale->save();
         $html =  $this->xyz($sale_id);
         return $html;

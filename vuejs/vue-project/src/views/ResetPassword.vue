@@ -1,36 +1,41 @@
 <template>
     <div class="container">
         <h2 class="text-center">Thay đổi mật khẩu</h2>
-        <div class="alert alert-primary">
-            <form v-on:submit.prevent="sendToken">
-                <div class="form-group">
-                    <label>Nhập email</label>
-                    <input v-model="email" type="email" class="form-control form-control-user"
-                        v-bind:class="{ 'is-invalid': errEmail }" placeholder="Email...">
-                    <div class="invalid-feedback">
-                        {{ errEmail }}
-                    </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="alert alert-primary">
+                    <form v-on:submit.prevent="sendToken">
+                        <div class="form-group">
+                            <label>Nhập email</label>
+                            <input v-model="email" type="email" class="form-control form-control-user"
+                                v-bind:class="{ 'is-invalid': errEmail }" placeholder="Email...">
+                            <div class="invalid-feedback">
+                                {{ errEmail }}
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                            Gửi mã xác nhận
+                        </button>
+                    </form>
                 </div>
-                <button type="submit" class="btn btn-primary btn-user btn-block">
-                    Gửi mã xác nhận
-                </button>
-            </form>
-        </div>
-
-        <div class="alert alert-secondary">
-            <form v-on:submit.prevent="validateToken">
-                <div class="form-group">
-                    <label>Mã xác nhận</label>
-                    <input v-model="token" type="text" class="form-control form-control-user"
-                        v-bind:class="{ 'is-invalid': errToken }" placeholder="Mã xác nhận...">
-                    <div class="invalid-feedback">
-                        {{ errToken }}
-                    </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="alert alert-secondary">
+                    <form v-on:submit.prevent="validateToken">
+                        <div class="form-group">
+                            <label>Mã xác nhận</label>
+                            <input v-model="token" type="text" class="form-control form-control-user"
+                                v-bind:class="{ 'is-invalid': errToken }" placeholder="Mã xác nhận...">
+                            <div class="invalid-feedback">
+                                {{ errToken }}
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-user btn-block">
+                            Kiểm tra mã xác nhận
+                        </button>
+                    </form>
                 </div>
-                <button type="submit" class="btn btn-secondary btn-user btn-block">
-                    Kiểm tra mã xác nhận
-                </button>
-            </form>
+            </div>
         </div>
 
         <div class="alert alert-success" v-if="tokenValid">
@@ -56,8 +61,10 @@
                 </button>
             </form>
         </div>
+
         <div class="text-center">
-            <router-link to="/login" class="small"><button class="btn btn-primary ">Quay lại đăng nhập</button> </router-link>
+            <router-link to="/login" class="small"><button class="btn btn-primary ">Quay lại đăng nhập</button>
+            </router-link>
         </div>
     </div>
 </template>

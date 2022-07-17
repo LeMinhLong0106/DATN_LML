@@ -5,7 +5,7 @@
       <input class="box" placeholder="Nhập tên" v-model="user.tenkh">
       <span style="color: red;" v-if="errors['tenkh']" v-html="errors['tenkh']">
       </span>
-      <input class="box" placeholder="Nhập email" v-model="user.email">
+      <input class="box" type="email" placeholder="Nhập email" v-model="user.email">
       <span style="color: red;" v-if="errors['email']" v-html="errors['email']">
       </span>
       <input class="box" placeholder="Nhập số điện thoại" v-model="user.sdt">
@@ -14,7 +14,7 @@
       <input class="box" placeholder="Nhập địa chỉ" v-model="user.diachi">
       <span style="color: red;" v-if="errors['diachi']" v-html="errors['diachi']">
       </span>
-      <input class="box" placeholder="Nhập mật khẩu" v-model="user.matkhau">
+      <input class="box" type="password" placeholder="Nhập mật khẩu" v-model="user.matkhau">
       <span style="color: red;" v-if="errors['matkhau']" v-html="errors['matkhau']">
       </span>
       <!-- <div class="remember">

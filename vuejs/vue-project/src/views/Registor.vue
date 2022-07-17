@@ -70,15 +70,15 @@
                     </div>
                   </div> -->
                   <button type="submit" class="btn btn-primary btn-user btn-block">
-                    Register Account
+                    Đăng ký tài khoản
                   </button>
                   <hr>
                 </form>
                 <div class="text-center">
-                  <router-link class="small" to="/forgot">Forgot Password?</router-link>
+                  <router-link class="small" to="/forgot">Quên mật khẩu?</router-link>
                 </div>
                 <div class="text-center">
-                  <router-link to="/login" class="small">Already have an account? Login!</router-link>
+                  <router-link to="/login" class="small">Đăng nhập</router-link>
                 </div>
               </div>
             </div>

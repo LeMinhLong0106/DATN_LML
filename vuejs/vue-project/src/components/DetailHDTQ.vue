@@ -45,7 +45,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <h5 class="text-center font-italic">Cám ơn quý khách, hẹn gặp lại!</h5>
+                        <h6 class="text-center font-italic">Cám ơn quý khách, hẹn gặp lại!</h6>
                         <div class="noprint">
                             <button @click="printHD()" class="btn btn-primary ">In hóa đơn</button>
                             <router-link to="/hdtaiquay" class="btn btn-primary float-right">Quay lại</router-link>

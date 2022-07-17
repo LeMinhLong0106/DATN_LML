@@ -240,34 +240,3 @@ export default {
     },
 }
 </script>
-
-<style>
-.filter {
-    filter: invert(1)
-}
-
-@media print {
-    h4 {
-        font-size: 2.5rem;
-    }
-
-    h5 {
-        font-size: 2rem;
-    }
-
-    p,
-    .table {
-        font-size: 1.5rem;
-    }
-
-    .printHD {
-        width: 100%;
-        margin-left: 50px;
-    }
-
-    .noprint,
-    .noprint * {
-        display: none !important;
-    }
-}
-</style>

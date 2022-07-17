@@ -24,7 +24,7 @@
                                 <td>{{ format_date(item.created_at) }}</td>
                                 <td>{{ item.nhanvien_id }}</td>
                                 <td>{{ item.nhanvien_tn }}</td>
-                                <td>{{ item.tongtien.toLocaleString("de-DE") }} </td>
+                                <td>{{ item.tongtien.toLocaleString("de-DE") }}đ </td>
                                 <td>
                                     <span v-if="item.tinhtrang == 0" class="badge badge-danger">Chưa xử lý</span>
                                     <span v-else class="badge badge-success">Đã xử lý</span>
@@ -45,14 +45,10 @@
                                             <button type="button" class="btn btn-warning btn-circle btn-sm">
                                                 <i class="fas fa-eye"></i></button>
                                         </router-link>
-
-                                        <!-- <button type="button" class="btn btn-danger btn-circle btn-sm mr-2"
-                                            @click="printDownload(item.id)"><i class="fas fa-fax"></i></button> -->
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
-
                     </table>
                 </div>
             </div>
@@ -78,7 +74,7 @@
 
         <!-- Modal thanh toán -->
         <div class="modal fade" id="editHD">
-            <div class="modal-dialog">
+            <div class="modal-dialog" style="max-width: 700px;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editHDLabel"></h5>
@@ -104,8 +100,8 @@
                                             @change="updateSoluong(item.id, item.soluong)" class="form-control" min="1"
                                             style="width: 70px;">
                                     </td>
-                                    <td>{{ parseInt(item.giaban).toLocaleString("de-DE") }}</td>
-                                    <td>{{ item.tongtien.toLocaleString("de-DE") }}</td>
+                                    <td>{{ parseInt(item.giaban).toLocaleString("de-DE") }}đ</td>
+                                    <td>{{ item.tongtien.toLocaleString("de-DE") }}đ</td>
                                     <!-- <td>
                                         <div v-if="item.tinhtrang == 0">
                                             <button class="btn btn-danger btn-circle btn-sm mr-2"
@@ -117,7 +113,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="text-right"><b>Tổng:</b></td>
-                                    <td colspan="1">{{ $data.tong.toLocaleString() }} VNĐ</td>
+                                    <td colspan="1">{{ $data.tong.toLocaleString() }} đ</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -230,7 +226,6 @@ export default {
         thanhToan() {
             var id = this.id;
             var tong = this.tong;
-            // var url = 'http://localhost:8000/api/hdtaiquay/' + id + '/thanhtoan';
 
             BaseRequest.put('hdtaiquay/' + id + '/thanhtoan', {
                 tong: tong
